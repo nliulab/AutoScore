@@ -1,1 +1,1 @@
-# AutoScore
+# AutoScore: Automatic Clinical Score Generator
