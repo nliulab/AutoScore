@@ -49,13 +49,13 @@ AutoScore(data,n=12)
 
 #AutoScore insample validation 
 ##AutoScore_imsample(data,n)
-##MD: preprocessed data frame
+##data: preprocessed data frame
 ##n: number of variables you would like
 AutoScore_insample(data,n=10)
 
 #AutoScore validation(80% training,20%test)
 ##AutoScore_validation(data,n)
-##MD: preprocessed data frame
+##data: preprocessed data frame
 ##n: number of variables you would like
 AutoScore_validation(data,n=8)
 
@@ -64,7 +64,7 @@ AutoScore_validation(data,n=12)
 
 #divide data into training(70%),validation(10%) and test(20%) set
 ##AutoScore_imsample(data,n)
-##MD: preprocessed data frame
+##data: preprocessed data frame
 ##nmin: minimal number of variables you would like
 ##nmax: mmaximal number of variables you would like
 AutoScore_validation_range(data,nmin=1,nmax=20)
@@ -73,5 +73,4 @@ AutoScore_validation_range(data,nmin=1,nmax=20)
 
 
 ## References 
-
 
