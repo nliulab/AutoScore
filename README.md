@@ -19,9 +19,9 @@ The five pipeline function *AutoScore_rank()*, *AutoScore_parsimony()*, *AutoSco
 
 We also several functions in the package, which are optional. They include *Preprocess()* for preprocessing dataset, *Descriptive* for generating the descriptive table (table one) of your dataset, *UniVariable* for creating the table of univariable analysis for your dataset, *MultiVariable* for generating the table of multivariable analysis for your dataset. These functions are handy in building predictive models, especially for preparing clinical manuscripts.
 
-# **Demostration**
+# **AutoScore Demostration**
 
-## **1.Prepare data and package installation**
+## **1. Prepare data and package installation**
 ### Install the development version from GitHub:
 
 ```r
@@ -31,46 +31,41 @@ install_github(repo = "nliulab/AutoScore")
 ```
 [devtools]: https://github.com/hadley/devtools
 
-AutoSCore makes it trivial to process and develop the clinical scores given a dataset.
-
 ### Load R packages (including AutoScore package)
 ```r
-#library(caret)
 library(AutoScore)
+library(caret)
 library(pROC)
 library(randomForest)
 library(ggplot2)
 ```
 
-
 ### Load data (input data from csv or excel)
-- can use sample data built in the package for the demo
+- Users can use the integrated sample data in the package for demo
 ```r
 df_AutoScore <- Sample_Data
 ```
 
 ### Data preprocessing
-- Users are suggested to handle missing values, outliers, etc
-- Make Sure data are in good quality and reasonable distribution before entering our AutoScore Pipeline
-- "Preprocess" built-in function may help in missing value imputation
+- Users are suggested to preprocess their data (missing values, outliers, etc) to ensure that data are in good quality before running the AutoScore Pipeline
+- "Preprocess" built-in function may help with missing value imputation
 
 ### Prepare TrainSet, ValidationSet, and Testset
-- Users need to define datasets to train, validate, and test model
-- Users can also use codes below to split their dataset into Train/validation/test(7:1:2)
+- Option 1: Prepare three separate datasets to train, validate, and test models
+- Option 2: Use demo codes below to split their dataset into Train/validation/test datasets (70/10/20 in percentage)
 
-### Other requirements for Data input
-- Independent variables (X) can be numeric (class: num / int) or categorical (class: factor/logic).
+### Other requirements for input data
+- Independent variables (X) can be numeric (class: num/int) or categorical (class: factor/logic)
 - Categories/levels for each factor should be less than 10
-- Variables of character class (in R environment) were not accepted. Please transfer them into categorical variables first before going on with this codebook
-- Dependent variable (Y) should be binary, and its name should be changed to ¡°label¡± (Can use codes below to do it.)
+- Variables of character class (in R environment) are not supported. Please convert them into categorical variables first before running AutoScore
+- Dependent variable (Y) should be binary, and its name should be changed to "label" (Can use codes below to do it.)
 
-
-### Change name of Dependent variable (Y)/Outcome to "label" before going on with this codebook
+### Change "Y" (Dependent variable/Outcome) to "label" before running AutoScore
 ```r
 names(df_AutoScore)[names(df_AutoScore)=="Mortality_inpatient"]<-"label"
 ```
 
-### Data Splitting
+### Data splitting (optional if users have predefined training/validation/test datasets)
 ```r
 set.seed(4)
 Testindex <- sample((1:10000), 2000)
@@ -88,42 +83,38 @@ head(ValidationSet)
 head(TestSet)
 ```
 
+## **2. Run AutoScore to build clinical scores: 5-step process**
 
-
-
-## **2.Run AutoScore to build clinical scores: 5-step standard process**
-
-### STEP (1): Genrate variable ranking List (AutoScore Module 1)
-- ntree: Number of trees in random forest algorithm, default:100
+### STEP (1): Genrate variable ranking list (AutoScore Module 1)
+- ntree: Number of trees in random forest algorithm, default: 100
 ```r
 Ranking <- AutoScore_rank(TrainSet, ntree=100)
 ```
 
 ### STEP (2): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
-- nmin: Minimum number of selected variables, default:1
-- nmax: Maximum number of selected variables, default:20
+- nmin: Minimum number of selected variables, default: 1
+- nmax: Maximum number of selected variables, default: 20
 - probs: Predefine quantiles to convert continuous variables to categorical, default:(0, 0.05, 0.2, 0.8, 0.95, 1)
 ```r
 AUC <- AutoScore_parsimony(TrainSet, ValidationSet, rank=Ranking, nmin=1, nmax=20, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
 ```
 
-### Determine model complexity (final num_var for predictive modeling)
-- decided with the parsimony plot from STEP(2)
+**Determine the final list of variables "num_var" for creating the risk score, based on the parsimony plot in STEP (2)**
 ```r
 num_var <- 6
 FinalVariable <- names(Ranking[1:num_var])
 ```
 
-### STEP (3): Generate initial score with Final Variable list (Rerun AutoScore Module 2+3)
-- MaxScore: Predefined cap of final score, e.g. 100
+### STEP (3): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
+- MaxScore: Predefined cap of of the risk score (e.g. <=100)
 ```r
 CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
 ```
 
-### STEP (4): Fine-tune the score
-- Revise CutVec with domain knowledge to update scoring table (AutoScore Module 5)
+### STEP (4): Fine-tune the initial score generated in STEP-3 (AutoScore Module 5 & Re-run AutoScore Modules 2+3) 
+- Revise "CutVec" with domain knowledge to update the scoring table (AutoScore Module 5)
 - Rerun AutoScore Modules 2+3
-- User can choose any cut-off values/any number of categories
+- Users can choose any cut-off values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values
 ```r
 CutVec$tempc_mean <- c(36, 36.5, 37.3, 38)
 CutVec$platelet_min <- c(60, 120, 280, 400)
@@ -133,51 +124,35 @@ CutVec$spo2_mean <- c(95, 99)
 ScoringTable <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
 ```
 
-### STEP (5): Final score evaluation (AutoScore Module 6)
+### STEP (5): Evalute the final risk score (AutoScore Module 6)
 ```r
 AutoScore_testing(TestSet, FinalVariable, CutVec, ScoringTable)
 ```
 
+## **3. Demo on several related functions**
 
-
-## **3.Run AutoScore to build clinical scores: other direct function usage**
-
-preprocessing
+Preprocessing
 ```r
-# df_AutoScore<-Preprocess(Sample_Data,outcome = "Mortality_inpatient")
+# df_AutoScore<-Preprocess(Sample_Data, outcome="Mortality_inpatient")
 ```
 
-*AutoScore_insample* is used to generate scoring model based on a dataset and predefined number of variables. And it uses all sample for performance evaluation, which is good for some studies with small sample size.
-```r
-AutoScore_insample(df_AutoScore, m = 6, MaxScore = 150, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1))
-```
-
-*AutoScore_outofsample* is used to generate scoring model based on a dataset and predefined number of variables. And it uses testing data randomly selected from the original dataset for performance evaluation, which is good for some studies with relatively big sample size.
-```r
-AutoScore_outofsample(df_AutoScore, m = 6 , Percentage_test = 0.2, MaxScore = 150, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1))
-```
-
-
-## **4.Other analysis : related function usage**
-Descriptive Analysis and generate the result table
+Descriptive analysis and result table generation
 ```r
 Descriptive(df_AutoScore)
 ```
 
-Univariable Analysis and generate the result table
+Univariable analysis and result table generation
 ```r
 UniTable<-UniVariable(df_AutoScore)
 ```
 
-Multivariable Analysis and generate the result table
+Multivariable analysis and result table generation
 ```r
 MultiTable<-MultiVariable(df_AutoScore)
 ```
 
-
 ## References 
 Preprint (<http://dx.doi.org/10.2196/21798>)
-
 
 ## Author and maintainer(contact)
 - Feng Xie (Email: <xief@u.duke.nus.edu>)
