@@ -4,25 +4,20 @@
 
 **Description**
 
-AutoScore, a novel framework to automate the development of a clinical scoring model for predefined outcomes. AutoScore consists of six modules: variable ranking with machine learning, variable transformation, score derivation, model selection, domain knowledge-based score fine-tuning, and performance evaluation. The details are described in the manuscript<http://dx.doi.org/10.2196/21798>. USers or clinicians could seamlessly generate parsimonious sparse-score risk models (i.e., risk scores), which can be easily implemented and validated in clinical practice. Also, it enables users to build transparent and straightforward clinical scores quickly. We hope to see its application in various medical case studies.
-
+AutoScore, a novel framework to automate the development of a clinical scoring model for predefined outcomes. AutoScore consists of six modules: variable ranking with machine learning, variable transformation, score derivation, model selection, domain knowledge-based score fine-tuning, and performance evaluation. The details are described in the manuscript (<http://dx.doi.org/10.2196/21798>). Users (clinicians or scientists) could seamlessly generate parsimonious sparse-score risk models (i.e., risk scores), which can be easily implemented and validated in clinical practice. Also, it enables users to build transparent and straightforward clinical scores quickly. We hope to see its application in various medical case studies.
 
 **Features for Function**
 
-The five pepline function *AutoScore_rank()*,*AutoScore_parsimony()*,*AutoScore_weighting()*,*AutoScore_fine_tuning()* and
-*AutoScore_testing()* constitute the standard 5-step AutoScore-based Score generation process.This 5-step process could conbineboth automation and customization. Users only need to do some choices (eg. determine final variable according to the parsimony plot, or fine-tune the cut-offs). 
-Please follow the Guidebook and build you own scores using your own data step-by-step.
+The five pipeline function *AutoScore_rank()*, *AutoScore_parsimony()*, *AutoScore_weighting()*, *AutoScore_fine_tuning()* and
+*AutoScore_testing()* constitute the standard 5-step AutoScore-based Score generation process. This 5-step process is flexible for users to make some choices (e.g. determine the final list variable according to the parsimony plot, or fine-tune the cut-offs in variable transformation). Please follow the step-by-step instructions to build your own scores.
 
-* STEP (1): *AutoScore_rank()* -Generate variable ranking List by machine learning (AutoScore Module 1)
-* STEP (2): *AutoScore_parsimony()* -Select the best model with parsimony plot (AutoScore Modules 2+3+4)
-* STEP (3): *AutoScore_weighting()* -Generate initial score with Final Variable list (Rerun AutoScore Module 2+3)
-* STEP (4): *AutoScore_fine_tuning()* -Fine-tune the score and Revise CutVec with domain knowledge to update scoring table (AutoScore Module 5)
-* STEP (5): *AutoScore_testing()* -Final score evaluation by ROC analysis (AutoScore Module 6)
+* STEP (1): *AutoScore_rank()* - Rank variables by machine learning (AutoScore Module 1)
+* STEP (2): *AutoScore_parsimony()* - Select the best model with parsimony plot (AutoScore Modules 2+3+4)
+* STEP (3): *AutoScore_weighting()* - Generate initial score with the final list of variables (Re-run AutoScore Modules 2+3)
+* STEP (4): *AutoScore_fine_tuning()* - Fine-tune the score by revising "CutVec" with domain knowledge (AutoScore Module 5)
+* STEP (5): *AutoScore_testing()* - Evaluate the final score with ROC analysis (AutoScore Module 6)
 
-We also provide some direct function *AutoScore_insample()*,*AutoScore_outofsample()*. These two functions can take input data and predefined parameter m (number of variables) to generate the scoring table and evaluate the model by the in-sample or out-of-sample validation. Although it's more automatic, it's also less flexible for routine use. We would recommend a 5-step standard procedure for generating your scoring model.
-
-We also have other attached or related functions in the package, which are optional to use. They include *Preprocess()* for preprocessing you dataset,*Descriptive* for generating the descriptive table(table one) of your dataset, *UniVariable* for creating the table of Univariable analysis for your dataset, *MultiVariable* for generating the table of Multivariable analysis for your dataset. These functions are handy in building predictive models, especially for clinical manuscript formation.
-
+We also several functions in the package, which are optional. They include *Preprocess()* for preprocessing dataset, *Descriptive* for generating the descriptive table (table one) of your dataset, *UniVariable* for creating the table of univariable analysis for your dataset, *MultiVariable* for generating the table of multivariable analysis for your dataset. These functions are handy in building predictive models, especially for preparing clinical manuscripts.
 
 # **Demostration**
 
