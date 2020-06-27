@@ -133,7 +133,7 @@ AutoScore_testing(TestSet, FinalVariable, CutVec, ScoringTable)
 
 Preprocessing
 ```r
-# df_AutoScore<-Preprocess(Sample_Data, outcome="Mortality_inpatient")
+# df_AutoScore <- Preprocess(Sample_Data, outcome="Mortality_inpatient")
 ```
 
 Descriptive analysis and result table generation
@@ -143,12 +143,12 @@ Descriptive(df_AutoScore)
 
 Univariable analysis and result table generation
 ```r
-UniTable<-UniVariable(df_AutoScore)
+UniTable <- UniVariable(df_AutoScore)
 ```
 
 Multivariable analysis and result table generation
 ```r
-MultiTable<-MultiVariable(df_AutoScore)
+MultiTable <- MultiVariable(df_AutoScore)
 ```
 
 ## References 
