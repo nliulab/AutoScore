@@ -67,7 +67,7 @@ df_AutoScore <- Sample_Data
 - Independent variables (X) can be numeric (class: num / int) or categorical (class: factor/logic).
 - Categories/levels for each factor should be less than 10
 - Variables of character class (in R environment) were not accepted. Please transfer them into categorical variables first before going on with this codebook
-- Dependent variable (Y) should be binary, and its name should be changed to ¡°label¡± (Can use codes below to do it.)
+- Dependent variable (Y) should be binary, and its name should be changed to Â¡Â°labelÂ¡Â± (Can use codes below to do it.)
 
 
 ### Change name of Dependent variable (Y)/Outcome to "label" before going on with this codebook
@@ -185,5 +185,5 @@ Preprint<http://dx.doi.org/10.2196/21798>]
 
 
 ## Author and maintainer(contact)
-Xie Feng<xief@u.duke.nus.edu>,Liu Nan<liu.nan@duke-nus.edu.sg>
-We welcome any suggestion!
+Xie Feng <xief@u.duke.nus.edu>
+Liu Nan <liu.nan@duke-nus.edu.sg>
