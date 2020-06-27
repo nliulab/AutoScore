@@ -181,10 +181,9 @@ MultiTable<-MultiVariable(df_AutoScore)
 
 
 ## References 
-Preprint<http://dx.doi.org/10.2196/21798>]
+Preprint (<http://dx.doi.org/10.2196/21798>)
 
 
 ## Author and maintainer(contact)
-Xie Feng <xief@u.duke.nus.edu>
-
-Liu Nan <liu.nan@duke-nus.edu.sg>
+- Feng Xie (Email: <xief@u.duke.nus.edu>)
+- Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
