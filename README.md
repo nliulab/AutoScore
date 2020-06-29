@@ -1,6 +1,6 @@
 # AutoScore: A Machine Learning-Based Automatic Clinical Score Generator
 
-- This is the first release version of the AutoScore R package (version 0.1).
+- AutoScore R package (version 0.1)
 
 **Description**
 
