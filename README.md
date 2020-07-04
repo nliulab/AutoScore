@@ -27,7 +27,7 @@ Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N*. AutoScore: A machine learni
 - Feng Xie (Email: <xief@u.duke.nus.edu>)
 - Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
 
-# **AutoScore Demostration**
+# **AutoScore Demonstration**
 
 ## **1. Prepare data and package installation**
 ### Install the development version from GitHub:
