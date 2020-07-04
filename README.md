@@ -3,11 +3,11 @@
 - AutoScore R package (version 0.1)
 - AutoScore manuscript (https://preprints.jmir.org/preprint/21798)
 
-**Description**
+### Description
 
 AutoScore, a novel framework to automate the development of a clinical scoring model for predefined outcomes. AutoScore consists of six modules: variable ranking with machine learning, variable transformation, score derivation, model selection, domain knowledge-based score fine-tuning, and performance evaluation. The details are described in the manuscript (<http://dx.doi.org/10.2196/21798>). Users (clinicians or scientists) could seamlessly generate parsimonious sparse-score risk models (i.e., risk scores), which can be easily implemented and validated in clinical practice. Also, it enables users to build transparent and straightforward clinical scores quickly. We hope to see its application in various medical case studies.
 
-**Features for Function**
+### Features for Function
 
 The five pipeline function *AutoScore_rank()*, *AutoScore_parsimony()*, *AutoScore_weighting()*, *AutoScore_fine_tuning()* and
 *AutoScore_testing()* constitute the standard 5-step AutoScore-based Score generation process. This 5-step process is flexible for users to make some choices (e.g. determine the final list variable according to the parsimony plot, or fine-tune the cut-offs in variable transformation). Please follow the step-by-step instructions to build your own scores.
