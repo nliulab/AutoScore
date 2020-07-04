@@ -3,15 +3,6 @@
 - AutoScore R package (version 0.1)
 - AutoScore manuscript (https://preprints.jmir.org/preprint/21798)
 
-## Please cite as:
-Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N*. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. JMIR Preprints 21798. DOI: 10.2196/preprints.21798
-URL: https://preprints.jmir.org/preprint/21798
-
-## Author and maintainer(contact)
-- Feng Xie (Email: <xief@u.duke.nus.edu>)
-- Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
-
-
 **Description**
 
 AutoScore, a novel framework to automate the development of a clinical scoring model for predefined outcomes. AutoScore consists of six modules: variable ranking with machine learning, variable transformation, score derivation, model selection, domain knowledge-based score fine-tuning, and performance evaluation. The details are described in the manuscript (<http://dx.doi.org/10.2196/21798>). Users (clinicians or scientists) could seamlessly generate parsimonious sparse-score risk models (i.e., risk scores), which can be easily implemented and validated in clinical practice. Also, it enables users to build transparent and straightforward clinical scores quickly. We hope to see its application in various medical case studies.
@@ -28,6 +19,14 @@ The five pipeline function *AutoScore_rank()*, *AutoScore_parsimony()*, *AutoSco
 * STEP (5): *AutoScore_testing()* - Evaluate the final score with ROC analysis (AutoScore Module 6)
 
 We also several functions in the package, which are optional. They include *Preprocess()* for preprocessing dataset, *Descriptive* for generating the descriptive table (table one) of your dataset, *UniVariable* for creating the table of univariable analysis for your dataset, *MultiVariable* for generating the table of multivariable analysis for your dataset. These functions are handy in building predictive models, especially for preparing clinical manuscripts.
+
+## Please cite as:
+Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N*. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. JMIR Preprints 21798. DOI: 10.2196/preprints.21798
+URL: https://preprints.jmir.org/preprint/21798
+
+## Contact
+- Feng Xie (Email: <xief@u.duke.nus.edu>)
+- Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
 
 # **AutoScore Demostration**
 
