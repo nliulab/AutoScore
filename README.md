@@ -1,6 +1,16 @@
 # AutoScore: A Machine Learning-Based Automatic Clinical Score Generator
 
 - AutoScore R package (version 0.1)
+- AutoScore manuscript (https://preprints.jmir.org/preprint/21798)
+
+## Please cite as:
+Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N*. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. JMIR Preprints 21798. DOI: 10.2196/preprints.21798
+URL: https://preprints.jmir.org/preprint/21798
+
+## Author and maintainer(contact)
+- Feng Xie (Email: <xief@u.duke.nus.edu>)
+- Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
+
 
 **Description**
 
@@ -151,9 +161,3 @@ Multivariable analysis and result table generation
 MultiTable <- MultiVariable(df_AutoScore)
 ```
 
-## References 
-Preprint (<http://dx.doi.org/10.2196/21798>)
-
-## Author and maintainer(contact)
-- Feng Xie (Email: <xief@u.duke.nus.edu>)
-- Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
