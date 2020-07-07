@@ -1,5 +1,27 @@
 ############################################
 ## built-in function for AutoScore below are functions
+
+split_data <- function(data, ratio) {
+  n <- length(data[, 1])
+  test_ratio <- ratio[3] / sum(ratio)
+  validation_ratio <- ratio[2] / sum(ratio)
+  set.seed(4)
+  Testindex <- sample((1:n), test_ratio * n)
+  Validateindex <-
+    sample((1:n)[(1:n) %in% Testindex], validation_ratio * n)
+  
+  TrainSet <- df_AutoScore[-c(Validateindex, Testindex), ]
+  TestSet <- df_AutoScore[Testindex, ]
+  ValidationSet <- df_AutoScore[Validateindex, ]
+  
+  return(list(
+    TrainSet = TrainSet,
+    ValidationSet = ValidationSet,
+    TestSet = TestSet
+  ))
+}
+
+
 selectionRF <- function(x, num) {
   library(caret)
   set.seed(4)
