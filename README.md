@@ -73,15 +73,12 @@ df_AutoScore <- Sample_Data
 names(df_AutoScore)[names(df_AutoScore)=="Mortality_inpatient"]<-"label"
 ```
 
-### Data splitting (optional if users have predefined training/validation/test datasets)
+### Data splitting (split dataset into Train/validation/test datasets (70/10/20 in percentage)；optional if users have predefined training/validation/test datasets)
 ```r
-set.seed(4)
-Testindex <- sample((1:10000), 2000)
-Validateindex <- sample((1:10000)[(1:10000) %in% Testindex], 1000)
-
-TrainSet <- df_AutoScore[-c(Validateindex, Testindex),]
-TestSet <- df_AutoScore[Testindex,]
-ValidationSet <- df_AutoScore[Validateindex,]
+Out_split <- split_data(data = df_AutoScore, ratio = c(7, 1, 2))
+TrainSet <- Out_split$TrainSet
+ValidationSet <- Out_split$ValidationSet
+TestSet <- Out_split$TestSet
 ```
 
 ### Data displaying
