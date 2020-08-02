@@ -1,7 +1,6 @@
 # AutoScore: A Machine Learning-Based Automatic Clinical Score Generator
 
 - **AutoScore R package (version 0.1)**
-- **Please cite the AutoScore manuscript as:** *Xie F, Chakraborty B, Ong MEH, Goldstein B, Liu N. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. JMIR Medical Informatics 2020:21798 (forthcoming/in press) DOI: 10.2196/21798 (https://preprints.jmir.org/preprint/21798)*
 
 ### Description
 
