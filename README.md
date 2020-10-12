@@ -17,7 +17,7 @@ The five pipeline function *AutoScore_rank()*, *AutoScore_parsimony()*, *AutoSco
 * STEP (4): *AutoScore_fine_tuning()* - Fine-tune the score by revising "CutVec" with domain knowledge (AutoScore Module 5)
 * STEP (5): *AutoScore_testing()* - Evaluate the final score with ROC analysis (AutoScore Module 6)
 
-We also several functions in the package, which are optional. They include *Preprocess()* for preprocessing dataset, *Descriptive* for generating the descriptive table (table one) of your dataset, *UniVariable* for creating the table of univariable analysis for your dataset, *MultiVariable* for generating the table of multivariable analysis for your dataset. These functions are handy in building predictive models, especially for preparing clinical manuscripts.
+We also included several functions in the package, which are optional. They include *Preprocess()* for preprocessing dataset, *Descriptive* for generating the descriptive table (table one) of your dataset, *UniVariable* for creating the table of univariable analysis for your dataset, *MultiVariable* for generating the table of multivariable analysis for your dataset. These functions are handy in building predictive models, especially for preparing clinical manuscripts.
 
 ### Please cite as:
 Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N*. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. JMIR Medical Informatics 2020:21798 (forthcoming/in press)
