@@ -126,7 +126,7 @@ AutoScore_insample <- function(data, m, MaxScore = 100, probs = c(0, 0.05, 0.2, 
   print("AUC:")
   print(ci(Modelroc))
   print(Modelroc$auc)  ##update
-  print("The best cutoff of using this score£º")
+  print("The best cutoff of using this score")
   print(coords(Modelroc, "best", ret = "threshold", transpose = TRUE))
   print("Other Performance indicators based on this cutoff: ")
   print(coords(Modelroc, "best", ret = c("specificity", "sensitivity", "accuracy", "npv", "ppv", "precision"), transpose = TRUE))
@@ -193,7 +193,7 @@ AutoScore_outofsample <- function(Dataset, m = 8 , Percentage_test = 0.2, MaxSco
   print("AUC:")
   print(ci(Modelroc))
   print(Modelroc$auc)  ##update
-  print("The best cutoff of using this score£º")
+  print("The best cutoff of using this scoreÂ£Âº")
   print(coords(Modelroc, "best", ret = "threshold", transpose = TRUE))
   print("Other Performance indicators based on this cutoff: ")
   print(coords(Modelroc, "best", ret = c("specificity", "sensitivity", "accuracy", "npv", "ppv", "precision"), transpose = TRUE))
