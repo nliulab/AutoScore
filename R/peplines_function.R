@@ -110,7 +110,7 @@ AutoScore_weighting <- function(TrainSet, ValidationSet, FinalVariable, MaxScore
   print("AUC:")
   print(ci(Modelroc))
   print(auc(Modelroc))
-  print("The best cutoff of using this score")
+  #print("The best cutoff of using this score")
   print(coords(Modelroc, "best", ret = "threshold", transpose = TRUE))
   print("Other Performance indicators based on this cutoff: ")
   print(coords(Modelroc, "best", ret = c("specificity", "sensitivity", "accuracy", "npv", "ppv", "precision"), transpose = TRUE))
