@@ -20,8 +20,8 @@ The five pipeline function *AutoScore_rank()*, *AutoScore_parsimony()*, *AutoSco
 We also included several functions in the package, which are optional. They include *Preprocess()* for preprocessing dataset, *Descriptive* for generating the descriptive table (table one) of your dataset, *UniVariable* for creating the table of univariable analysis for your dataset, *MultiVariable* for generating the table of multivariable analysis for your dataset. These functions are handy in building predictive models, especially for preparing clinical manuscripts.
 
 ### Please cite as:
-Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N*. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. JMIR Medical Informatics 2020:21798 (forthcoming/in press)
-DOI: 10.2196/21798 (https://preprints.jmir.org/preprint/21798)
+Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning–Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. JMIR Med Inform 2020;8(10):e21798
+DOI: 10.2196/21798 PMID: 33084589 PMCID: 7641783
 
 ### Contact
 - Feng Xie (Email: <xief@u.duke.nus.edu>)
