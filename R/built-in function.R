@@ -8,7 +8,7 @@ split_data <- function(data, ratio) {
   set.seed(4)
   Testindex <- sample((1:n), test_ratio * n)
   Validateindex <-
-    sample((1:n)[(1:n) %in% Testindex], validation_ratio * n)
+    sample((1:n)[!(1:n) %in% Testindex], validation_ratio * n)
   
   TrainSet <- df_AutoScore[-c(Validateindex, Testindex), ]
   TestSet <- df_AutoScore[Testindex, ]
