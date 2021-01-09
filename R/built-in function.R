@@ -92,6 +92,10 @@ Dftransform <- function(x, testSet1, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1), Prin
       x[, i] <- as.factor(x[, i])
       testSet1[, i] <- as.factor(testSet1[, i])
     } else {
+      ##fix bug for roundings
+      a1 <- c(a1[a1 < max(a1)], max(a1)*1.1)
+      a1 <- c(a1[a1 > min(a1)], min(a1)*0.9)
+      a1 <- sort(a1)
       x[, i] <- cut(x[, i], breaks = a1, right = F, include.lowest = T, dig.lab = 3)
       # xmin<-unlist(strsplit(levels(x[,i])[1],','))[1] xmax<-unlist(strsplit(levels(x[,i])[length(levels(x[,i]))],','))[2]
       levels(x[, i])[1] <- gsub(".*,", "(,", levels(x[, i])[1])
