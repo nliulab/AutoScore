@@ -1,4 +1,3 @@
-############################################
 ## built-in function for AutoScore below are functions
 
 split_data <- function(data, ratio) {
@@ -9,7 +8,7 @@ split_data <- function(data, ratio) {
   Testindex <- sample((1:n), test_ratio * n)
   Validateindex <-
     sample((1:n)[!(1:n) %in% Testindex], validation_ratio * n)
-  
+  df_AutoScore<-data
   TrainSet <- df_AutoScore[-c(Validateindex, Testindex), ]
   TestSet <- df_AutoScore[Testindex, ]
   ValidationSet <- df_AutoScore[Validateindex, ]
@@ -93,17 +92,19 @@ Dftransform <- function(x, testSet1, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1), Prin
       testSet1[, i] <- as.factor(testSet1[, i])
     } else {
       ##fix bug for roundings
-      a1 <- c(a1[a1 < max(a1)], max(a1)*1.1)
-      a1 <- c(a1[a1 > min(a1)], min(a1)*0.9)
-      a1 <- sort(a1)
+      #a1 <- c(a1[a1 < max(a1)], max(a1)*1.1)
+      #a1 <- c(a1[a1 > min(a1)], min(a1)*0.9)
+      #a1 <- sort(a1)
+      if (a1[5]==a1[6]) {a1[6]<-a1[6]+0.1}
+      if (a1[1]==a1[2]) {a1[1]<-a1[1]-0.1}
       x[, i] <- cut(x[, i], breaks = a1, right = F, include.lowest = T, dig.lab = 3)
       # xmin<-unlist(strsplit(levels(x[,i])[1],','))[1] xmax<-unlist(strsplit(levels(x[,i])[length(levels(x[,i]))],','))[2]
       levels(x[, i])[1] <- gsub(".*,", "(,", levels(x[, i])[1])
       levels(x[, i])[length(levels(x[, i]))] <- gsub(",.*", ",)", levels(x[, i])[length(levels(x[, i]))])
 
       at <- a1
-      at[1] <- min(testSet1[, i])
-      at[length(at)] <- max(testSet1[, i])
+      at[1] <- floor(min(testSet1[, i]))
+      at[length(at)] <- ceiling(max(testSet1[, i]))
       at1 <- signif(at, 3)
       at1 <- CheckVector(at1)  ###revised update##
       testSet1[, i] <- cut(testSet1[, i], breaks = at1, right = F, include.lowest = T, dig.lab = 3)
@@ -144,8 +145,8 @@ Dftransform_FineTune <- function(x, testSet1, CutVec) {
       levels(x[, i])[length(levels(x[, i]))] <- gsub(",.*", ",)", levels(x[, i])[length(levels(x[, i]))])
 
       at <- a1
-      at[1] <- min(testSet1[, i])
-      at[length(at)] <- max(testSet1[, i])
+      at[1] <- floor(min(testSet1[, i]))
+      at[length(at)] <- ceiling(max(testSet1[, i]))
       at1 <- signif(at, 3)
       at1 <- CheckVector(at1)  ###revised update##
       testSet1[, i] <- cut(testSet1[, i], breaks = at1, right = F, include.lowest = T, dig.lab = 3)
@@ -242,7 +243,7 @@ AddBaseline <- function(df, coefVec) {
 
 
 AutoTest <- function(df, myvec) {
-  for (i in 1:length(names(df))) {
+  for (i in 1:(length(names(df))-1)) {
     a <- myvec[grepl(names(df)[i], names(myvec))]
     df[, i] <- as.character(df[, i])
     for (j in 1:length(names(a))) {
@@ -281,7 +282,7 @@ Dftransform_fixed <- function(x, CutVec = CutVec) {
       if (length(levels(x[, i])) < 10)
         (next)() else stop("Error!! The number of categories should be less than 9")
     }
-    at <- c(min(x[, i]), CutVec[[j]], max(x[, i]))
+    at <- c(floor(min(x[, i])), CutVec[[j]], ceiling(max(x[, i])))
     at1 <- signif(at, 3)
     at1 <- CheckVector(at1)  ###revised update##
     x[, i] <- cut(x[, i], breaks = at1, right = F, include.lowest = T, dig.lab = 3)
