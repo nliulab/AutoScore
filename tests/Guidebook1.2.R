@@ -7,7 +7,7 @@ library(ggplot2)
 
 ## Load data (input data from csv or excel)
 ## can use sample data built in the package for the demo
-df_AutoScore <- Sample_Data
+df_AutoScore <- testdf6_mimic_20000
 
 ##------------------------------------------------------------------
 ## Data preprocessing
@@ -31,8 +31,8 @@ names(df_AutoScore)[names(df_AutoScore)=="Mortality_inpatient"]<-"label"
 
 ## Data Splitting
 set.seed(4)
-Testindex <- sample((1:10000), 2000)
-Validateindex <- sample((1:10000)[(1:10000) %in% Testindex], 1000)
+Testindex <- sample((1:20000), 4000)
+Validateindex <- sample((1:20000)[(1:20000) %in% Testindex], 2000)
 
 TrainSet <- df_AutoScore[-c(Validateindex, Testindex),]
 TestSet <- df_AutoScore[Testindex,]
@@ -43,13 +43,17 @@ head(TrainSet)
 head(ValidationSet)
 head(TestSet)
 
+summary(TrainSet$label)
+
+TrainSet1<-rbind(TrainSet[TrainSet$label==1,][1:150,],TrainSet[TrainSet$label==0,])
+TrainSet<-TrainSet1
 ##-------------------------------------------------------------------
 ## Run AutoScore to build clinical scores: 5-step standard process
 ##-------------------------------------------------------------------
 
 ## STEP (1): Genrate variable ranking List (AutoScore Module 1)
 ## - ntree: Number of trees in random forest algorithm, default:100
-Ranking <- AutoScore_rank(TrainSet, ntree=100)
+Ranking <- AutoScore_rank(TrainSet, ntree=30)
 
 ## STEP (2): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
 ## - nmin: Minimum number of selected variables, default:1
@@ -59,7 +63,7 @@ AUC <- AutoScore_parsimony(TrainSet, ValidationSet, rank=Ranking, nmin=1, nmax=2
 
 ## Determine final num_var for predictive modeling
 ## -- decided with the parsimony plot from STEP(2)
-num_var <- 6
+num_var <- 7
 FinalVariable <- names(Ranking[1:num_var])
 
 ## STEP (3): Generate initial score with Final Variable list (Rerun AutoScore Module 2+3)
@@ -79,7 +83,6 @@ ScoringTable <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, Cu
 
 ## STEP (5): Final score evaluation (AutoScore Module 6)
 AutoScore_testing(TestSet, FinalVariable, CutVec, ScoringTable)
-
 
 
 ##-------------------------------------------------------------------
