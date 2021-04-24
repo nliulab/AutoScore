@@ -286,7 +286,7 @@ AUC <- AutoScore_parsimony(
 #> Select 20 Variable(s):  Area under the curve: 0.8259
 ```
 
-![](Guide_book_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
   - Determine the optimal number of variables (`num_var`) based on the
     parsimony plot obtained in STEP(ii).
@@ -378,7 +378,7 @@ cut_vec <- AutoScore_weighting(
 #> ==============  ===========  =====
 ```
 
-![](Guide_book_files/figure-gfm/weighting-1.png)<!-- -->
+![](README_files/figure-gfm/weighting-1.png)<!-- -->
 
     #> ***Performance (based on validation set):
     #> AUC:  0.8268   95% CI: 0.7953-0.8583 (DeLong)
@@ -477,7 +477,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 #> ==============  ========  =====
 ```
 
-![](Guide_book_files/figure-gfm/scoring-1.png)<!-- -->
+![](README_files/figure-gfm/scoring-1.png)<!-- -->
 
     #> ***Performance (based on validation set, after fine-tuning):
     #> AUC:  0.8188   95% CI: 0.7862-0.8515 (DeLong)
@@ -502,7 +502,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
 ```
 
-![](Guide_book_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
     #> ***Performance using AutoScore (based on unseen test Set):
     #> AUC:  0.8337   95% CI: 0.8125-0.8548 (DeLong)
@@ -657,7 +657,7 @@ AUC <- AutoScore_parsimony(
 #> 20   0.8326314
 ```
 
-![](Guide_book_files/figure-gfm/parsi-1.png)<!-- -->
+![](README_files/figure-gfm/parsi-1.png)<!-- -->
 
   - Determine the optimal number of variables (`num_var`) based on the
     parsimony plot obtained in STEP(ii).
@@ -751,7 +751,7 @@ cut_vec <- AutoScore_weighting(
 #> ==============  ==========  =====
 ```
 
-![](Guide_book_files/figure-gfm/weighting2-1.png)<!-- -->
+![](README_files/figure-gfm/weighting2-1.png)<!-- -->
 
     #> ***Performance (based on validation set):
     #> AUC:  0.8936   95% CI: 0.8583-0.9289 (DeLong)
@@ -854,7 +854,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 #> ==============  =========  =====
 ```
 
-![](Guide_book_files/figure-gfm/scoring2-1.png)<!-- -->
+![](README_files/figure-gfm/scoring2-1.png)<!-- -->
 
     #> ***Performance (based on validation set, after fine-tuning):
     #> AUC:  0.8938   95% CI: 0.858-0.9297 (DeLong)
@@ -879,7 +879,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
 ```
 
-![](Guide_book_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
     #> ***Performance using AutoScore (based on unseen test Set):
     #> AUC:  0.7838   95% CI: 0.6949-0.8728 (DeLong)
