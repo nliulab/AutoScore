@@ -1,6 +1,8 @@
 ---
 title: "AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: yes
 vignette: >
   %\VignetteIndexEntry{Guide_book}
   %\VignetteEngine{knitr::rmarkdown}
