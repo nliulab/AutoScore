@@ -2,6 +2,63 @@ AutoScore: An Interpretable Machine Learning-Based Automatic Clinical
 Score Generator
 ================
 
+  - [**AutoScore Introduction**](#autoscore-introduction)
+      - [Description](#description)
+      - [Functions and pipeline](#functions-and-pipeline)
+      - [Citation](#citation)
+      - [Contact](#contact)
+  - [**AutoScore Demonstration**](#autoscore-demonstration)
+      - [**Install the package and prepare
+        data**](#install-the-package-and-prepare-data)
+          - [Install the development version from GitHub or the stable
+            version from CRAN
+            (recommended):](#install-the-development-version-from-github-or-the-stable-version-from-cran-recommended)
+          - [Load R package](#load-r-package)
+          - [Load data](#load-data)
+          - [Data preprocessing (Users to check the
+            following)](#data-preprocessing-users-to-check-the-following)
+          - [AutoScore preprocessing (Users to check the
+            following)](#autoscore-preprocessing-users-to-check-the-following)
+      - [**AutoScore Demo \#1: Large dataset (sample size =
+        20000)**](#autoscore-demo-1-large-dataset-sample-size--20000)
+          - [Prepare training, validation, and test
+            datasets](#prepare-training-validation-and-test-datasets)
+          - [STEP(i): Generate variable ranking list (AutoScore Module
+            1)](#stepi-generate-variable-ranking-list-autoscore-module-1)
+          - [STEP(ii): Select the best model with parsimony plot
+            (AutoScore Modules
+            2+3+4)](#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234)
+          - [STEP(iii): Generate initial scores with the final list of
+            variables (Re-run AutoScore Modules
+            2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23)
+          - [STEP(iv): Fine-tune the initial score generated in
+            STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
+            2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23)
+          - [STEP(v): Evaluate final risk scores on test dataset
+            (AutoScore Module
+            6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6)
+      - [**AutoScore Demo \#2: Small dataset (sample size = 1000) with
+        cross-validation**](#autoscore-demo-2-small-dataset-sample-size--1000-with-cross-validation)
+          - [Get small dataset with 1000
+            samples](#get-small-dataset-with-1000-samples)
+          - [Prepare training and test
+            datasets](#prepare-training-and-test-datasets)
+          - [STEP(i): Generate variable ranking list (AutoScore Module
+            1)](#stepi-generate-variable-ranking-list-autoscore-module-1-1)
+          - [STEP(ii): Select the best model with parsimony plot
+            (AutoScore Modules
+            2+3+4)](#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234-1)
+          - [STEP(iii): Generate initial scores with the final list of
+            variables (Re-run AutoScore Modules
+            2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23-1)
+          - [STEP(iv): Fine-tune the initial score generated in
+            STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
+            2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23-1)
+          - [STEP(v): Evaluate final risk scores on test dataset
+            (AutoScore Module
+            6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6-1)
+      - [**Appendix: Other functions**](#appendix-other-functions)
+
   - **AutoScore R package (version 0.2.0)**
 
 # **AutoScore Introduction**
