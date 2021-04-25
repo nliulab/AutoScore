@@ -842,7 +842,7 @@ cut_vec <- AutoScore_weighting(
 ##                 >=60          4  
 ```
 
-  - Current cutoffs: `c(44, 60)`. We can fine tune the cutoffs as
+  - Current cutoffs: `c(10, 44, 60)`. We can fine tune the cutoffs as
     follows:
   - Note: It is just a demo using simulated data, and thus, the result
     might not be clinically meaningful.
@@ -852,13 +852,13 @@ cut_vec <- AutoScore_weighting(
 ``` r
 
 # Example 1: rounding up to a nice number
-cut_vec$bun_mean <- c(45, 60)
+cut_vec$bun_mean <- c(10, 45, 60)
 
 # Example 2: changing cutoffs according to clinical knowledge or preference 
-cut_vec$bun_mean <- c(40, 60)
+cut_vec$bun_mean <- c(10, 40, 60)
 
 # Example 3: combining categories
-cut_vec$bun_mean <- c(45)
+cut_vec$bun_mean <- c(10, 45)
 ```
 
 ``` r
