@@ -763,9 +763,7 @@ cut_vec <- AutoScore_weighting(
 #> 4   lactate_mean
 #> 5  resprate_mean
 #> 6 heartrate_mean
-#> Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 
-#> Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 #> ****Initial Scores: 
 #> 
 #> 
@@ -872,9 +870,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
                         final_variables,
                         cut_vec,
                         max_score = 100)
-#> Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 
-#> Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 #> ***Fine-tuned Scores: 
 #> 
 #> 
