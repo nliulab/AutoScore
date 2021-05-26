@@ -1,0 +1,110 @@
+data <- read.csv("C:/Users/XFE/Downloads/numeric_steroid_mv_demo_final_0519_2.csv", stringsAsFactors=TRUE)
+
+
+##missing values
+colSums(is.na(data ))
+q<-colSums(is.na(data ))/length(data [,1])
+#deteling
+
+data1<-data[,q<0.68]
+
+
+
+#check density and outlier!!Good checker
+par(mfrow=c(5,5))
+i<-1
+plot(density(data1[,i],na.rm=T),main=names(data1)[i])
+print(names(data1)[i])
+i<-i+1
+
+data1$calcium_first[data1$calcium_first>50]<-NA
+data1$calcium_median[data1$calcium_median>50]<-NA
+
+data1$magnesium_first[data1$magnesium_first>50]<-NA
+data1$magnesium_median[data1$magnesium_median>50]<-NA
+
+data1$ph_first[data1$ph_first>10]<-NA
+data1$ph_median[data1$ph_median>10]<-NA
+
+data1$phosphorus_first[data1$phosphorus_first>20]<-NA
+data1$phosphorus_median[data1$phosphorus_median>20]<-NA
+
+sele_sa<-data1$sao2_median>2
+sele_sa[is.na(sele_sa)]<-FALSE
+data1$sao2_median[sele_sa] <-data1$sao2_median[sele_sa]/100
+
+sele_sa<-data1$sao2_first>2
+sele_sa[is.na(sele_sa)]<-FALSE
+data1$sao2_first[sele_sa] <-data1$sao2_first[sele_sa]/100
+
+
+
+## outcomes:
+
+data1$mortality_2d<-data1$dateofdeath<8.64e+7*2
+data1$mortality_2d[is.na(data1$mortality_2d)]<-FALSE
+summary(data1$mortality_2d)
+
+data1$mortality_3d<-data1$dateofdeath<8.64e+7*3
+data1$mortality_3d[is.na(data1$mortality_3d)]<-FALSE
+summary(data1$mortality_3d)
+
+data1$mortality_7d<-data1$dateofdeath<8.64e+7*7
+data1$mortality_7d[is.na(data1$mortality_7d)]<-FALSE
+summary(data1$mortality_7d)
+
+data1$mortality_14d<-data1$dateofdeath<8.64e+7*14
+data1$mortality_14d[is.na(data1$mortality_14d)]<-FALSE
+summary(data1$mortality_14d)
+
+
+data1$mortality_icu<-data1$destination=="Overleden"
+summary(data1$mortality_icu)
+
+data1$label<-data1$mortality_icu
+
+
+data_first<-data1[,c("INR_first", "alkaline_phosphatase_first",
+  "base_excess_first", "calcium_first", "chloride_first", "creatinine_first",
+  "diastolic_blood_pressure_first", "glucose_first", "hco3_first",
+  "heart_rate_first", "hematocrit_first", "lactate_first", "magnesium_first",
+  "mean_arterial_blood_pressure_first", "pao2_first", "pco2_first",
+  "ph_first", "phosphorus_first", "potassium_first", "sao2_first",
+  "sodium_first", "systolic_blood_pressure_first", "temperature_first",
+  "steroid_t_or_f", "mv_t_or_f", "gender",
+  "agegroup", "label" )]
+
+
+FD2<-data_first
+
+colSums(is.na(FD2))
+colSums(is.na(FD2))/length(FD2[,1])
+
+
+library(caret)
+preProcValues <- preProcess(FD2, method = c("medianImpute"))
+FD2<- predict(preProcValues, FD2)
+#library('RANN')
+colSums(is.na(FD2))/length(FD2[,2])
+str(FD2)
+
+colSums(is.na(FD2))
+colSums(is.na(FD2))/length(FD2[,1])
+
+
+
+
+
+data_median<-data1[,c("INR_median", "alkaline_phosphatase_median", "base_excess_median",
+                       "calcium_median", "chloride_median", "creatinine_median", "diastolic_blood_pressure_median",
+                       "glucose_median", "hco3_median", "heart_rate_median", "hematocrit_median",
+                       "lactate_median", "magnesium_median", "mean_arterial_blood_pressure_median",
+                       "pao2_median", "pco2_median", "ph_median", "phosphorus_median",
+                       "potassium_median", "sao2_median", "sodium_median", "systolic_blood_pressure_median",
+                       "temperature_median", "steroid_t_or_f", "mv_t_or_f","gender",
+                       "agegroup",  "label" )]
+
+
+
+
+

@@ -1,0 +1,2 @@
+"0","num_var <- 5"
+"0","final_variables <- names(ranking[c(1:num_var)])"
