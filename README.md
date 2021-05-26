@@ -279,7 +279,7 @@ test_set <- out_split$test_set
 <!-- end list -->
 
 ``` r
-ranking <- AutoScore_rank(train_set, ntree=100)
+ranking <- AutoScore_rank(train_set, ntree = 100)
 #> The ranking based on variable importance was shown below for each variable: 
 #>              Age     lactate_mean         bun_mean    aniongap_mean 
 #>        152.24380        151.60648        147.96133        134.85962 
@@ -395,44 +395,44 @@ cut_vec <- AutoScore_weighting(
 #> ****Initial Scores: 
 #> 
 #> 
-#> ==============  ===========  =====
-#> variable        interval     point
-#> ==============  ===========  =====
-#> Age             <35            0  
-#>                 [35,49)        7  
-#>                 [49,76)       17  
-#>                 [76,89)       23  
-#>                 >=89          27  
-#>                                   
-#> lactate_mean    <0.2           0  
-#>                 [0.2,1.1)      4  
-#>                 [1.1,3.1)      9  
-#>                 [3.1,4)       15  
-#>                 >=4           18  
-#>                                   
-#> bun_mean        <8             0  
-#>                 [8,8.8)       14  
-#>                 [8.8,42)       6  
-#>                 >=42          11  
-#>                                   
-#> aniongap_mean   <8.5           0  
-#>                 [8.5,9.35)    12  
-#>                 [9.35,11.2)    4  
-#>                 [11.2,17)      7  
-#>                 >=17          10  
-#>                                   
-#> resprate_mean   <12            0  
-#>                 [12,15)        2  
-#>                 [15,22)        7  
-#>                 [22,25)       12  
-#>                 >=25          15  
-#>                                   
-#> heartrate_mean  <60            0  
-#>                 [60,73)        1  
-#>                 [73,98)        6  
-#>                 [98,107.8)    13  
-#>                 >=107.8       10  
-#> ==============  ===========  =====
+#> ==============  ==========  =====
+#> variable        interval    point
+#> ==============  ==========  =====
+#> Age             <35           0  
+#>                 [35,49)       7  
+#>                 [49,76)      17  
+#>                 [76,89)      23  
+#>                 >=89         27  
+#>                                  
+#> lactate_mean    <0.2          0  
+#>                 [0.2,1.1)     4  
+#>                 [1.1,3.1)     9  
+#>                 [3.1,4)      15  
+#>                 >=4          18  
+#>                                  
+#> bun_mean        <8            0  
+#>                 [8,42)        6  
+#>                 [42,58)      11  
+#>                 >=58         14  
+#>                                  
+#> aniongap_mean   <8.5          0  
+#>                 [8.5,11.2)    4  
+#>                 [11.2,17)     7  
+#>                 [17,19.8)    10  
+#>                 >=19.8       12  
+#>                                  
+#> resprate_mean   <12           0  
+#>                 [12,15)       2  
+#>                 [15,22)       7  
+#>                 [22,25)      12  
+#>                 >=25         15  
+#>                                  
+#> heartrate_mean  <60           0  
+#>                 [60,73)       1  
+#>                 [73,98)       6  
+#>                 [98,111)     10  
+#>                 >=111        13  
+#> ==============  ==========  =====
 ```
 
 ![](README_files/figure-gfm/weighting-1.png)<!-- -->
@@ -470,7 +470,7 @@ cut_vec <- AutoScore_weighting(
 ##                 >=89          27  
 ```
 
-  - Current cutoffs:`c(52, 62, 73)`. We can fine tune the cutoffs as
+  - Current cutoffs:`c(35, 49, 76, 89)`. We can fine tune the cutoffs as
     follows:
 
 <!-- end list -->
@@ -608,8 +608,7 @@ to generate the parsimony plot.
 ### Get small dataset with 1000 samples
 
 ``` r
-set.seed(4)
-sample_data_small <- sample_data[sample(1:20000, size = 1000),]
+data("sample_data_small")
 ```
 
 ### Prepare training and test datasets
@@ -624,6 +623,7 @@ sample_data_small <- sample_data[sample(1:20000, size = 1000),]
 <!-- end list -->
 
 ``` r
+set.seed(4)
 out_split <- split_data(data = sample_data_small, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
@@ -640,18 +640,18 @@ test_set <- out_split$test_set
 ``` r
 ranking <- AutoScore_rank(train_set, ntree=100)
 #> The ranking based on variable importance was shown below for each variable: 
-#>         bun_mean              Age    platelet_mean     lactate_mean 
-#>        10.219811         7.851205         7.712101         7.548413 
-#>    resprate_mean   heartrate_mean bicarbonate_mean         wbc_mean 
-#>         7.097551         7.046781         6.318323         5.309559 
-#>       tempc_mean     glucose_mean      meanbp_mean       sysbp_mean 
-#>         4.905788         4.802996         4.778476         4.666737 
-#>    aniongap_mean      diasbp_mean      sodium_mean  creatinine_mean 
-#>         4.470944         4.361515         3.921090         3.839813 
-#>   potassium_mean    chloride_mean  hematocrit_mean  hemoglobin_mean 
-#>         3.731714         3.706675         3.645487         2.917810 
+#>              Age    aniongap_mean     lactate_mean    resprate_mean 
+#>        37.406648        31.315285        25.564054        21.855069 
+#>         bun_mean   heartrate_mean    platelet_mean   potassium_mean 
+#>        20.907522        20.645694        16.788696        16.094679 
+#>       sysbp_mean     glucose_mean         wbc_mean      diasbp_mean 
+#>        15.574365        14.651987        14.297510        13.765633 
+#>       tempc_mean  creatinine_mean bicarbonate_mean    chloride_mean 
+#>        12.932043        12.679113        12.295000        12.165724 
+#>  hematocrit_mean      meanbp_mean      sodium_mean  hemoglobin_mean 
+#>        11.649415        11.431833        10.108408         9.297786 
 #>        spo2_mean 
-#>         2.443781
+#>         7.680821
 ```
 
 ### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
@@ -692,26 +692,26 @@ AUC <- AutoScore_parsimony(
   )
 #> ***list of final mean AUC values through cross-validation are shown below 
 #>    auc_set.sum
-#> 1    0.7052608
-#> 2    0.7249083
-#> 3    0.7673085
-#> 4    0.8024666
-#> 5    0.8583165
-#> 6    0.8701298
-#> 7    0.8739864
-#> 8    0.8846013
-#> 9    0.8915448
-#> 10   0.8810343
-#> 11   0.8869434
-#> 12   0.8874628
-#> 13   0.8892373
-#> 14   0.8770931
-#> 15   0.8718943
-#> 16   0.8538118
-#> 17   0.8470469
-#> 18   0.8414739
-#> 19   0.8341456
-#> 20   0.8326314
+#> 1    0.6337707
+#> 2    0.7219767
+#> 3    0.7277593
+#> 4    0.7537172
+#> 5    0.7516205
+#> 6    0.7619839
+#> 7    0.7616981
+#> 8    0.7582741
+#> 9    0.7636885
+#> 10   0.7552515
+#> 11   0.7534764
+#> 12   0.7547035
+#> 13   0.7542316
+#> 14   0.7618277
+#> 15   0.7589772
+#> 16   0.7578815
+#> 17   0.7562271
+#> 18   0.7597782
+#> 19   0.7603524
+#> 20   0.7558810
 ```
 
 ![](README_files/figure-gfm/parsi-1.png)<!-- -->
@@ -726,16 +726,16 @@ AUC <- AutoScore_parsimony(
 <!-- end list -->
 
 ``` r
-# Example 1: Top 6 variables are selected
-num_var <- 6
+# Example 1: Top 5 variables are selected
+num_var <- 5
 final_variables <- names(ranking[1:num_var])
 
 # Example 2: Top 9 variables are selected
 num_var <- 9
 final_variables <- names(ranking[1:num_var])
 
-# Example 3: Top 6 variables, the 9th and 10th variable are selected
-num_var <- 6
+# Example 3: Top 5 variables, the 9th and 10th variable are selected
+num_var <- 5
 final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
@@ -756,67 +756,61 @@ cut_vec <- AutoScore_weighting(
     quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
   )
 #> ****Included Variables: 
-#>    variable_name
-#> 1       bun_mean
-#> 2            Age
-#> 3  platelet_mean
-#> 4   lactate_mean
-#> 5  resprate_mean
-#> 6 heartrate_mean
-
+#>   variable_name
+#> 1           Age
+#> 2 aniongap_mean
+#> 3  lactate_mean
+#> 4 resprate_mean
+#> 5      bun_mean
 #> ****Initial Scores: 
 #> 
 #> 
-#> ==============  ==========  =====
-#> variable        interval    point
-#> ==============  ==========  =====
-#> bun_mean        <10           0  
-#>                 [10,44)       1  
-#>                 [44,60)       2  
-#>                 >=60          4  
+#> =============  ===========  =====
+#> variable       interval     point
+#> =============  ===========  =====
+#> Age            <35            0  
+#>                [35,49)        1  
+#>                [49,75)       13  
+#>                [75,88)       21  
+#>                >=88          18  
 #>                                  
-#> Age             <37           0  
-#>                 [37,49)      20  
-#>                 [49,79)      20  
-#>                 [79,91)      21  
-#>                 >=91         22  
+#> aniongap_mean  <8.6           0  
+#>                [8.6,11.3)     7  
+#>                [11.3,17.5)   14  
+#>                [17.5,19.8)   17  
+#>                >=19.8        14  
 #>                                  
-#> platelet_mean   <44          24  
-#>                 [44,48.4)     0  
-#>                 [48.4,128)   24  
-#>                 [128,322)    23  
-#>                 >=322        21  
+#> lactate_mean   <1             0  
+#>                [1,3.1)        8  
+#>                [3.1,4.1)     14  
+#>                >=4.1         22  
 #>                                  
-#> lactate_mean    <1.2          0  
-#>                 [1.2,3.1)     1  
-#>                 [3.1,4.1)     3  
-#>                 >=4.1         3  
+#> resprate_mean  <12            0  
+#>                [12,15)        7  
+#>                [15,22)       11  
+#>                [22,25)       16  
+#>                >=25          28  
 #>                                  
-#> resprate_mean   <12           0  
-#>                 [12,15)       0  
-#>                 [15,22)      21  
-#>                 [22,25)      23  
-#>                 >=25         24  
-#>                                  
-#> heartrate_mean  <61           0  
-#>                 [61,72)      19  
-#>                 [72,98)      21  
-#>                 [98,107.8)   22  
-#>                 >=107.8      21  
-#> ==============  ==========  =====
+#> bun_mean       <9             0  
+#>                [9,43.2)       1  
+#>                [43.2,59)      9  
+#>                >=59          13  
+#> =============  ===========  =====
 ```
 
 ![](README_files/figure-gfm/weighting2-1.png)<!-- -->
 
     #> ***Performance (based on validation set):
-    #> AUC:  0.8936   95% CI: 0.8583-0.9289 (DeLong)
-    #> Best score threshold: >= 89 
+    #> AUC:  0.7891   95% CI: 0.7558-0.8224 (DeLong)
+    #> Best score threshold: >= 48 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.8689 95% CI: 0.7869-0.9508
-    #> Specificity: 0.7465 95% CI: 0.7121-0.7778
-    #> PPV:         0.2464 95% CI: 0.217-0.2778
-    #> NPV:         0.9836 95% CI: 0.9728-0.9937
+    #> Sensitivity: 0.706 95% CI: 0.6593-0.7501
+    #> Specificity: 0.7589 95% CI: 0.7113-0.8065
+    #> PPV:         0.7608 95% CI: 0.7235-0.7981
+    #> NPV:         0.7048 95% CI: 0.67-0.7391
     #> ***The cutoffs of each variable generated by the AutoScore are saved in cut_vec. You can decide whether to revise or fine-tune them
+
+\`\`
 
 ### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3)
 
@@ -834,13 +828,13 @@ cut_vec <- AutoScore_weighting(
 ## ==============  ===========  =====
 ## variable        interval     point
 ## ==============  ===========  =====
-## bun_mean        <10           0  
-##                 [10,44)       1  
-##                 [44,60)       2  
-##                 >=60          4  
+#> bun_mean       <9             0  
+#>                [9,43.2)       1  
+#>                [43.2,59)      9  
+#>                >=59          13  
 ```
 
-  - Current cutoffs: `c(10, 44, 60)`. We can fine tune the cutoffs as
+  - Current cutoffs: `c(9, 43.2, 59)`. We can fine tune the cutoffs as
     follows:
   - Note: It is just a demo using simulated data, and thus, the result
     might not be clinically meaningful.
@@ -850,73 +844,66 @@ cut_vec <- AutoScore_weighting(
 ``` r
 
 # Example 1: rounding up to a nice number
-cut_vec$bun_mean <- c(10, 45, 60)
+cut_vec$bun_mean <- c(9, 45, 60)
 
 # Example 2: changing cutoffs according to clinical knowledge or preference 
-cut_vec$bun_mean <- c(10, 40, 60)
+cut_vec$bun_mean <- c(15, 45, 60)
 
 # Example 3: combining categories
-cut_vec$bun_mean <- c(10, 45)
+cut_vec$bun_mean <- c(45, 60)
 ```
 
 ``` r
-cut_vec$platelet_mean <- c(50, 120, 300)
 cut_vec$lactate_mean <- c(1, 2, 3)
 cut_vec$Age <- c(35, 50, 80)
-cut_vec$heartrate_mean <- c(60, 75, 100)
-cut_vec$resprate_mean <- c(15,22)
+cut_vec$aniongap_mean <- c(8, 12, 18)
+cut_vec$resprate_mean <- c(15, 22)
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
                         cut_vec,
                         max_score = 100)
-
 #> ***Fine-tuned Scores: 
 #> 
 #> 
-#> ==============  =========  =====
-#> variable        interval   point
-#> ==============  =========  =====
-#> bun_mean        <45          0  
-#>                 [45,60)      1  
-#>                 >=60         4  
-#>                                 
-#> Age             <35          0  
-#>                 [35,50)     26  
-#>                 [50,80)     27  
-#>                 >=80        29  
-#>                                 
-#> platelet_mean   <50          5  
-#>                 [50,55)      0  
-#>                 [55,120)     4  
-#>                 >=120        3  
-#>                                 
-#> lactate_mean    <1           0  
-#>                 [1,2)        2  
-#>                 [2,3)        2  
-#>                 >=3          4  
-#>                                 
-#> resprate_mean   <15          0  
-#>                 [15,22)     28  
-#>                 >=22        30  
-#>                                 
-#> heartrate_mean  <60          0  
-#>                 [60,75)     27  
-#>                 [75,82.5)   29  
-#>                 >=82.5      28  
-#> ==============  =========  =====
+#> =============  ========  =====
+#> variable       interval  point
+#> =============  ========  =====
+#> Age            <35         0  
+#>                [35,50)     2  
+#>                [50,80)    18  
+#>                >=80       23  
+#>                               
+#> aniongap_mean  <8          0  
+#>                [8,12)      8  
+#>                [12,18)    15  
+#>                >=18       22  
+#>                               
+#> lactate_mean   <1          0  
+#>                [1,2)      12  
+#>                [2,3)      13  
+#>                >=3        18  
+#>                               
+#> resprate_mean  <15         0  
+#>                [15,22)    10  
+#>                >=22       20  
+#>                               
+#> bun_mean       <45         0  
+#>                [45,60)    10  
+#>                >=60       17  
+#> =============  ========  =====
 ```
 
 ![](README_files/figure-gfm/scoring2-1.png)<!-- -->
 
     #> ***Performance (based on validation set, after fine-tuning):
-    #> AUC:  0.8938   95% CI: 0.858-0.9297 (DeLong)
-    #> Best score threshold: >= 90 
+    #> AUC:  0.7623   95% CI: 0.7275-0.7971 (DeLong)
+    #> Best score threshold: >= 60 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.9016 95% CI: 0.8197-0.9672
-    #> Specificity: 0.7433 95% CI: 0.7105-0.7762
-    #> PPV:         0.2512 95% CI: 0.2237-0.281
-    #> NPV:         0.9877 95% CI: 0.9775-0.9959
+    #> Sensitivity: 0.5714 95% CI: 0.522-0.6209
+    #> Specificity: 0.8214 95% CI: 0.7827-0.8601
+    #> PPV:         0.7769 95% CI: 0.7354-0.8171
+    #> NPV:         0.6392 95% CI: 0.6105-0.6691
 
 ### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
 
@@ -935,21 +922,21 @@ pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_tabl
 ![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
     #> ***Performance using AutoScore (based on unseen test Set):
-    #> AUC:  0.7838   95% CI: 0.6949-0.8728 (DeLong)
-    #> Best score threshold: >= 89 
+    #> AUC:  0.7133   95% CI: 0.6556-0.7709 (DeLong)
+    #> Best score threshold: >= 51 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.8182 95% CI: 0.6364-0.9545
-    #> Specificity: 0.6727 95% CI: 0.6151-0.723
-    #> PPV:         0.1652 95% CI: 0.1308-0.202
-    #> NPV:         0.9793 95% CI: 0.9604-0.9948
+    #> Sensitivity: 0.7421 95% CI: 0.673-0.8115
+    #> Specificity: 0.5887 95% CI: 0.5035-0.6738
+    #> PPV:         0.6721 95% CI: 0.6243-0.7212
+    #> NPV:         0.6719 95% CI: 0.6061-0.7391
     head(pred_score)
     #>   pred_score Label
-    #> 1         87 FALSE
-    #> 2         91 FALSE
-    #> 3         88 FALSE
-    #> 4         87 FALSE
-    #> 5         65 FALSE
-    #> 6         58 FALSE
+    #> 1         53  TRUE
+    #> 2         56  TRUE
+    #> 3         49  TRUE
+    #> 4         38 FALSE
+    #> 5         51  TRUE
+    #> 6         40  TRUE
 
   - Users could use the `pred_score` for further analysis or export it
     as the CSV to other software.
@@ -962,13 +949,13 @@ pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_tabl
 
 ``` r
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
-#> AUC:  0.7838   95% CI: 0.6949-0.8728 (DeLong)
+#> AUC:  0.7133   95% CI: 0.6556-0.7709 (DeLong)
 #> Score threshold: >= 90 
 #> Other performance indicators based on this score threshold: 
-#> Sensitivity: 0.6364 95% CI: 0.4091-0.8182
-#> Specificity: 0.759 95% CI: 0.7086-0.8094
-#> PPV:         0.1744 95% CI: 0.1196-0.2273
-#> NPV:         0.9638 95% CI: 0.9435-0.9817
+#> Sensitivity: 0.0063 95% CI: 0-0.0189
+#> Specificity: 1 95% CI: 1-1
+#> PPV:         1 95% CI: 1-1
+#> NPV:         0.4716 95% CI: 0.47-0.4747
 ```
 
 ## **Appendix: Other functions**
