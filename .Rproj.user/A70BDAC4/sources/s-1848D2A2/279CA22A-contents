@@ -585,57 +585,27 @@ print_score_table<-function(scoring_table,final_variable){
     num<-grepl(var_tmp,var_name)
     table_1<-data.frame(name=var_name[num],value=unname(scoring_table[num]))
     rank_indicator<-gsub(".*,","",table_1$name)
-    rank_indicator<-gsub(")","",rank_indicator) #>>> (Xie Feng) bugs here. not compatible for only two categories(E.g.,mwhen quantiles = c(0, 0.5, 1) )
-    # rank_indicator[which(rank_indicator=="")]<-max(as.numeric(rank_indicator[-which(rank_indicator=="")]))+1
-    {
-      if (grepl(",",table_1$name[1])!=TRUE){
-        table_1$rank_indicator<-c(seq(1:nrow(table_1)))
-        interval<-c(gsub(pattern = var_tmp, replacement = "", table_1$name))
-        table_1$interval<-interval
-        table_2<-table_1[order(table_1$interval),]
-        table_2$variable<-c(var_tmp,rep("",(nrow(table_2)-1)))
-        table_3<-rbind(table_2,rep("",ncol(table_2)))
-        table_tmp<-rbind(table_tmp,table_3)
-      }
-      else
-      {
-        rank_indicator[which(rank_indicator=="")]<-max(as.numeric(rank_indicator[-which(rank_indicator=="")]))+1
-        rank_indicator<-as.numeric(rank_indicator)
-        {
-          if (length(rank_indicator)==2){
-            table_1$rank_indicator<-rank_indicator
-            table_2<-table_1[order(table_1$rank_indicator),]
-            interval<-c(paste0("<",table_2$rank_indicator[1]))
-            interval<-c(interval,paste0(">=",table_2$rank_indicator[length(rank_indicator)-1]))
-            table_2$interval<-interval
-            table_2$variable<-c(var_tmp,rep("",(nrow(table_2)-1)))
-            table_3<-rbind(table_2,rep("",ncol(table_2)))
-            table_tmp<-rbind(table_tmp,table_3)
-          }
-          else{
-            table_1$rank_indicator<-rank_indicator
-            table_2<-table_1[order(table_1$rank_indicator),]
-            interval<-c(paste0("<",table_2$rank_indicator[1]))
-            for (j in 1:(length(table_2$rank_indicator)-2)) {
-              interval<-c(interval,paste0("[",table_2$rank_indicator[j],",",table_2$rank_indicator[j+1],")"))
-            }
-            interval<-c(interval,paste0(">=",table_2$rank_indicator[length(rank_indicator)-1]))
-            table_2$interval<-interval
-            table_2$variable<-c(var_tmp,rep("",(nrow(table_2)-1)))
-            table_3<-rbind(table_2,rep("",ncol(table_2)))
-            table_tmp<-rbind(table_tmp,table_3)
-          }
-        }
-      }
+    rank_indicator<-gsub(")","",rank_indicator)
+    rank_indicator[which(rank_indicator=="")]<-as.numeric(max(rank_indicator))*1.1
+    rank_indicator<-as.numeric(rank_indicator)
+    table_1$rank_indicator<-rank_indicator
+    table_2<-table_1[order(table_1$rank_indicator),]
+    interval<-c(paste0("<",table_2$rank_indicator[1]))
+    for (j in 1:(length(table_2$rank_indicator)-2)) {
+      interval<-c(interval,paste0("[",table_2$rank_indicator[j],",",table_2$rank_indicator[j+1],")"))
     }
+    interval<-c(interval,paste0(">=",table_2$rank_indicator[length(rank_indicator)-1]))
+    table_2$interval<-interval
+    table_2$variable<-c(var_tmp,rep("",(nrow(table_2)-1)))
+    table_3<-rbind(table_2,rep("",ncol(table_2)))
+    table_tmp<-rbind(table_tmp,table_3)
   }
   table_tmp<-table_tmp[1:(nrow(table_tmp)-1),]
   table_final<-data.frame(variable = table_tmp$variable,interval = table_tmp$interval, point = table_tmp$value)
   table_kable_format<-kable(table_final,align = "llc",caption = "AutoScore-created scoring model",format = "rst")
   print(table_kable_format)
-  invisible(table_final)
+  return(table_final)
 }
-
 
 
 
@@ -941,14 +911,9 @@ assign_score <- function(df, score_table) {
 
 #' 20000 simulated ICU admission data, with the same distribution as the data in the MIMIC-III ICU database
 #'
-#' @description 20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook.
+#' @description 20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demostration only in the Guidebook.
 "sample_data"
 
-
-#' 1000 simulated ICU admission data, with the same distribution as the data in the MIMIC-III ICU database
-#'
-#' @description 1000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook.
-"sample_data_small"
 
 
 

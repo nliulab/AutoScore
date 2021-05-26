@@ -1,27 +1,14 @@
 ---
-title: "AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator"
-output: 
-  rmarkdown::html_vignette:
+title: 'AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator'
+output:
+  html_document:
     toc: yes
-vignette: >
-  %\VignetteIndexEntry{Guide_book}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  pdf_document:
+    toc: yes
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  collapse = TRUE,
-  comment = "#>",
-  cache = FALSE, fig.width=7, fig.height=5
-)
-
-options(rmarkdown.html_vignette.check_title = FALSE)
-knitr::opts_chunk$set()
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, cache = FALSE)
 ```
-
 
 - **AutoScore R package (version 0.2.0)**
 
@@ -30,8 +17,8 @@ knitr::opts_chunk$set()
 
 AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The AutoScore is elaborated in the article (<http://dx.doi.org/10.2196/21798>) and its flowchart is shown in the following figure. AutoScore could seamlessly generate risk scores using a parsimonious set of variables, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner.
 
-```{r pressure, echo=FALSE, fig.cap="The flowchart of AutoScore", out.width = '75%', fig.align="center"}
-knitr::include_graphics("Figure1.png")
+```{r pressure, echo=FALSE, fig.cap="The flowchart of AutoScore", out.width = '60%', fig.align="center"}
+knitr::include_graphics("D:/Document/GitHub/AutoScore_Improvement/AutoScore_TBP/Figure1.png")
 ```
 
 
@@ -81,9 +68,29 @@ install.packages("AutoScore")
 [devtools]: https://github.com/hadley/devtools
 
 ### Load R package
+```{r  library1 ,eval=FALSE,include=FALSE}
+
+source('D:/Document/GitHub/AutoScore_Improvement/AutoScore_TBP/AutoScore.R')
+load("D:/Document/GitHub/AutoScore_Improvement/Data/testdf6_mimic_20000.Rdata")
+#library(AutoScore)
+library(pROC)
+library(randomForest)
+library(ggplot2)
+library(knitr)
+devtools::load_all(".")
+```
 
 ```{r  library, results = "hide", warning=FALSE, message=FALSE}
 library(AutoScore)
+```
+
+```{r  library2, results = "hide", warning=FALSE, message=FALSE,eval=TRUE,include=FALSE}
+source('D:/Document/Project_AutoScore/Project_development/AutoScore/R/AutoScore.R')
+library(pROC)
+library(randomForest)
+library(ggplot2)
+library(tableone)
+library(knitr)
 ```
 
 ### Load data 
@@ -123,7 +130,6 @@ check_data(sample_data)
 
 
 In Demo #1, we demonstrate the use of AutoScore on a comparably large dataset where separate training and validation sets are available. 
-Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
 
 ### Prepare training, validation, and test datasets
 - Option 1: Prepare three separate datasets to train, validate, and test models.
@@ -140,7 +146,7 @@ test_set <- out_split$test_set
 ### STEP(i): Generate variable ranking list (AutoScore Module 1)
 - `ntree`: Number of trees in the random forest algorithm (Default: 100).
 ```{r}
-ranking <- AutoScore_rank(train_set, ntree = 100)
+ranking <- AutoScore_rank(train_set, ntree=100)
 ```
 
 ### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
@@ -150,7 +156,7 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
 - `quantiles`: Predefined quantiles to convert continuous variables to categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if `categorize = "quantile"`.
 - `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
 - `max_score`: Maximum total score (Default: 100).
-```{r, }
+```{r}
 AUC <- AutoScore_parsimony(
     train_set,
     validation_set,
@@ -211,33 +217,32 @@ cut_vec <- AutoScore_weighting(
 ## ==============  ===========  =====
 ## variable        interval     point
 ## ==============  ===========  =====
-## Age             <35            0  
-##                 [35,49)        7  
-##                 [49,76)       17  
-##                 [76,89)       23  
-##                 >=89          27  
+## Age             <52            0  
+##                 [52,62)        7  
+##                 [62,73)       15  
+##                 >=73          19   
 ```
 
-- Current cutoffs:`c(35, 49, 76, 89)`. We can fine tune the cutoffs as follows:
+- Current cutoffs:`c(52, 62, 73)`. We can fine tune the cutoffs as follows:
 ```{r}
 
 # Example 1: rounding up to a nice number
-cut_vec$Age <- c(35, 50, 75, 90)
+cut_vec$Age <- c(50, 60, 75)
 
 # Example 2: changing cutoffs according to clinical knowledge or preference 
-cut_vec$Age <- c(35, 50, 75, 90)
+cut_vec$Age <- c(40, 60, 75)
 
 # Example 3: combining categories
-cut_vec$Age <- c(50, 75, 90)
+cut_vec$Age <- c(40, 75)
 
 ```
 
 
 ```{r scoring, warning = FALSE}
-cut_vec$lactate_mean <- c(0.2, 1, 3, 4)
-cut_vec$bun_mean <- c(10, 40)
-cut_vec$aniongap_mean <- c(10, 17)
-cut_vec$heartrate_mean<- c(70, 98)
+cut_vec$lactate_mean <- c(1, 2, 3)
+cut_vec$bun_mean <- c(12, 25, 40)
+cut_vec$aniongap_mean <- c(11, 16)
+cut_vec$resprate_mean <- c(16, 21)
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
@@ -247,8 +252,8 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 ```
 
 ### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
-- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
-- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default:`"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default:`TRUE`).
 ```{r}
 pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
 head(pred_score)
@@ -269,14 +274,14 @@ In Demo #2, we demonstrate the use of AutoScore on a comparably small dataset wh
 
 ### Get small dataset with 1000 samples
 ```{r}
-data("sample_data_small")
+set.seed(4)
+sample_data_small <- sample_data[sample(1:20000, size = 1000),]
 ```
 
 ### Prepare training and test datasets
 - Option 1: Prepare two separate datasets to train and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, `train_set` is equal to `validation_set` and the ratio of `validation_set` should be 0. Then cross-validation will be implemented in the STEP(ii) `AutoScore_parsimony()`.
 ```{r}
-set.seed(4)
 out_split <- split_data(data = sample_data_small, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
@@ -311,7 +316,7 @@ AUC <- AutoScore_parsimony(
     cross_validation = TRUE,
     categorize = "quantile",
     fold = 10,
-    quantiles = c(0, 0.25, 0.5, 0.75, 1), #c(0, 0.05, 0.2, 0.8, 0.95, 1)
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
     do_trace = FALSE
   )
 
@@ -361,36 +366,32 @@ cut_vec <- AutoScore_weighting(
 ## ==============  ===========  =====
 ## variable        interval     point
 ## ==============  ===========  =====
-#> bun_mean       <9             0  
-#>                [9,43.2)       1  
-#>                [43.2,59)      9  
-#>                >=59          13  
+## Age             <51.8          0  
+##                 [51.8,64)      7  
+##                 [64,75)       11  
+##                 >=75          15  
 ```
 
-- Current cutoffs: `c(9, 43.2, 59)`. We can fine tune the cutoffs as follows:
-- Note: It is just a demo using simulated data, and thus, the result might not be clinically meaningful.
+- Current cutoffs: `c(51.8, 64, 75)`. We can fine tune the cutoffs as follows:
 ```{r}
 
 # Example 1: rounding up to a nice number
-cut_vec$bun_mean <- c(9, 45, 60)
+cut_vec$Age <- c(50, 65, 75)
 
-# Example 2: changing cutoffs according to clinical knowledge or preference 
-cut_vec$bun_mean <- c(15, 45, 60)
+# Example 2: changing cutoffs accroding to clinical knowledge or preference 
+cut_vec$Age <- c(55, 60, 75)
 
 # Example 3: combining categories
-cut_vec$bun_mean <- c(45, 60)
+cut_vec$Age <- c(55, 75)
 
-```
-
-```{r, results = "hide", warning=FALSE, message=FALSE,eval=TRUE,include=FALSE}
-cut_vec$bun_mean <- c(45, 60)
 ```
 
 ```{r scoring2, warning = TRUE}
+cut_vec$platelet_mean <- c(150, 300)
 cut_vec$lactate_mean <- c(1, 2, 3)
-cut_vec$Age <- c(35, 50, 80)
-cut_vec$aniongap_mean <- c(8, 12, 18)
-cut_vec$resprate_mean <- c(15, 22)
+cut_vec$bun_mean <- c(12, 25)
+cut_vec$heartrate_mean <- c(75, 90)
+cut_vec$tempc_mean <- c(36.8, 37.2)
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
@@ -400,18 +401,17 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 ```
 
 ### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
-- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
-- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default:`"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default:`TRUE`).
 ```{r}
 pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
 head(pred_score)
 ```
 
 - Users could use the `pred_score` for further analysis or export it as the CSV to other software.
-- Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 90).
-- Note: It is just a demo using simulated data, and thus, the result might not be clinically meaningful.
+- Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 35).
 ```{r}
-print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
+print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 35)
 ```
 
 
@@ -434,3 +434,4 @@ print(uni_table)
 multi_table<-compute_multi_variable_table(sample_data)
 print(multi_table)
 ```
+

@@ -1,0 +1,12 @@
+"0","cut_vec$platelet_mean <- c(150, 300)"
+"0","cut_vec$lactate_mean <- c(1, 2, 3)"
+"0","cut_vec$bun_mean <- c(12, 25)"
+"0","cut_vec$heartrate_mean <- c(75, 90)"
+"0","cut_vec$tempc_mean <- c(36.8, 37.2)"
+"0","scoring_table <- AutoScore_fine_tuning(train_set,"
+"0","                        validation_set,"
+"0","                        final_variables,"
+"0","                        cut_vec,"
+"0","                        max_score = 100)"
+"1","***Fine-tuned Scores: 
+"

@@ -1,8 +1,6 @@
 ---
 title: "AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator"
-output: 
-  rmarkdown::html_vignette:
-    toc: yes
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Guide_book}
   %\VignetteEngine{knitr::rmarkdown}
@@ -136,11 +134,40 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
+```{r}
+all_outcome<-c("Mortality_2d", 
+"mortality_3d", "mortality_5d", "mortality_7d", "mortality_14d","mortality_30d")
+
+FD2<-FD2_temp
+i<-"mortality_7d"
+i<-"mortality_30d"
+i<-"Mortality_2d"
+outcome_label<-FD2[,i]
+FD2<-subset(FD2, select = names(FD2)[!names(FD2) %in% all_outcome])
+## Clear label 30d mortaluty
+FD2$label<-as.factor(outcome_label)
+
+## AutoScore Module 0:  split dataset to training and validation (80% and 20%)
+set.seed(4)
+Validateindex<-sample((1:length(FD2[,1])),round(length(FD2[,1])*0.2))
+TrainSet_30d<-FD2[-Validateindex,]
+ValidationSet_30d<-FD2[Validateindex,]
+
+
+
+```
+
+
 
 ### STEP(i): Generate variable ranking list (AutoScore Module 1)
 - `ntree`: Number of trees in the random forest algorithm (Default: 100).
 ```{r}
-ranking <- AutoScore_rank(train_set, ntree = 100)
+ranking_7d <- AutoScore_rank(train_set=TrainSet, ntree=100)
+
+ranking_30d
+ranking_2d
+ranking_7d<-
+
 ```
 
 ### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
@@ -151,16 +178,19 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
 - `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
 - `max_score`: Maximum total score (Default: 100).
 ```{r, }
-AUC <- AutoScore_parsimony(
-    train_set,
-    validation_set,
-    rank = ranking,
-    max_score = 100,
+AUC_7d_1 <- AutoScore_parsimony(
+    train_set=TrainSet_7d,
+    validation_set=ValidationSet_7d,
+    rank = ranking_7d,
+    max_score = 60,
     n_min = 1,
-    n_max = 20,
+    n_max = 26,
     categorize = "quantile",
     quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
   )
+
+
+
 
 ```
 
@@ -183,17 +213,18 @@ final_variables <- names(ranking[c(1:num_var, 9, 10)])
 
 
 ```{r finalvariab2, results = "hide", warning=TRUE, message=FALSE,eval=TRUE,include=FALSE}
-num_var <- 6
-final_variables <- names(ranking[1:num_var])
+num_var <- 5
+final_variables_7d <- names(ranking_7d[1:num_var])
 ```
 
 ### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
 - Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
 ```{r weighting,  warning = FALSE}
-cut_vec <- AutoScore_weighting( 
-    train_set,
-    validation_set,
-    final_variables,
+cut_vec_2d
+cut_vec_7d <- AutoScore_weighting( 
+    train_set=TrainSet_7d,
+    validation_set=ValidationSet_7d,
+    final_variables_7d,
     max_score = 100,
     categorize = "quantile",
     quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
@@ -218,39 +249,38 @@ cut_vec <- AutoScore_weighting(
 ##                 >=89          27  
 ```
 
-- Current cutoffs:`c(35, 49, 76, 89)`. We can fine tune the cutoffs as follows:
+- Current cutoffs:`c(52, 62, 73)`. We can fine tune the cutoffs as follows:
 ```{r}
 
 # Example 1: rounding up to a nice number
-cut_vec$Age <- c(35, 50, 75, 90)
+CutVec_7d$Pulse<-c(60, 70, 95, 110)
+CutVec_7d$BP_Systolic<-c(100,115,150)
+CutVec_7d$Age<-c(30, 50, 80)
+CutVec_7d$BP_Diastolic<-c(50, 95)
+CutVec_7d$Respiration<-c(16, 20)
+CutVec_2d$SPO2<-c(90, 95)
 
-# Example 2: changing cutoffs according to clinical knowledge or preference 
-cut_vec$Age <- c(35, 50, 75, 90)
-
-# Example 3: combining categories
-cut_vec$Age <- c(50, 75, 90)
 
 ```
 
 
 ```{r scoring, warning = FALSE}
-cut_vec$lactate_mean <- c(0.2, 1, 3, 4)
-cut_vec$bun_mean <- c(10, 40)
-cut_vec$aniongap_mean <- c(10, 17)
-cut_vec$heartrate_mean<- c(70, 98)
-scoring_table <- AutoScore_fine_tuning(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100)
+
+scoring_table_7d <- AutoScore_fine_tuning(train_set=TrainSet_7d,
+                        validation_set=ValidationSet_7d,
+                        final_variables_7d,
+                        cut_vec = CutVec_7d,
+                        max_score = 60)
+
+scoring_table_7d
 
 ```
-
 ### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
 - `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
 - `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
 ```{r}
-pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
+pred_score <- AutoScore_testing(test_set, final_variables_7d, cut_vec=CutVec_7d, scoring_table_7d, threshold = "best", with_label = TRUE)
+Score_7d<- pred_score$pred_score
 head(pred_score)
 ```
 
@@ -259,6 +289,220 @@ head(pred_score)
 ```{r}
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
 ```
+
+-----2d
+
+```{r, }
+AUC_2d_1 <- AutoScore_parsimony(
+    train_set=TrainSet_2d,
+    validation_set=ValidationSet_2d,
+    rank = ranking_2d,
+    max_score = 60,
+    n_min = 1,
+    n_max = 26,
+    categorize = "quantile",
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+  )
+
+
+
+
+```
+
+- Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
+- The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
+- Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge.
+
+```{r finalvariab2, results = "hide", warning=TRUE, message=FALSE,eval=TRUE,include=FALSE}
+num_var <- 6
+final_variables_2d <- names(ranking_2d[1:num_var])
+```
+
+### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
+- Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
+```{r weighting,  warning = FALSE}
+cut_vec_2d
+CutVec_2d <- AutoScore_weighting( 
+    train_set=TrainSet_2d,
+    validation_set=ValidationSet_2d,
+    final_variables_2d,
+    max_score = 100,
+    categorize = "quantile",
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+  )
+
+```
+
+### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3) 
+- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
+- Re-run AutoScore Modules 2+3 to generate the updated scores.
+- Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
+
+```{r}
+## For example, we have current cutoffs of continuous variable: Age 
+## ==============  ===========  =====
+## variable        interval     point
+## ==============  ===========  =====
+## Age             <35            0  
+##                 [35,49)        7  
+##                 [49,76)       17  
+##                 [76,89)       23  
+##                 >=89          27  
+```
+
+- Current cutoffs:`c(52, 62, 73)`. We can fine tune the cutoffs as follows:
+```{r}
+
+# Example 1: rounding up to a nice number
+CutVec_2d$Pulse<-c(60, 70, 95, 110)
+CutVec_2d$BP_Systolic<-c(100,115,150)
+CutVec_2d$Age<-c(30, 50, 80)
+CutVec_2d$BP_Diastolic<-c(50, 95)
+CutVec_2d$Respiration<-c(16, 20)
+CutVec_2d$SPO2<-c(90, 95)
+
+
+```
+
+
+```{r scoring, warning = FALSE}
+
+scoring_table_2d <- AutoScore_fine_tuning(train_set=TrainSet_2d,
+                        validation_set=ValidationSet_2d,
+                        final_variables_2d,
+                        cut_vec = CutVec_2d,
+                        max_score = 60)
+
+
+
+```
+### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
+```{r}
+pred_score <- AutoScore_testing(test_set, final_variables_2d, cut_vec=CutVec_2d, scoring_table_2d, threshold = "best", with_label = TRUE)
+Score_2d<- pred_score$pred_score
+head(pred_score)
+```
+
+- Users could use the `pred_score` for fur
+
+
+
+
+
+
+-30d锛?
+```{r}
+names(ranking_30d)<-ranking_30d
+AUC_30d_1 <- AutoScore_parsimony(
+    train_set=TrainSet_30d,
+    validation_set=ValidationSet_30d,
+    rank = ranking_30d,
+    max_score = 60,
+    n_min = 1,
+    n_max = 26,
+    categorize = "quantile",
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+  )
+
+
+
+
+```
+
+- Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
+- The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
+- Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge.
+```{r}
+# Example 1: Top 6 variables are selected
+num_var <- 6
+final_variables <- names(ranking[1:num_var])
+
+# Example 2: Top 9 variables are selected
+num_var <- 9
+final_variables <- names(ranking[1:num_var])
+
+# Example 3: Top 6 variables, the 9th and 10th variable are selected
+num_var <- 6
+final_variables <- names(ranking[c(1:num_var, 9, 10)])
+```
+
+
+```{r finalvariab2, results = "hide", warning=TRUE, message=FALSE,eval=TRUE,include=FALSE}
+num_var <- 6
+final_variables_30d <- names(ranking_30d[1:num_var])
+```
+
+### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
+- Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
+```{r weighting,  warning = FALSE}
+CutVec_30d <- AutoScore_weighting( 
+    train_set=TrainSet_30d,
+    validation_set=ValidationSet_30d,
+    final_variables_30d,
+    max_score = 100,
+    categorize = "quantile",
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+  )
+
+```
+
+### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3) 
+- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
+- Re-run AutoScore Modules 2+3 to generate the updated scores.
+- Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
+
+```{r}
+## For example, we have current cutoffs of continuous variable: Age 
+## ==============  ===========  =====
+## variable        interval     point
+## ==============  ===========  =====
+## Age             <35            0  
+##                 [35,49)        7  
+##                 [49,76)       17  
+##                 [76,89)       23  
+##                 >=89          27  
+```
+
+- Current cutoffs:`c(52, 62, 73)`. We can fine tune the cutoffs as follows:
+```{r}
+
+# Example 1: rounding up to a nice number
+CutVec_30d$Pulse<-c(60, 70, 95, 110)
+CutVec_30d$BP_Systolic<-c(100,115,150)
+CutVec_30d$Age<-c(30, 50, 80)
+CutVec_30d$BP_Diastolic<-c(50, 95)
+CutVec_30d$Respiration<-c(16, 20)
+#CutVec_2d$SPO2<-c(90, 95)
+CutVec_30d$AllCancer<-c(1, 2)
+
+```
+
+
+```{r scoring, warning = FALSE}
+
+scoring_table_30d <- AutoScore_fine_tuning(train_set=TrainSet_30d,
+                        validation_set=ValidationSet_30d,
+                        final_variables_30d,
+                        cut_vec = CutVec_30d,
+                        max_score = 60)
+scoring_table_30d
+
+
+```
+### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
+```{r}
+pred_score <- AutoScore_testing(test_set, final_variables_30d, cut_vec=CutVec_30d, scoring_table_30d, threshold = "best", with_label = TRUE)
+Score_30d<- pred_score$pred_score
+head(pred_score)
+```
+
+
+
+
 
 
 <h id="Demo2">
@@ -269,14 +513,14 @@ In Demo #2, we demonstrate the use of AutoScore on a comparably small dataset wh
 
 ### Get small dataset with 1000 samples
 ```{r}
-data("sample_data_small")
+set.seed(4)
+sample_data_small <- sample_data[sample(1:20000, size = 1000),]
 ```
 
 ### Prepare training and test datasets
 - Option 1: Prepare two separate datasets to train and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, `train_set` is equal to `validation_set` and the ratio of `validation_set` should be 0. Then cross-validation will be implemented in the STEP(ii) `AutoScore_parsimony()`.
 ```{r}
-set.seed(4)
 out_split <- split_data(data = sample_data_small, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
@@ -335,7 +579,7 @@ final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
 ```{r finalvariab, results = "hide", warning=FALSE, message=FALSE,eval=TRUE,include=FALSE}
-num_var <- 5
+num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 ### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
@@ -361,24 +605,24 @@ cut_vec <- AutoScore_weighting(
 ## ==============  ===========  =====
 ## variable        interval     point
 ## ==============  ===========  =====
-#> bun_mean       <9             0  
-#>                [9,43.2)       1  
-#>                [43.2,59)      9  
-#>                >=59          13  
+## bun_mean        <10           0  
+##                 [10,44)       1  
+##                 [44,60)       2  
+##                 >=60          4  
 ```
 
-- Current cutoffs: `c(9, 43.2, 59)`. We can fine tune the cutoffs as follows:
+- Current cutoffs: `c(44, 60)`. We can fine tune the cutoffs as follows:
 - Note: It is just a demo using simulated data, and thus, the result might not be clinically meaningful.
 ```{r}
 
 # Example 1: rounding up to a nice number
-cut_vec$bun_mean <- c(9, 45, 60)
+cut_vec$bun_mean <- c(45, 60)
 
 # Example 2: changing cutoffs according to clinical knowledge or preference 
-cut_vec$bun_mean <- c(15, 45, 60)
+cut_vec$bun_mean <- c(40, 60)
 
 # Example 3: combining categories
-cut_vec$bun_mean <- c(45, 60)
+cut_vec$bun_mean <- c(45)
 
 ```
 
@@ -387,10 +631,11 @@ cut_vec$bun_mean <- c(45, 60)
 ```
 
 ```{r scoring2, warning = TRUE}
+cut_vec$platelet_mean <- c(50, 120, 300)
 cut_vec$lactate_mean <- c(1, 2, 3)
 cut_vec$Age <- c(35, 50, 80)
-cut_vec$aniongap_mean <- c(8, 12, 18)
-cut_vec$resprate_mean <- c(15, 22)
+cut_vec$heartrate_mean <- c(60, 75, 100)
+cut_vec$resprate_mean <- c(15,22)
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,

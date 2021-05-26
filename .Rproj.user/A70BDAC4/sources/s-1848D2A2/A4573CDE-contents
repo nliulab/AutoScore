@@ -1,0 +1,1464 @@
+## Necessary packages
+library(tidyverse)
+library(caret)
+library(AutoScore)
+library(pROC)
+library(zoo)
+library(randomForest)
+library(stringr)
+library(dplyr)
+
+## load data and scripts
+source('D:/Document/Project_AutoScore/AutoScore_Codes/ScoreGenerator2.1(range).R')
+load("D:/NBoxDocuments/EDData/Master_ED_dataset/FDS_v1.RData")
+source('D:/Document/Project_AutoScore/AutoScore_Codes/ScoreGenerator2.2.R')
+load("D:/NBoxDocuments/EDData/ProfMarcus_Data202001/ED2W_XieFeng201902/Rdata/RDATA_xiefeng/Data_Temp.RData")
+load("D:/NBoxDocuments/EDData/ProfMarcus_Data202001/ED2W_XieFeng201902/Rdata/RDATA_xiefeng/Data_GCS.RData")
+load("D:/NBoxDocuments/EDData/ProfMarcus_Data202001/ED2W_XieFeng201902/Rdata/RDATA_xiefeng/Data_Vital.RData")
+
+
+## revise FDS~~
+
+##add temp and GCS to
+Data_GCS$EyeOpen<-str_sub(as.character(Data_GCS$Data_VitalGCS..Eye.Open.),1,1)
+Data_GCS$MotorResponse<-str_sub(as.character(Data_GCS$Data_VitalGCS..Motor.Response.),1,1)
+Data_GCS$VerbalResponse<-str_sub(as.character(Data_GCS$Data_VitalGCS..Verbal.Response.),1,1)
+#> summary(as.factor(Data_GCS$VerbalResponse))
+#-     0     1     2     3     4     5
+#48814     2  1240   878   399  1444 18280
+#> summary(as.factor(Data_GCS$MotorResponse))
+#-     0     1     2     3     4     5     6  NA's
+#48858     1   520   106   177   532  1464 19393     6
+#> summary(as.factor(Data_GCS$EyeOpen))
+#    -     0     1     2     3     4  NA's
+#48739     8   793   561  1881 19062    13
+
+Data_GCS$VerbalResponse[Data_GCS$VerbalResponse=="0" |Data_GCS$VerbalResponse=="-"]<-"5"
+Data_GCS$MotorResponse[Data_GCS$MotorResponse=="0" |Data_GCS$MotorResponse=="-" | is.na(Data_GCS$MotorResponse)]<-"6"
+Data_GCS$MotorResponse[is.na(Data_GCS$MotorResponse)]<-"6"
+
+Data_GCS$EyeOpen[Data_GCS$EyeOpen=="0" | Data_GCS$EyeOpen=="-" | is.na(Data_GCS$EyeOpen)]<-"4"
+Data_GCS$EyeOpen[ is.na(Data_GCS$EyeOpen)]<-"4"
+
+
+Data_GCS$Data_VitalGCS..Anon.AE.Case.No.<-as.character(Data_GCS$Data_VitalGCS..Anon.AE.Case.No.)
+names(Data_GCS)[1]<-"Anon_AE_Case_No"
+Data_GCS<-Data_GCS[,c(1,5:7)]
+Data_GCS$VerbalResponse<-as.numeric(Data_GCS$VerbalResponse)
+Data_GCS$MotorResponse<-as.numeric(Data_GCS$MotorResponse)
+Data_GCS$EyeOpen<-as.numeric(Data_GCS$EyeOpen)
+Data_GCS$GCS<-Data_GCS$EyeOpen + Data_GCS$MotorResponse + Data_GCS$VerbalResponse
+
+Data_GCS$AVPU<-NA
+Data_GCS$AVPU<-ifelse(Data_GCS$GCS>14,"A",Data_GCS$AVPU)
+Data_GCS$AVPU<-ifelse(Data_GCS$GCS<=14&Data_GCS$GCS>=10,"V",Data_GCS$AVPU)
+Data_GCS$AVPU<-ifelse(Data_GCS$GCS<=9&Data_GCS$GCS>=7,"P",Data_GCS$AVPU)
+Data_GCS$AVPU<-ifelse(Data_GCS$GCS<=6,"U",Data_GCS$AVPU)
+#Data_GCS$AVPU<-as.factor(Data_GCS$AVPU)
+
+names(Data_Temp)<-c("Anon_AE_Case_No", "Temperature")
+FDS1<-merge(FDS,Data_Temp,by="Anon_AE_Case_No",all.x = T)
+FDS1<-merge(FDS1,Data_GCS,by="Anon_AE_Case_No",all.x = T)
+
+
+
+#----FDS2   to be done...
+colSums(is.na(Data_Vital))
+Data_Vital1<-Data_Vital[,c("Anon AE Case No","Pulse", "Respiration", "FIO2", "SPO2", "BP Diastolic", "BP Systolic")]
+names(Data_Vital1)<-c("Anon_AE_Case_No", "Pulse_new", "Respiration_new", "FIO2_new", "SPO2_new",
+                      "BP Diastolic_new", "BP Systolic_new")
+FDS2<-merge(FDS1,Data_Vital1,by="Anon_AE_Case_No",all.x = T)
+
+
+###################################################
+# part1：cohort formation (inclusion and exclusion)
+###################################################
+FD1<-FDS1
+
+# from FDS or FD1 (take data of 2008 and 2017)
+FD1<-FD1[!FD1$admit_year=="2017",]
+FD1<-FD1[!FD1$admit_year=="2008",]
+##364323
+
+# delete Age<21 or missing
+FD1<-FD1[FD1$Age>=21,]
+FD1<-FD1[!is.na(FD1$Age),]
+#delete 6961
+
+# delete natural death
+# FD1<-FD1[(FD1$Death_Reason!="NATURAL DEATH")| is.na(FD1$Death_Reason),]
+##delete 252
+
+# delete foreigners
+FD1<-FD1[FD1$Nationality=="Singapore Citizen",]
+FD1$Nationality<-NULL
+#delete 33853
+
+
+### look at missing values
+colSums(is.na(FD1))/length(FD1$Anon_AE_Case_No)
+
+
+## remaining 323,259 for splitting
+
+## feature revision
+# create DM2 = DMcx+DM ; DM changes to DM1 (For AutoScore)
+
+FD1[,c("MI", "CHF",
+      "PVD", "Stroke", "Dementia", "Pulmonary", "Rheumatic", "PUD",
+      "LiverMild", "DM", "DMcx", "Paralysis", "Renal", "Cancer", "LiverSevere",
+      "Mets", "HIV" )]<-
+  na.fill(FD1[  ,c("MI", "CHF", "PVD", "Stroke", "Dementia", "Pulmonary", "Rheumatic", "PUD",
+                  "LiverMild", "DM", "DMcx", "Paralysis", "Renal", "Cancer", "LiverSevere", "Mets", "HIV" )],0)
+
+
+FD1$DM2<-as.logical(as.numeric(FD1$DM)) | as.logical(as.numeric(FD1$DMcx))
+names(FD1)[names(FD1)=="DM"]<-"DM1"
+## combining the comorbidities with multi-level factors
+
+FD1$Diabetes <- ifelse(as.logical(as.numeric(FD1$DM1)),1,0)
+FD1$Diabetes <- ifelse(as.logical(as.numeric(FD1$DMcx)),2,FD1$Diabetes)
+### Assumption made here that DMcx (end-organ damage from DM) takes precedence over DM1 (have uncomplicated diabetes) -> which results in ONLY 3% uncomplicated DM (cant believe this stat though) for 2016
+FD1$LiverD <- ifelse(as.logical(as.numeric(FD1$LiverMild)),1,0)
+FD1$LiverD <- ifelse(as.logical(as.numeric(FD1$LiverSevere)),2,FD1$LiverD)
+FD1$AllCancer <- ifelse(as.logical(as.numeric(FD1$Cancer)),1,0)
+FD1$AllCancer <- ifelse(as.logical(as.numeric(FD1$Mets)),2,FD1$AllCancer)
+
+
+
+###################################################
+# part2： data preprocessing
+###################################################
+
+
+###################################################
+# Training and validation set
+
+
+
+####adding revision: 2021.4.24
+#FD1$difftime_Death_discharge<-difftime(FD1$`Death Date`,CD_all$`Admit Date/Time (SAP)`,units="days")
+#CD_all$Mortality_30days<-CD_all$difftime_Death_discharge<30
+#CD_all$Mortality_30days[is.na(CD_all$Mortality_30days)]<-FALSE
+#summary(CD_all$Mortality_30days)
+
+FD1$mortality_3d<-FD1$difftime_Death_EDdischarge<3
+FD1$mortality_3d[is.na(FD1$mortality_3d)]<-FALSE
+summary(FD1$mortality_3d)
+
+
+FD1$mortality_5d<-FD1$difftime_Death_EDdischarge<5
+FD1$mortality_5d[is.na(FD1$mortality_5d)]<-FALSE
+summary(FD1$mortality_5d)
+
+
+FD1$mortality_7d<-FD1$difftime_Death_EDdischarge<7
+FD1$mortality_7d[is.na(FD1$mortality_7d)]<-FALSE
+summary(FD1$mortality_7d)
+
+FD1$mortality_14d<-FD1$difftime_Death_EDdischarge<14
+FD1$mortality_14d[is.na(FD1$mortality_14d)]<-FALSE
+summary(FD1$mortality_14d)
+
+save(FD1,file="D:/NBoxDocuments/EDData_SERP/CodeForPaperFormation/SERP5_for_survival_readmission.Rdata")
+
+FD2<-FD1[!FD1$admit_year=="2016",]
+##311196
+
+
+preselect<-c("Age", "Gender",
+             "ShiftTime", "DayofWeek", "Pulse", "Respiration",
+             "SPO2", "BP_Diastolic", "BP_Systolic",  "MI", "CHF", "PVD", "Stroke",
+             "Dementia", "Pulmonary", "Rheumatic", "PUD", "LiverD", "Diabetes",
+              "Paralysis", "Renal", "AllCancer",
+             "Num_visit_last_1yr",  "Total_Num_Surgery_last1yr",  "Total_icu_count_last1yr",  "Total_hd_count_last1yr",
+             "Mortality_2d", "mortality_3d",
+             "mortality_5d", "mortality_7d", "mortality_14d", "mortality_30d")
+FD2<-FD2[,preselect]
+
+
+## data preprocessing
+FD2$Pulse<-ifelse(FD2$Pulse>300|FD2$Pulse<0,NA,FD2$Pulse)
+density(FD2$Pulse,na.rm=T)%>%plot
+
+FD2$Respiration<-ifelse(FD2$Respiration>50|FD2$Respiration<0,NA,FD2$Respiration)
+density(FD2$Respiration,na.rm=T)%>%plot
+
+FD2$SPO2<-ifelse(FD2$SPO2>100|FD2$SPO2<0,NA,FD2$SPO2)
+density(FD2$SPO2,na.rm=T)%>%plot
+
+FD2$BP_Systolic<-ifelse(FD2$BP_Systolic>300,NA,FD2$BP_Systolic)
+density(FD2$BP_Systolic,na.rm=T)%>%plot
+
+FD2$BP_Diastolic<-ifelse(FD2$BP_Diastolic>180,NA,FD2$BP_Diastolic)
+density(FD2$BP_Diastolic,na.rm=T)%>%plot
+
+# calculate the NA%
+colSums(is.na(FD2))
+colSums(is.na(FD2))/length(FD2[,1])
+
+
+## missing value imputation
+#a<-data.frame(rowSums(is.na(FD2)))
+##about 2000: no vital signs measure ment..
+
+library(caret)
+preProcValues <- preProcess(FD2, method = c("medianImpute"))
+FD2<- predict(preProcValues, FD2)
+#library('RANN')
+colSums(is.na(FD2))/length(FD2[,2])
+str(FD2)
+
+##change character to
+c<-sapply(FD2, class)=="character"
+for(i in colnames(FD2)[c]){
+  FD2[,i]<-as.factor(FD2[,i])
+}
+
+all_outcome<-c("Mortality_2d", 
+"mortality_3d", "mortality_5d", "mortality_7d", "mortality_14d", "mortality_14d")
+
+FD2<-FD2_temp
+i<- "mortality_14d"
+outcome_label<-FD2[,i]
+FD2<-subset(FD2, select = names(FD2)[!names(FD2) %in% all_outcome])
+## Clear label 30d mortaluty
+FD2$label<-as.factor(outcome_label)
+
+## AutoScore Module 0:  split dataset to training and validation (80% and 20%)
+set.seed(4)
+Validateindex<-sample((1:length(FD2[,1])),round(length(FD2[,1])*0.2))
+TrainSet<-FD2[-Validateindex,]
+ValidationSet<-FD2[Validateindex,]
+
+
+
+### adding:
+train_set<-TrainSet
+validation_set<-ValidationSet
+
+
+
+
+
+
+
+
+
+
+print_score_table<-function(scoring_table,final_variable){
+}
+
+print_roc_performance<-function(label, score, threshold = "best"){
+  if(sum(is.na(score))>0) warning("NA in the score: ",sum(is.na(score)))
+  model_roc <- roc(label, score, quiet = T)
+  cat("AUC: ", round(auc(model_roc),4),"  ")
+  print(ci(model_roc))
+  
+  if(threshold == "best") {
+    threshold <- ceiling(coords(model_roc, "best", ret = "threshold", transpose = TRUE))
+    cat("Best score threshold: >=", threshold, "\n")
+  } else {cat("Score threshold: >=",threshold,"\n")}
+  cat("Other performance indicators based on this score threshold: \n")
+}
+###################################################
+###################################################
+###################################################
+###################################################
+###################################################
+
+
+
+
+
+
+
+
+
+
+###################################################
+###################################################
+###################################################
+# Test data processing.
+
+# Split policy: selection
+FD4<-FD1[FD1$admit_year=="2016",]
+
+preselect1<-c(preselect, "Triage_Class_Code","LiverMild", "DM1", "DM2",
+              "DMcx",  "Cancer", "LiverSevere", "Mets","HIV","Temperature","AVPU","FIO2","GCS",
+              "DeathLabel2", "Mortality_2d", "Mortality_30days_postDischarge", "DeathOverall",  "readmission_30d", "ICU_Admission2", "Mortality_1year","mortality_3d",
+              "mortality_5d", "mortality_7d", "mortality_14d","mortality_30d")
+FD4<-FD4[,preselect1]
+TestSet<-FD4
+
+#FF<-FD1[!is.na(FD1$Temperature),]
+
+
+############################################
+## data Processing
+
+#levels(TestSet$`Triage Class Code`)[3:4]<-"P3"
+levels(TestSet$Triage_Class_Code)
+
+TestSet$Temperature<-ifelse(TestSet$Temperature>50|TestSet$Temperature<20,NA,TestSet$Temperature)
+
+TestSet$Pulse<-ifelse(TestSet$Pulse>300|TestSet$Pulse<0,NA,TestSet$Pulse)
+density(TestSet$Pulse,na.rm=T)%>%plot
+
+TestSet$Respiration<-ifelse(TestSet$Respiration>50|TestSet$Respiration<0,NA,TestSet$Respiration)
+density(TestSet$Respiration,na.rm=T)%>%plot
+
+TestSet$SPO2<-ifelse(TestSet$SPO2>100|TestSet$SPO2<0,NA,TestSet$SPO2)
+density(TestSet$SPO2,na.rm=T)%>%plot
+
+
+TestSet$BP_Systolic<-ifelse(TestSet$BP_Systolic>300,NA,TestSet$BP_Systolic)
+density(TestSet$BP_Systolic,na.rm=T)%>%plot
+
+TestSet$BP_Diastolic<-ifelse(TestSet$BP_Diastolic>180,NA,TestSet$BP_Diastolic)
+density(TestSet$BP_Diastolic,na.rm=T)%>%plot
+
+##calculate the NA%
+colSums(is.na(TestSet))
+colSums(is.na(TestSet))/length(TestSet[,1])
+
+
+names(TestSet)[names(TestSet)=="mortality_30d"]<-"label"
+TestSet$label<-as.factor(TestSet$label)
+
+
+###missing value imputation
+library(caret)
+preProcValues <- preProcess(TestSet, method = c("medianImpute"))
+TestSet<- predict(preProcValues, TestSet)
+sum(is.na(TestSet))
+colSums(is.na(TestSet))/length(TestSet[,2])
+
+
+###################################################
+# part3： derivation by the AutoScore
+###################################################
+
+TrainSet$AllCancer<-as.factor(TrainSet$AllCancer)
+ValidationSet$AllCancer<-as.factor(ValidationSet$AllCancer)
+TestSet$AllCancer<-as.factor(TestSet$AllCancer)
+
+
+"DeathLabel2", "Mortality_2d", "Mortality_30days_postDischarge", "DeathOverall",  "readmission_30d", "ICU_Admission2", "Mortality_1year","mortality_3d",
+"mortality_5d", "mortality_7d", "mortality_14d","mortality_30d"
+
+i<-"mortality_14d"
+test_set<-TestSet[,c(final_variables,i)]
+names(test_set)[names(test_set) == i] <- "label"
+pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
+
+
+
+
+
+
+##Revised needed::
+
+## 1. plot parsimony: full 26 variables:
+# SERP
+Ri
+
+names(Ri) <- nmin:nmax
+print("list of AUC values are shown below")
+print(data.frame(Ri))
+
+
+plot(Ri, main = "Parsimony plot on the Validation Set", xlab = "Number of Variables", ylim=c(0.5,0.9), ylab = "Area Under the Curve", col = "red",
+     lwd = 2, type = "o")
+
+
+plot(AUC_30d_1, main = "Parsimony plot of SERP (30-day)", xlab = "Number of Variables", ylim=c(0.5,0.9), ylab = "Area Under the Curve", col = "deepskyblue1",
+     lwd = 2, type = "o")
+#SERP-2d:
+
+plot(AUC_2d, main = "Parsimony plot of SERP (2-day)", xlab = "Number of Variables", ylim=c(0.5,0.9), ylab = "Area Under the Curve", col = "deepskyblue1",
+     lwd = 2, type = "o")
+
+#SERP-14d:
+plot(AUC_7d, main = "Parsimony plot of SERP (7-day)", xlab = "Number of Variables", ylim=c(0.5,0.9), ylab = "Area Under the Curve", col = "deepskyblue1",
+     lwd = 2, type = "o")
+
+
+##Performance table:
+
+r_old<-r
+
+
+
+
+
+
+
+
+
+
+
+
+## ------------------------------------------------------------
+## for loop handle: generate comparison table
+library(pROC)
+set.seed(4)
+label_list<-list(TestSet$Mortality_2d,TestSet$mortality_3d,TestSet$mortality_5d,TestSet$mortality_7d,TestSet$mortality_14d,TestSet$DeathLabel2,TestSet$mortality_30d,TestSet$ICU_Admission2)
+score_list<-list(Score_2d,Score_7d,TestSet4$SERP,TestSet4$CART,TestSet4$Triage_Class_Code,TestSet4$MEWS,TestSet4$NEWS,TestSet4$CCI,TestSet4$PAPS, TestSet4$REMS)
+auc_result<-matrix(data = NA, nrow = 10, ncol = 8)
+for(i in 1:10){
+  for(j in 1:8){
+    a<-round(as.numeric(ci(roc(label_list[[j]],score_list[[i]],quiet = T))),digits = 3)
+    auc_result[i,j]<-paste(a[2]," ","(",a[1],"-",a[3],")",sep="")}}
+
+r<-data.frame(auc_result)
+colnames(r)<-c("2-day mortality","3-day mortality","5-day mortality","7-day mortality","14-day mortality","Inpatient Mortality","30-day mortality","ICU admission")
+row.names(r)<-c("SERP(2-day)","SERP(7-day)","SERP(30-day)","CART","PACS","MEWS","NEWS","CCI","PAPS","REMS")
+
+
+
+############################################
+## performance evaluation with baselines
+library(pROC)
+label_roc<-TestSet$Mortality_2d
+
+a<-roc(label_roc,TestSet4$CART,quiet = T)
+
+b<-roc(label_roc,TestSet4$Triage_Class_Code,quiet = T)
+
+c<-roc(label_roc,TestSet4$SERP,quiet = T)
+
+d<-roc(label_roc,Score_2d,quiet = T)
+
+e<-roc(label_roc,TestSet4$NEWS,quiet = T)
+ci(e)
+auc(e)
+plot(e)
+
+f<-roc(label_roc,TestSet4$CCI,quiet = T)
+ci(f)
+auc(f)
+plot(f)
+
+
+roc_rose <- plot(c, print.auc = F, col = "red")
+roc_rose <- plot(d, print.auc = F, col = "blue",add = TRUE)
+roc_rose <- plot(e, print.auc = F, col = "darkgoldenrod", add = TRUE)
+roc_rose <- plot(b, print.auc = F, col = "green", add = TRUE)
+roc_rose <- plot(a, print.auc = F, col = "purple", add = TRUE)
+roc_rose <- plot(f, print.auc = F, col = "skyblue4", add = TRUE)
+op <- par(cex = 0.8)
+legend("bottomright",legend = c("SERP (AUC=0.823)","MEWS (AUC=0.661)","NEWS (AUC=0.711)","PACS (AUC=0.680)","CART (AUC=0.700)","CCI (AUC=0.755)"),col = c("red","blue","darkgoldenrod","green","purple","skyblue4"),lwd=3)
+
+
+
+
+
+
+library(givitiR)
+cb_SERP_30d <- givitiCalibrationBelt(o = as.numeric(label_roc), e = SERP_pred_30d,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                 devel = "internal",confLevels = c(.80,.95))
+
+cb_SERP_2d <- givitiCalibrationBelt(o = as.numeric(label_roc), e = SERP_pred_2d,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                    devel = "internal",confLevels = c(.80,.95))
+
+cb_SERP_7d <- givitiCalibrationBelt(o = as.numeric(label_roc), e = SERP_pred_7d,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                    devel = "internal",confLevels = c(.80,.95))
+
+
+#######################################
+##Final plots pdf
+
+pdf(file ="Figure5A.pdf")
+plot(cb_SERP_30d, main = "Calibration for SERP (30-day)",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+pdf(file ="Figure5B.pdf")
+plot(cb_SERP_2d, main = "Calibration for CART Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+
+pdf(file ="Figure5C.pdf")
+plot(cb_PACS, main = "Calibration for PACS Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+pdf(file ="Figure5D.pdf")
+plot(cb_EWS, main = "Calibration for EWS Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+pdf(file ="Figure5E.pdf")
+plot(cb_CCI, main = "Calibration for CCI Score",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+
+
+###################################################
+## AutoScore Module 1:  Variable Ranking by Random Forest
+
+set.seed(4)
+model <- randomForest(label~., data=TrainSet, ntree=100,
+                      preProcess="scale")
+
+# estimate variable importance
+importance <- varImp(model, scale=FALSE)
+
+# summarize importance
+b<-importance$Overall
+names(b)<-rownames(importance)
+b<-sort(b,decreasing = T)
+print(b)
+
+
+###################################################
+## AutoScore Module 2/3/4:  select the most parsimonious model
+# input TrainSet and ValidationSet
+# choose nmin=1 and nmax=30
+
+nmin<-1
+nmax<-26
+s<-names(b)
+Ri<-c()
+
+for(i in nmin:nmax){
+  print("Select the number of Variables")
+  print(i)
+  SD<-TrainSet[,c(s[1:i],"label")]
+  ValidationSet1<-ValidationSet[,c(s[1:i],"label")]
+
+  # AutoScore Module 2 : cut numeric and transfer categories
+  SDlist<-Dftransform(SD,ValidationSet1,probs = c(0, 0.05,0.2,0.8,0.95,1))
+  SD2<-SDlist[[1]]
+  ValidationSet2<-SDlist[[2]]
+  #str(SD2)
+  #str(testSet2)
+
+  # multivariable analysis after
+
+  model <- glm(label~., family = binomial(link="logit"), data = SD2)
+  y_validation<-ValidationSet2$label
+
+  # AutoScore Module 3 : cut numeric and transfer categories
+  coefVec<-coef(model)
+  SD2<-ChangeRef(SD2,coefVec)
+  model <- glm(label ~., family = binomial(link="logit"), data = SD2)
+  #print(model)
+  #summary(model)
+  coefVec<-coef(model)
+  a<-round(coefVec/min(coefVec[-1]))
+  myvec<-AddBaseline(SD2,a)
+
+
+  ValidationSet3<-AutoTest(ValidationSet2,myvec)
+  ValidationSet3$SERP<-rowSums(subset(ValidationSet3,select=-label))
+  y_validation<-ValidationSet3$label
+  #PlotROCCurve(ValidationSet3$TotalScore,as.numeric(y_validation)-1)
+
+  Modelroc<-roc(y_validation,ValidationSet3$SERP,quiet = T)
+  print(auc(Modelroc))
+  Ri<-c(Ri,auc(Modelroc))
+
+  }
+
+
+##Figure2 plotting1
+
+names(Ri) <- nmin:nmax
+print("list of AUC values are shown below")
+print(data.frame(Ri))
+plot(Ri, main = "Parsimony plot on the Validation Set", xlab = "Number of Variables", ylab = "Area Under the Curve", col = "red",
+     lwd = 2, type = "o")
+
+
+##plotting 2:
+
+
+ss<-c("Systolic Blood Pressure", "Pulse", "Age", "Diastolic Blood Pressure", "Cancer",
+  "Respiration Rate", "SPO2", "Day of Week", "Number of admissions last year", "Shift Time",
+  "Diabetes", "Number of Surgeries last year", "Gender", "Liver Disease",
+  "Total HD admissions last year", "Renal Disease", "Myocardial infarction", "Pulmonary", "Stroke",
+  "Congestive heart failure", "Paralysis", "Peripheral vascular disease", "Peptic ulcer disease", "Dementia", "Total ICU Admissions last year",
+  "Rheumatoid disease")
+
+#plotting increasing numbers of model variables for either single/multilevel comorbidities
+plot(names(Ri),Ri,
+     pch=42, main="Parsimony plot on the Validation Set", xlab="Number of Variables", ylab="Area Under the Curve",col = "red", lwd = 2,
+     xlim=c(0, 30), ylim=c(0.56, 0.86),type = "o") #modify ylim to fit text
+splus <- paste("+", ss, sep = "", collapse = NULL)
+#splus <- splus[1:20]
+text(names(Ri), Ri, splus, cex=0.6, pos=4,offset=.2, col="blue", srt=-30)
+
+
+
+###################################################
+## comfirming variables in the final model:
+FinalVariable<-s[1:6]
+
+
+###################################################
+## AutoScore Module 2/3/4:  Generate the initial scoring model
+SD<-TrainSet[,c(FinalVariable,"label")]
+ValidationSet1<-ValidationSet[,c(FinalVariable,"label")]
+
+# AutoScore Module 2 : cut numeric and transfer categories
+SDlist<-Dftransform(SD,ValidationSet1,probs = c(0, 0.05,0.2,0.8,0.95,1))
+SD2<-SDlist[[1]]
+ValidationSet2<-SDlist[[2]]
+
+# AutoScore Module 3 : Score weighting
+model <- glm(label~., family = binomial(link="logit"), data = SD2)
+y_validation<-ValidationSet2$label
+coefVec<-coef(model)
+SD2<-ChangeRef(SD2,coefVec)
+model <- glm(label ~., family = binomial(link="logit"), data = SD2)
+#print(model)
+coefVec<-coef(model)
+a<-round(coefVec/min(coefVec[-1]))
+myvec<-AddBaseline(SD2,a)
+print("The generated Scores are shown below")
+print(as.data.frame(myvec))
+
+
+###################################################
+# Revising Score values
+total_max<-50
+total<-0
+for(i in 1:length(FinalVariable)) total<-total+ max(myvec[grepl(FinalVariable[1],names(myvec))])
+myvec<-round(myvec/(total/total_max))
+print("The generated Scores are shown below")
+print(as.data.frame(myvec))
+
+## intermediate evaluation based on Validation Set
+ValidationSet3<-AutoTest(ValidationSet2,myvec)
+ValidationSet3$TotalScore<-rowSums(subset(ValidationSet3,select=-label))
+y_validation<-ValidationSet3$label
+PlotROCCurve(ValidationSet3$TotalScore,as.numeric(y_validation)-1)
+
+print("Performance using AutoScore (based on internal validation):")
+Modelroc<-roc(y_validation,ValidationSet3$TotalScore,auc = T,ci=T)
+print("AUC:")
+print(ci(Modelroc))
+print(auc(Modelroc))
+print("The best cutoff of using this score：")
+print(coords(Modelroc, "best", ret="threshold"))
+print("Other Performance indicators based on this cutoff: ")
+print(coords(Modelroc, "best", ret=c("specificity", "sensitivity", "accuracy",
+                                     "npv", "ppv", "precision")))
+
+
+
+
+###################################################
+## AutoScore Module 5:  Fine-tuning and scoring model regenration
+SD<-TrainSet[,c(FinalVariable,"label")]
+ValidationSet1<-ValidationSet[,c(FinalVariable,"label")]
+TestSet1<-TestSet[,c(FinalVariable,"label")]
+
+
+# AutoScore Module 2 : cut numeric and transfer categories
+SDlist<-Dftransform(SD,ValidationSet1,probs = c(0, 0.05,0.2,0.8,0.95,1), Print_categories = TRUE)
+CutVec1<-SDlist[[3]]
+
+CutVec<-CutVec1
+for(i in 1:length(CutVec)) CutVec[[i]]<- CutVec[[i]][2:(length(CutVec[[i]])-1)]
+print(CutVec)
+
+#######################################################
+# Fine-tuning process (combine intervals or change cut-offs )
+CutVec$Pulse<-c(60, 70, 95, 110)
+CutVec$BP_Systolic<-c(100,115,150)
+CutVec$Age<-c(30, 50, 80)
+CutVec$BP_Diastolic<-c(50, 95)
+CutVec$Respiration<-c(16, 20)
+#CutVec$SPO2<-c(95)
+#CutVec$Num_visit_last_1yr<-c(2)
+
+
+# after change cut-offs (Fine-tuning)
+for(i in 1:length(CutVec)) CutVec[[i]]<- c( CutVec1[[i]][1],CutVec[[i]],CutVec1[[i]][length(CutVec1[[i]])])
+SDlist<-Dftransform_FineTune(SD,ValidationSet1,CutVec = CutVec)
+SDlist_Test<-Dftransform_FineTune(SD,TestSet1,CutVec = CutVec)
+SD2<-SDlist[[1]]
+ValidationSet2<-SDlist[[2]]
+TestSet2<-SDlist_Test[[2]]
+
+
+# AutoScore Module 3 : Score weighting
+model <- glm(label~., family = binomial(link="logit"), data = SD2)
+y_validation<-ValidationSet2$label
+coefVec<-coef(model)
+SD2<-ChangeRef(SD2,coefVec)
+model <- glm(label ~., family = binomial(link="logit"), data = SD2)
+#print(model)
+#summary(model)
+coefVec<-coef(model)
+a<-round(coefVec/min(coefVec[-1]))
+myvec<-AddBaseline(SD2,a)
+#print("The generated Scores are shown below")
+#print(as.data.frame(myvec))
+#######################################################
+# Revising Score values
+total_max<-50
+total<-0
+for(i in 1:length(FinalVariable)) total<-total+ max(myvec[grepl(FinalVariable[1],names(myvec))])
+myvec<-round(myvec/(total/total_max))
+print("The generated Scores are shown below")
+print(as.data.frame(myvec))
+
+
+
+
+#######################################################
+## Final Validation based on Validation Set (After fine-tuning)
+ValidationSet3<-AutoTest(ValidationSet2,myvec)
+ValidationSet3$TotalScore<-rowSums(subset(ValidationSet3,select=-label))
+y_validation<-ValidationSet3$label
+PlotROCCurve(ValidationSet3$TotalScore,as.numeric(y_validation)-1)
+
+print("Performance using AutoScore ( based on Validation Set (After fine-tuning)):")
+Modelroc<-roc(y_validation,ValidationSet3$TotalScore,auc = T,ci=T)
+print("AUC:")
+print(ci(Modelroc))
+print(auc(Modelroc))
+print("The best cutoff of using this score：")
+print(coords(Modelroc, "best", ret="threshold"))
+print("Other Performance indicators based on this cutoff: ")
+print(coords(Modelroc, "best", ret=c("specificity", "sensitivity", "accuracy",
+                                     "npv", "ppv", "precision")))
+
+
+
+
+############################################
+#part4： Testing (unseen test set)
+#############################################
+
+
+###########################################
+## SERP testing
+TestSet3<-AutoTest(TestSet2,myvec)
+TestSet3$TotalScore<-rowSums(subset(TestSet3,select=-label))
+y_test<-TestSet3$label
+PlotROCCurve(TestSet3$TotalScore,as.numeric(y_test)-1)
+
+print("Performance using AutoScore ( based on unseen test Set):")
+Modelroc<-roc(y_test,TestSet3$TotalScore,auc = T,ci=T)
+print("AUC:")
+print(ci(Modelroc))
+print(auc(Modelroc))
+print("The best cutoff of using this score：")
+print(coords(Modelroc, "best", ret="threshold"))
+print("Other Performance indicators based on this cutoff: ")
+print(coords(Modelroc, "best", ret=c("specificity", "sensitivity", "accuracy",
+                                     "npv", "ppv", "precision")))
+
+
+
+#############################
+## Baseline model
+## outcome: 1.DeathLabel 2.48h mortality 3.Death post discharge 4DeathOverall 5.ICU admission 6.readmission
+seq1<-c( "Age",
+         "Triage_Class_Code",
+         "Pulse", "Respiration",  "BP_Diastolic", "BP_Systolic",
+          "SPO2",
+
+         "MI", "CHF", "PVD", "Stroke",
+         "Dementia", "Pulmonary", "Rheumatic", "PUD", "LiverMild", "DM1", "DM2",
+         "DMcx", "Paralysis", "Renal", "Cancer", "LiverSevere", "Mets","HIV", "Temperature","AVPU","FIO2","GCS",
+         "DeathLabel2",
+         "Mortality_2d", "Mortality_30days_postDischarge", "DeathOverall",  "readmission_30d", "ICU_Admission2", "Mortality_1year", "mortality_3d",
+         "mortality_5d", "mortality_7d", "mortality_14d","mortality_30d")
+TestSet4<-TestSet[,seq1]
+
+
+
+#MD3$mortality_30d[is.na(MD3$mortality_30d)]<-0
+## CART
+TestSet4$Score1<-NA
+TestSet4$Score1<-ifelse(TestSet4$Age>69,9,TestSet4$Score1)
+TestSet4$Score1<-ifelse(TestSet4$Age<=69&TestSet4$Age>=55,4,TestSet4$Score1)
+TestSet4$Score1<-ifelse(TestSet4$Age<55,0,TestSet4$Score1)
+
+TestSet4$Score2<-NA
+TestSet4$Score2<-ifelse(TestSet4$Respiration>29,22,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<=29&TestSet4$Respiration>=26,15,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<=25&TestSet4$Respiration>=24,12,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<=23&TestSet4$Respiration>=21,8,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<21,0,TestSet4$Score2)
+
+TestSet4$Score3<-NA
+TestSet4$Score3<-ifelse(TestSet4$Pulse>139,13,TestSet4$Score3)
+TestSet4$Score3<-ifelse(TestSet4$Pulse<=139&TestSet4$Pulse>=110,14,TestSet4$Score3)
+TestSet4$Score3<-ifelse(TestSet4$Pulse<110,0,TestSet4$Score3)
+
+TestSet4$Score4<-NA
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic>49,0,TestSet4$Score4)
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic<=49&TestSet4$BP_Diastolic>=40,4,TestSet4$Score4)
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic<=39&TestSet4$BP_Diastolic>=35,6,TestSet4$Score4)
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic<35,13,TestSet4$Score4)
+
+##MEWS
+TestSet4$MEWS1<-NA
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration>=30,3,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<=29&TestSet4$Respiration>=21,2,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<=20&TestSet4$Respiration>=15,1,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<=14&TestSet4$Respiration>=9,0,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<9,2,TestSet4$MEWS1)
+
+TestSet4$MEWS2<-NA
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse>=130,3,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=129&TestSet4$Pulse>=111,2,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=110&TestSet4$Pulse>=101,1,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=100&TestSet4$Pulse>=51,0,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=50&TestSet4$Pulse>=41,1,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=40,2,TestSet4$MEWS2)
+
+TestSet4$MEWS3<-NA
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic>199,2,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<=199&TestSet4$BP_Systolic>=100,0,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<=99&TestSet4$BP_Systolic>=80,1,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<=79&TestSet4$BP_Systolic>=70,2,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<70,3,TestSet4$MEWS3)
+
+
+TestSet4$MEWS4<-NA
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="A",0,TestSet4$MEWS4)
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="V",1,TestSet4$MEWS4)
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="P",2,TestSet4$MEWS4)
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="U",3,TestSet4$MEWS4)
+
+TestSet4$MEWS5<-NA
+TestSet4$MEWS5<-ifelse(TestSet4$Temperature>=38.5,2,TestSet4$MEWS5)
+TestSet4$MEWS5<-ifelse(TestSet4$Temperature<38.5&TestSet4$Temperature>=35,0,TestSet4$MEWS5)
+TestSet4$MEWS5<-ifelse(TestSet4$Temperature<35,2,TestSet4$MEWS5)
+
+
+##NEWS
+sum(TestSet4$Respiration %% 1)
+TestSet4$NEWS1<-NA
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration>=25,3,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=24&TestSet4$Respiration>=21,2,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=20&TestSet4$Respiration>=12,0,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=11&TestSet4$Respiration>=9,1,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=8,3,TestSet4$NEWS1)
+
+sum(TestSet4$Pulse %% 1)
+TestSet4$NEWS2<-NA
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse>=131,3,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=130&TestSet4$Pulse>=111,2,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=110&TestSet4$Pulse>=91,1,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=90&TestSet4$Pulse>=51,0,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=50&TestSet4$Pulse>=41,1,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=40,3,TestSet4$NEWS2)
+
+sum(TestSet4$BP_Systolic %% 1)
+TestSet4$NEWS3<-NA
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic>=220,3,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<=219&TestSet4$BP_Systolic>=111,0,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<=110&TestSet4$BP_Systolic>=101,1,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<=100&TestSet4$BP_Systolic>=91,2,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<90,3,TestSet4$NEWS3)
+
+sum(TestSet4$SPO2 %% 1)
+TestSet4$NEWS4<-NA
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<=100&TestSet4$SPO2>=96,0,TestSet4$NEWS4)
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<=95&TestSet4$SPO2>=94,1,TestSet4$NEWS4)
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<=93&TestSet4$SPO2>=92,2,TestSet4$NEWS4)
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<91,3,TestSet4$NEWS4)
+
+sum(TestSet4$Temperature %% 0.1)
+TestSet4$NEWS5<-NA
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature>=39.1,2,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<39.1 & TestSet4$Temperature>=38,1,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<38&TestSet4$Temperature>=36,0,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<36&TestSet4$Temperature>=35,1,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<35,3,TestSet4$NEWS5)
+
+TestSet4$NEWS6<-NA
+TestSet4$NEWS6<-ifelse(TestSet4$FIO2>=22,2,TestSet4$NEWS6)
+TestSet4$NEWS6<-ifelse(TestSet4$FIO2<22,0,TestSet4$NEWS6)
+
+TestSet4$NEWS7<-NA
+TestSet4$NEWS7<-ifelse(TestSet4$AVPU=="A",0,TestSet4$NEWS7)
+TestSet4$NEWS7<-ifelse(TestSet4$AVPU!="A",2,TestSet4$NEWS7)
+
+
+
+##CCI weighted
+TestSet4$AVPU<-as.factor(TestSet4$AVPU)
+c<-sapply(TestSet4, class)=="character"
+for(i in colnames(TestSet4)[c]){
+  TestSet4[,i]<-as.numeric(TestSet4[,i])
+}
+
+
+TestSet4$CCI<-rowSums(TestSet4[,c("MI", "CHF", "PVD", "Stroke",
+                          "Dementia", "Pulmonary", "Rheumatic", "PUD", "LiverMild", "DM1")])
+TestSet4$CCI<-TestSet4$CCI+(TestSet4$DMcx+TestSet4$Paralysis+TestSet4$Renal+TestSet4$Cancer)*2+(TestSet4$LiverSevere*3)+(TestSet4$Mets+TestSet4$HIV)*6
+
+TestSet4$SERP<-TestSet3$TotalScore
+
+TestSet4$NEWS<-TestSet4$NEWS1+TestSet4$NEWS2+TestSet4$NEWS3+TestSet4$NEWS4+TestSet4$NEWS5+TestSet4$NEWS6+TestSet4$NEWS7
+
+TestSet4$MEWS<-TestSet4$MEWS1+TestSet4$MEWS2+TestSet4$MEWS3+TestSet4$MEWS4+TestSet4$MEWS5
+
+TestSet4$CART<-TestSet4$Score1+TestSet4$Score2+TestSet4$Score3+TestSet4$Score4
+
+TestSet4$Triage_Class_Code<-as.numeric(TestSet4$Triage_Class_Code)
+
+
+
+#adding RAPS and Rapid Emergency Medicine score
+TestSet4$MBP<-(TestSet4$BP_Systolic + TestSet4$BP_Diastolic*2)/3
+TestSet4$PAPS1<-NA
+TestSet4$PAPS1<-ifelse(TestSet4$MBP>=160,4,TestSet4$PAPS1)
+TestSet4$PAPS1<-ifelse(TestSet4$MBP<160&TestSet4$MBP>=130,3,TestSet4$PAPS1)
+TestSet4$PAPS1<-ifelse(TestSet4$MBP<130&TestSet4$MBP>=110,2,TestSet4$PAPS1)
+TestSet4$PAPS1<-ifelse(TestSet4$MBP<110&TestSet4$MBP>=70,0,TestSet4$PAPS1)
+TestSet4$PAPS1<-ifelse(TestSet4$MBP<70&TestSet4$MBP>=50,2,TestSet4$PAPS1)
+TestSet4$PAPS1<-ifelse(TestSet4$MBP<50,4,TestSet4$PAPS1)
+
+TestSet4$PAPS2<-NA
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse>=180,4,TestSet4$PAPS2)
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse<180&TestSet4$Pulse>=140,3,TestSet4$PAPS2)
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse<140&TestSet4$Pulse>=110,2,TestSet4$PAPS2)
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse<110&TestSet4$Pulse>=70,0,TestSet4$PAPS2)
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse<70&TestSet4$Pulse>=55,2,TestSet4$PAPS2)
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse<55&TestSet4$Pulse>=40,3,TestSet4$PAPS2)
+TestSet4$PAPS2<-ifelse(TestSet4$Pulse<40,4,TestSet4$PAPS2)
+
+TestSet4$PAPS3<-NA
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration>=50,4,TestSet4$PAPS3)
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration<50&TestSet4$Respiration>=35,3,TestSet4$PAPS3)
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration<35&TestSet4$Respiration>=25,1,TestSet4$PAPS3)
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration<25&TestSet4$Respiration>=12,0,TestSet4$PAPS3)
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration<12&TestSet4$Respiration>=10,1,TestSet4$PAPS3)
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration<10&TestSet4$Respiration>=6,2,TestSet4$PAPS3)
+TestSet4$PAPS3<-ifelse(TestSet4$Respiration<6,4,TestSet4$PAPS3)
+
+TestSet4$PAPS4<-NA
+TestSet4$PAPS4<-ifelse(TestSet4$GCS>=14,0,TestSet4$PAPS4)
+TestSet4$PAPS4<-ifelse(TestSet4$GCS<14&TestSet4$GCS>=11,1,TestSet4$PAPS4)
+TestSet4$PAPS4<-ifelse(TestSet4$GCS<11&TestSet4$GCS>=8,2,TestSet4$PAPS4)
+TestSet4$PAPS4<-ifelse(TestSet4$GCS<8&TestSet4$GCS>=5,3,TestSet4$PAPS4)
+TestSet4$PAPS4<-ifelse(TestSet4$GCS<5,4,TestSet4$PAPS4)
+
+TestSet4$PAPS<-TestSet4$PAPS1+TestSet4$PAPS2+TestSet4$PAPS3+TestSet4$PAPS4
+
+TestSet4$REMS1<-NA
+TestSet4$REMS1<-ifelse(TestSet4$Temperature>=40.9,4,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<40.9&TestSet4$Temperature>=39,3,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<39&TestSet4$Temperature>=38.5,1,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<38.5&TestSet4$Temperature>=36,0,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<36&TestSet4$Temperature>=34,1,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<34&TestSet4$Temperature>=32,2,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<32&TestSet4$Temperature>=30,3,TestSet4$REMS1)
+TestSet4$REMS1<-ifelse(TestSet4$Temperature<30,4,TestSet4$REMS1)
+
+
+TestSet4$REMS2<-NA
+TestSet4$REMS2<-ifelse(TestSet4$SPO2>=90,0,TestSet4$REMS2)
+TestSet4$REMS2<-ifelse(TestSet4$SPO2<90&TestSet4$SPO2>=86,1,TestSet4$REMS2)
+TestSet4$REMS2<-ifelse(TestSet4$SPO2<86&TestSet4$SPO2>=75,3,TestSet4$REMS2)
+TestSet4$REMS2<-ifelse(TestSet4$SPO2<75,4,TestSet4$REMS2)
+
+TestSet4$REMS3<-NA
+TestSet4$REMS3<-ifelse(TestSet4$Age>=75,6,TestSet4$REMS3)
+TestSet4$REMS3<-ifelse(TestSet4$Age<75&TestSet4$Age>=66,5,TestSet4$REMS3)
+TestSet4$REMS3<-ifelse(TestSet4$Age<66&TestSet4$Age>=55,3,TestSet4$REMS3)
+TestSet4$REMS3<-ifelse(TestSet4$Age<55&TestSet4$Age>=45,2,TestSet4$REMS3)
+TestSet4$REMS3<-ifelse(TestSet4$Age<45,0,TestSet4$REMS3)
+
+TestSet4$REMS<-TestSet4$REMS1+TestSet4$REMS2+TestSet4$REMS3+TestSet4$PAPS
+
+
+############################################
+## performance evaluation with baselines
+library(pROC)
+label<-TestSet$Mortality_2d
+label<-TestSet$mortality_30d
+label<-TestSet$mortality_7d
+a<-roc(label,TestSet4$CART,quiet = T)
+ci(a)
+auc(a)
+plot(a)
+
+b<-roc(label,TestSet4$Triage_Class_Code,quiet = T)
+ci(b)
+auc(b)
+plot(b)
+
+c<-roc(label,TestSet4$SERP,quiet = T)
+ci(c)
+auc(c)
+plot(c)
+
+d<-roc(label,TestSet4$MEWS,quiet = T)
+ci(d)
+auc(d)
+plot(d)
+
+e<-roc(label,TestSet4$NEWS,quiet = T)
+ci(e)
+auc(e)
+plot(e)
+
+f<-roc(label,TestSet4$PAPS,quiet = T)
+ci(f)
+auc(f)
+plot(f)
+
+f1<-roc(label,TestSet4$REMS,quiet = T)
+ci(f1)
+auc(f1)
+plot(f1)
+
+f2<-roc(label,Score_2d,quiet = T)
+ci(f2)
+auc(f2)
+plot(f2)
+
+f3<-roc(label,Score_7d,quiet = T)
+ci(f3)
+auc(f3)
+plot(f3)
+
+
+roc_rose <- plot(c, print.auc = F, col = "red")
+roc_rose <- plot(f2, print.auc = F, col = "burlywood1",add = TRUE)
+roc_rose <- plot(f3, print.auc = F, col = "cadetblue1",add = TRUE)
+roc_rose <- plot(d, print.auc = F, col = "blue",add = TRUE)
+roc_rose <- plot(e, print.auc = F, col = "darkgoldenrod", add = TRUE)
+roc_rose <- plot(b, print.auc = F, col = "green", add = TRUE)
+roc_rose <- plot(a, print.auc = F, col = "purple", add = TRUE)
+roc_rose <- plot(f, print.auc = F, col = "skyblue4", add = TRUE)
+roc_rose <- plot(f1, print.auc = F, col = "deeppink", add = TRUE)
+op <- par(cex = 0.8)
+#legend("bottomright",legend = c("SERP(30-day) (AUC=0.823)","SERP(2-day) (AUC=0.754)","SERP(7-day) (AUC=0.754)","MEWS (AUC=0.661)","NEWS (AUC=0.711)","PACS (AUC=0.680)","CART (AUC=0.700)","PAPS (AUC=0.580)","REMS (AUC=0.659)"),col = c("red","burlywood1","cadetblue1","blue","darkgoldenrod","green","purple","skyblue4","deeppink"),lwd=3)
+legend("bottomright",legend = c("SERP(30-day) (AUC=0.826)","SERP(2-day) (AUC=0.798)","SERP(7-day) (AUC=0.793)","MEWS (AUC=0.721)","NEWS (AUC=0.773)","PACS (AUC=0.75)","CART (AUC=0.738)","PAPS (AUC=0.633)","REMS (AUC=0.693)"),col = c("red","burlywood1","cadetblue1","blue","darkgoldenrod","green","purple","skyblue4","deeppink"),lwd=3)
+#legend("bottomright",legend = c("SERP(30-day) (AUC=0.821)","SERP(2-day) (AUC=0.821)","SERP(7-day) (AUC=0.810)","MEWS (AUC=0.763)","NEWS (AUC=0.803)","PACS (AUC=0.796)","CART (AUC=0.779)","PAPS (AUC=0.683)","REMS (AUC=0.729)"),col = c("red","burlywood1","cadetblue1","blue","darkgoldenrod","green","purple","skyblue4","deeppink"),lwd=3)
+
+#print.auc.y = .3
+
+###Margin table
+#SERP
+plot(prop.table(table(label, TestSet4$SERP), margin = 2)[2,])
+#CART
+plot(prop.table(table(label, TestSet4$CART), margin = 2)[2,])
+#PACS
+plot(prop.table(table(label, TestSet4$Triage_Class_Code), margin = 2)[2,])
+#EWS
+plot(prop.table(table(label, TestSet4$EWS), margin = 2)[2,])
+###
+
+plot(density(TestSet4$SERP))
+plot(density(TestSet4$CART))
+plot(density(TestSet4$EWS))
+
+
+##caliration
+
+
+
+## ------------------------------------------------------------
+## ------------------------------------------------------------
+## table and figure plotting
+
+## ------------------------------------------------------------
+### calibration plot
+glmmodel<-glm(label~SERP,data = TestSet4,family = binomial(link="logit"))
+SERP_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~CART,data = TestSet4,family = binomial(link="logit"))
+CART_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~Triage_Class_Code,data = TestSet4,family = binomial(link="logit"))
+PACS_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+
+glmmodel<-glm(label~EWS,data = TestSet4,family = binomial(link="logit"))
+EWS_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~CCI,data = TestSet4,family = binomial(link="logit"))
+CCI_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+
+
+library(givitiR)
+cb_SERP <- givitiCalibrationBelt(o = as.numeric(as.character(TestSet4$label)), e = SERP_pred,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                       devel = "internal",confLevels = c(.80,.95))
+
+cb_CART <- givitiCalibrationBelt(o = as.numeric(as.character(TestSet4$label)), e = CART_pred,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                 devel = "internal",confLevels = c(.80,.95))
+
+cb_PACS <- givitiCalibrationBelt(o = as.numeric(as.character(TestSet4$label)), e = PACS_pred,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                 devel = "internal",confLevels = c(.80,.95))
+
+cb_EWS <- givitiCalibrationBelt(o = as.numeric(as.character(TestSet4$label)), e = EWS_pred,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                 devel = "internal",confLevels = c(.80,.95))
+
+cb_CCI <- givitiCalibrationBelt(o = as.numeric(as.character(TestSet4$label)), e = CCI_pred,#(testSet3$TotalScore-0.5)/117,#(log(testSet3$TotalScore,10)/2.1)+0.00001,
+                                 devel = "internal",confLevels = c(.80,.95))
+
+#######################################
+##Final plots pdf
+
+pdf(file ="Figure5A.pdf")
+plot(cb_SERP, main = "Calibration for SERP Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+pdf(file ="Figure5B.pdf")
+plot(cb_CART, main = "Calibration for CART Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+
+pdf(file ="Figure5C.pdf")
+plot(cb_PACS, main = "Calibration for PACS Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+pdf(file ="Figure5D.pdf")
+plot(cb_EWS, main = "Calibration for EWS Model",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+pdf(file ="Figure5E.pdf")
+plot(cb_CCI, main = "Calibration for CCI Score",
+     xlab = "Predicted probability",
+     ylab = "Observed mortality",polynomialString = F, nString = F,table = T)
+dev.off()
+
+
+##Building pred_2d
+glmmodel<-glm(label~CART,data = TestSet4,family = binomial(link="logit"))
+CART_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~CART,data = TestSet4,family = binomial(link="logit"))
+CART_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~CART,data = TestSet4,family = binomial(link="logit"))
+CART_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~Triage_Class_Code,data = TestSet4,family = binomial(link="logit"))
+PACS_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+
+glmmodel<-glm(label~EWS,data = TestSet4,family = binomial(link="logit"))
+EWS_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label~CCI,data = TestSet4,family = binomial(link="logit"))
+CCI_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+
+## ------------------------------------------------------------
+#####for my self calibration oberserved vs Scores
+table(TestSet4$SERP)
+ScoreStratify_mean<-tapply(TestSet4$label, TestSet4$SERP,function(x){mean(x,na.rm = T)})
+ScoreStratify_sd<-tapply(TestSet4$label, TestSet4$SERP,function(x){sd(x,na.rm = T)})
+a<-data.frame(table(TestSet4$SERP),ScoreStratify_mean,ScoreStratify_sd)
+
+####grouping by 5
+
+ScoreGroup<-function(x,v=5){
+
+TestSet4$ScoreGroup<-NA
+
+for(i in 1:100*v) TestSet4$ScoreGroup<- ifelse(x<=i & x>i-v, i,TestSet4$ScoreGroup)
+ScoreStratify_mean<-tapply(as.numeric(label), TestSet4$ScoreGroup,function(x){mean(x,na.rm = T)})
+ScoreStratify_sd<-tapply(as.numeric(label), TestSet4$ScoreGroup,function(x){sd(x,na.rm = T)})
+b<-data.frame(table(TestSet4$ScoreGroup),ScoreStratify_mean,ScoreStratify_sd)
+return(b)}
+
+label<- TestSet$mortality_7d
+table_SERP_7d<-ScoreGroup(Score_2d,v=3)
+
+
+
+table_CART<-ScoreGroup(TestSet4$CART,v=5)
+table_CCI<-ScoreGroup(TestSet4$CCI,v=1)
+table_EWS<-ScoreGroup(TestSet4$EWS,v=1)
+table_PACS<-ScoreGroup(TestSet4$Triage_Class_Code,v=1)
+
+
+
+qplot(c(1:105),ScoreStratify,
+      geom = c("point","smooth"),method="loess",span=0.05) +scale_x_continuous(breaks = seq(0,110,10))
+
+
+
+
+
+
+
+
+## ------------------------------------------------------------
+## ------------------------------------------------------------
+## ------------------------------------------------------------
+## added for tables
+## ------------------------------------------------------------
+## demographic and table one
+library(tableone)
+vars<-c("Age", "Gender", "ShiftTime", "DayofWeek", "Pulse", "Respiration", 
+        "SPO2", "BP_Diastolic", "BP_Systolic", "MI", "CHF", "PVD", "Stroke", 
+        "Dementia", "Pulmonary", "Rheumatic", "PUD", "LiverD", "Diabetes", 
+        "Paralysis", "Renal", "AllCancer", "Num_visit_last_1yr", "Total_Num_Surgery_last1yr", 
+        "Total_icu_count_last1yr", "Total_hd_count_last1yr", "Mortality_2d", 
+        "mortality_3d", "mortality_5d", "mortality_7d", "mortality_14d", 
+        "mortality_30d")
+
+TestSet_demo<- TestSet[,vars]
+
+TrainSet$set<-"TrainSet"
+ValidationSet$set<-"Validation"
+TestSet_demo$set<-"Test"
+
+TrainSet$set<-NULL
+ValidationSet$set<-NULL
+TestSet$set<-NULL
+
+WholeSet<-rbind(TrainSet,ValidationSet,TestSet_demo)
+WholeSet$Mortality_30days_postDischarge<-as.factor(WholeSet$Mortality_30days_postDischarge)
+
+MD_table<-CreateTableOne(vars = vars,strata = "set",data=WholeSet)
+#MD_table_validation<-CreateTableOne(vars = vars,data=ValidationSet)
+#D_table_test<-CreateTableOne(vars = vars,data=TestSet)
+MD_table
+#MD_table_validation
+#MD_table_test
+
+
+
+
+TestSet4
+"mortality_3d",
+"mortality_5d", "mortality_7d", "mortality_14d","mortality_30d"
+
+
+
+## ------------------------------------------------------------
+## for loop handle: generate comparison table
+library(pROC)
+set.seed(4)
+label_list<-list(TestSet4$label,TestSet4$Mortality_2d,TestSet4$DeathLabel2,TestSet4$Mortality_30days_postDischarge,TestSet4$Mortality_1year)
+score_list<-list(TestSet4$SERP,TestSet4$CART,TestSet4$Triage_Class_Code,TestSet4$MEWS,TestSet4$NEWS,TestSet4$CCI)
+auc_result<-matrix(data = NA, nrow = 6, ncol = 5)
+for(i in 1:6){
+  for(j in 1:5){
+    a<-round(as.numeric(ci(roc(label_list[[j]],score_list[[i]],quiet = T))),digits = 3)
+    auc_result[i,j]<-paste(a[2]," ","(",a[1],"-",a[3],")",sep="")}}
+
+r<-data.frame(auc_result)
+colnames(r)<-c("30-day Mortality","2-day Mortality","Inpatient Mortality","30day-Post-discharge Mortality","1-year Mortality")
+row.names(r)<-c("SERP","CART","PACS","MEWS","NEWS","CCI")
+
+
+
+## ------------------------------------------------------------
+#####sensiticity for different cut-offs tables:
+reshapedf<-function(w1){
+  df<-data.frame(w1)
+  df<-round(df, digits = 3)*100
+  df1<-data.frame(1)
+  df1$`Sensitivity (95% CI)`<-paste(df$sensitivity.50.,"% (",df$sensitivity.2.5.,"-",df$sensitivity.97.5.,"%)",sep = "")
+  df1$`Specificity (95% CI)`<-paste(df$specificity.50.,"% (",df$specificity.2.5.,"-",df$specificity.97.5.,"%)",sep = "")
+  df1$`PPV (95% CI)`<-paste(df$ppv.50.,"% (",df$ppv.2.5.,"-",df$ppv.97.5.,"%)",sep = "")
+  df1$`NPV (95% CI)`<-paste(df$npv.50.,"% (",df$npv.2.5.,"-",df$npv.97.5.,"%)",sep = "")
+  #print(df1)
+  return(df1)
+}
+
+
+
+
+label_pred<-SERP_pred_7d
+label<- TestSet$Mortality_2d
+set.seed(4)
+Modelroc<-roc(label,label_pred,quiet = T)
+ci(Modelroc)
+auc(Modelroc)
+plot(Modelroc)
+
+
+
+f<-c(0.01,0.05,0.0515,0.1,0.2,0.5)
+i<-f[1]
+r<-data.frame(i)
+r$i<-paste("≥",r$i*100,"%",sep="")
+names(r)[1]<-"Predicted Risk"
+r$`Score cut-off`<-paste("≥",min(TestSet4[label_pred>=i,]$SERP),sep="")
+r$`Percentage of patients (%)`<-round(length(TestSet4[label_pred>=i,][,1])/length(TestSet4[,1]),digits = 2)*100
+r1<-reshapedf(ci.coords(Modelroc,x=i ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                               "ppv", "npv" )))
+r1$X1<-NULL
+rtotoal<-cbind(r,r1)
+
+for(i in f){
+r<-data.frame(i)
+r$i<-paste("≥",r$i*100,"%",sep="")
+names(r)[1]<-"Predicted Risk"
+r$`Score cut-off`<-paste("≥",min(TestSet4[label_pred>=i,]$SERP),sep="")
+r$`Percentage of patients (%)`<-round(length(TestSet4[label_pred>=i,][,1])/length(TestSet4[,1]),digits = 2)*100
+r1<-reshapedf(ci.coords(Modelroc,x=i ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                                "ppv", "npv" )))
+r1$X1<-NULL
+r<-cbind(r,r1)
+rtotoal<-rbind(rtotoal,r)
+}
+
+r_total_7d_7d<-rtotoal
+r_total_2d_2d<-rtotoal
+r_total_30d_2d<-rtotoal
+r_total<-rtotoal
+
+## ------------------------------------------------------------
+## Table formation: detail performance (to be done)
+##Formal codes: After ROC
+#9-variable Score
+
+print(ci(Modelroc))
+print(Modelroc$auc)
+#check best cutoff and local max
+print(coords(Modelroc, "best", ret="threshold",best.method=c("youden", "closest.topleft")))
+print(coords(Modelroc, "local maximas", ret=c("threshold", "sensitivity","specificity", "accuracy",
+                                              "ppv","npv", "precision")))
+#CI one by one
+r1<-reshapedf(ci.coords(Modelroc,x=48 ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                                "ppv", "npv" )))
+r2<-reshapedf(ci.coords(Modelroc,x=30 ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                                "ppv", "npv" )))
+r3<-reshapedf(ci.coords(Modelroc,x=64 ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                                "ppv", "npv" )))
+w<-rbind(r1,r2,r3)
+
+
+
+
+label_2d<-TestSet$Mortality_2d
+
+glmmodel<-glm(label_2d~TestSet4$SERP,data = TestSet4,family = binomial(link="logit"))
+TestSet4$SERP_30d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+TestSet4$SERP_30d<-TestSet4$SERP
+
+glmmodel<-glm(label_2d~Score_2d,family = binomial(link="logit"))
+TestSet4$SERP_2d_pred<-predict(glmmodel,newdata=data.frame(Score_2d), type = "response")
+
+TestSet4$SERP_2d<-Score_2d
+
+glmmodel<-glm(label_2d~Score_7d,family = binomial(link="logit"))
+TestSet4$SERP_7d_pred<-predict(glmmodel,newdata=data.frame(Score_7d), type = "response")
+
+TestSet4$SERP_7d<-Score_7d
+
+glmmodel<-glm(label_2d~TestSet4$NEWS,data = TestSet4,family = binomial(link="logit"))
+TestSet4$NEWS_2d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+
+
+glmmodel<-glm(label_2d~TestSet4$MEWS,data = TestSet4,family = binomial(link="logit"))
+TestSet4$MEWS_2d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label_2d~TestSet4$CART,data = TestSet4,family = binomial(link="logit"))
+TestSet4$CART_2d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label_2d~TestSet4$PAPS,data = TestSet4,family = binomial(link="logit"))
+TestSet4$PAPS_2d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label_2d~TestSet4$REMS,data = TestSet4,family = binomial(link="logit"))
+TestSet4$REMS_2d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+TestSet4$MEWS_2d<-TestSet4$MEWS
+TestSet4$NEWS_2d<-TestSet4$NEWS
+TestSet4$CART_2d<-TestSet4$CART
+TestSet4$PAPS_2d<-TestSet4$PAPS
+TestSet4$REMS_2d<-TestSet4$REMS
+#R_combine_before<- R_combine
+
+
+label_30d<-TestSet$mortality_30d
+
+glmmodel<-glm(label_30d~TestSet4$SERP,data = TestSet4,family = binomial(link="logit"))
+TestSet4$SERP_30d_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+TestSet4$SERP_30d<-TestSet4$SERP
+
+glmmodel<-glm(label_30d~Score_2d,family = binomial(link="logit"))
+TestSet4$SERP_2d_pred<-predict(glmmodel,newdata=data.frame(Score_2d), type = "response")
+
+TestSet4$SERP_2d<-Score_2d
+
+glmmodel<-glm(label_30d~Score_7d,family = binomial(link="logit"))
+TestSet4$SERP_7d_pred<-predict(glmmodel,newdata=data.frame(Score_7d), type = "response")
+
+TestSet4$SERP_7d<-Score_7d
+
+
+glmmodel<-glm(label_30d~TestSet4$PAPS,data = TestSet4,family = binomial(link="logit"))
+TestSet4$PAPSpred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+glmmodel<-glm(label_30d~TestSet4$REMS,data = TestSet4,family = binomial(link="logit"))
+TestSet4$REMS_pred<-predict(glmmodel,newdata=TestSet4, type = "response")
+
+
+r_seed<-rtotoal[1,]
+r_seed[1,]<-NA
+
+###start for loop
+"SERP_2d","SERP_7d","SERP_30d","MEWS_2d","NEWS_2d","CART_2d","PAPS_2d","REMS_2d"
+R_combine<-r_seed
+for(z in c("SERP_2d","SERP_7d","SERP_30d","PAPS","REMS")){
+  R_combine[length(R_combine[,1]),1]<-z
+  j<-paste(z,"_pred",sep = "")
+  set.seed(4)
+  Modelroc<-roc(label_30d,TestSet4[,j],quiet = T)
+  ci(Modelroc)
+  auc(Modelroc)
+  cuf<-coords(Modelroc, "best", ret="threshold")$threshold
+  
+  
+  f<-c(0.01,0.05,0.1,0.2,0.5,0.5)
+  i<-round(cuf,3)
+  r<-data.frame(i)
+  r$i<-paste("≥",r$i*100,"%",sep="")
+  names(r)[1]<-"Predicted Risk"
+  r$`Score cut-off`<-paste("≥",min(TestSet4[,z][TestSet4[,j]>=i]),sep="")
+  r$`Percentage of patients (%)`<-round(length(TestSet4[TestSet4[,j]>=i,][,1])/length(TestSet4[,1]),digits = 2)*100
+  r1<-reshapedf(ci.coords(Modelroc,x=i ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                                 "ppv", "npv" )))
+  r1$X1<-NULL
+  rtotoal<-cbind(r,r1)
+  
+  for(i in f){
+    r<-data.frame(i)
+    r$i<-paste("≥",r$i*100,"%",sep="")
+    names(r)[1]<-"Predicted Risk"
+    r$`Score cut-off`<-paste("≥",min(TestSet4[,z][TestSet4[,j]>=i]),sep="")
+    r$`Percentage of patients (%)`<-round(length(TestSet4[TestSet4[,j]>=i,][,1])/length(TestSet4[,1]),digits = 2)*100
+    r1<-reshapedf(ci.coords(Modelroc,x=i ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
+                                                                   "ppv", "npv" )))
+    r1$X1<-NULL
+    r<-cbind(r,r1)
+    rtotoal<-rbind(rtotoal,r)
+    
+  }
+  rtotoal[length(rtotoal[,1]),]<-NA
+  R_combine<-rbind(R_combine,rtotoal)
+}
+
+R_combine_30d<-R_combine
+R_combine_2d<-R_combine

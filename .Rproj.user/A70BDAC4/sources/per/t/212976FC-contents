@@ -1,0 +1,418 @@
+##-------------------------------------------------------------------
+## ###Evaluation for AutoScore Table:
+##-------------------------------------------------------------------
+
+##Caculate the median survival time: finish..
+
+
+ScoreGroup<-function(x,y,v=5){
+
+  a<-NA
+
+  for(i in 1:100*v) a<- ifelse(x<=i & x>i-v, i,a)
+  ScoreStratify_mean<-tapply(y, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_sd<-tapply(y, a,function(x){sd(x,na.rm = T)})
+  ScoreStratify_median<-tapply(y, a,function(x){median(x,na.rm = T)})
+  b<-data.frame(table(a),ScoreStratify_mean,ScoreStratify_sd,ScoreStratify_median)
+  b$interval<-paste((as.numeric(as.character(b$a)))-v,b$a,sep = "-")
+  return(b)}
+
+
+#SD2_n$TotalScore
+table_surv<-ScoreGroup(SD2_n$TotalScore,SD2_n$time,v=5)
+
+
+##-------------------------------------------------------------------
+## ###Baseline model:
+##-------------------------------------------------------------------
+#normal model:
+NameInclu_12<-c("Age", "bun_mean", "resprate_mean", "creatinine_mean", "aniongap_mean",
+             "lactate_mean", "tempc_mean", "platelet_mean", "sysbp_mean",
+             "hemoglobin_mean","heartrate_mean","chloride_mean" ,"time","status")
+
+NameInclu<-c("Age", "bun_mean", "resprate_mean", "creatinine_mean", "aniongap_mean",
+             "lactate_mean", "tempc_mean", "platelet_mean", "time","status")
+
+############################################################################
+#baseline 1. full cox model AUC_1
+model1 <- coxph(Surv(time, status)~., data=TrainSet)
+pred1 <- predict(model1, newdata = ValidationSet, type = "lp")
+
+
+############################################################################
+######10-variable cox AUC_2
+
+model1<-coxph(Surv(time, status) ~ .,ValidationSet[,NameInclu])
+
+pred2 <- predict(model1, newdata = ValidationSet, type = "lp")
+
+
+
+
+############################################################################
+  ######paramatrics  AUC_3
+
+
+
+model_weibull<- survreg(formula=Surv(time, status) ~ .,dist="weibull",data=TrainSet)
+pred3<-predict(model_weibull, ValidationSet,type="lp")
+
+
+
+############################################################################
+######paramatrics with 10  AUC_4
+
+
+model_weibull<- survreg(formula=Surv(time, status) ~ .,dist="weibull",data=TrainSet[,NameInclu])
+pred4<-predict(model_weibull, ValidationSet)
+
+
+############################################################################
+######RSF  AUC_5
+
+src.grow <- rfsrc(Surv(time, status) ~ ., TrainSet, ntree = 50)
+src.pred <- predict(src.grow, ValidationSet)
+pred5<-src.pred[["predicted"]]
+
+
+############################################################################
+  ######RSF  AUC_6
+
+src.grow <- rfsrc(Surv(time, status) ~ ., TrainSet[,NameInclu], ntree = 50)
+src.pred <- predict(src.grow, ValidationSet)
+pred6<-src.pred[["predicted"]]
+
+
+############################################################################
+######regularization  AUC_7
+
+library(glmnet)
+library(survival)
+dLasso <- TrainSet
+
+x <- model.matrix(Surv(time, status) ~ ., TrainSet)
+y <- Surv(TrainSet$time, TrainSet$status)
+#fit <- glmnet(x, y, family="cox", alpha=1,nlambda=?)
+#plot(fit, label=T)
+cv.fit <- cv.glmnet(x, y, family="cox", alpha=1)#,type.measure =  "C")
+plot(cv.fit)
+lasso.lam <- cv.fit$lambda.min
+coef(cv.fit, s = "lambda.min")
+lasso.lam2 <- cv.fit$lambda.1se
+log(lasso.lam2)
+min(cv.fit$cvm) + cv.fit$cvsd[which.min(cv.fit$cvm)]
+points(log(lasso.lam2), min(cv.fit$cvm) + cv.fit$cvsd[which.min(cv.fit$cvm)], cex=3)
+
+# plot optimal lambda
+plot(fit, xvar="lambda", label = TRUE)
+abline(v=log(lasso.lam), lty=2)
+abline(v=log(lasso.lam2), lty=2)
+
+#dlassoResult<-predict(cv.fit, type="coefficient", s=lasso.lam2)
+#dlassoResult@Dimnames[[1]][dlassoResult@i]
+
+
+##testset
+xtest <- model.matrix(Surv(time, status) ~ ., ValidationSet)
+ytest <- Surv(ValidationSet$time, ValidationSet$status)
+
+pred7<-predict(cv.fit, s=lasso.lam2, newx=xtest,family = "cox")
+
+
+############################################################################
+######other variable selction  AUC_8
+
+#baseline 2 stepwise
+
+#install.packages("My.stepwise")
+library(My.stepwise)
+library(dummies)
+dl<-dummy.data.frame(TrainSet, sep = ".")
+dl_validate<-dummy.data.frame(ValidationSet, sep = ".")
+my.variable.list <- c("Age", "GENDER.F", "ETHNICITY.HISPANIC", "ETHNICITY.WHITE",
+                      "ETHNICITY.ASIAN", "ETHNICITY.Others",
+                      "INSURANCE.Government", "INSURANCE.Medicaid",
+                      "INSURANCE.Private", "heartrate_mean",
+                      "sysbp_mean", "diasbp_mean", "meanbp_mean", "resprate_mean",
+                      "tempc_mean", "spo2_mean", "glucose_mean", "aniongap_mean", "bicarbonate_mean",
+                      "creatinine_mean", "chloride_mean", "lactate_mean", "hemoglobin_mean",
+                      "hematocrit_mean", "platelet_mean", "potassium_mean", "bun_mean",
+                      "sodium_mean", "wbc_mean")
+
+
+model_step<-coxph(formula = Surv(time, status) ~ bun_mean + Age + lactate_mean +
+        resprate_mean + heartrate_mean + tempc_mean + hemoglobin_mean +
+        chloride_mean + hematocrit_mean + sysbp_mean + ETHNICITY.Others +
+        creatinine_mean + aniongap_mean + platelet_mean + wbc_mean +
+        potassium_mean + GENDER.F + ETHNICITY.WHITE + INSURANCE.Private +
+        INSURANCE.Government + spo2_mean + ETHNICITY.ASIAN + sodium_mean +
+        bicarbonate_mean + meanbp_mean + diasbp_mean, data = dl,
+      method = "efron")
+
+
+
+pred8 <- predict(model_step, newdata = dl_validate, type = "lp")
+
+
+###Evaluation:
+df_result<-data.frame(AUC_f8,AUC_f12)
+df_result$AUC1<-eva_performance(pred1,TrainSet,ValidationSet)
+df_result$AUC2<-eva_performance(pred2,TrainSet,ValidationSet)
+df_result$AUC3<-eva_performance(-pred3,TrainSet,ValidationSet)
+df_result$AUC4<-eva_performance(-pred4,TrainSet,ValidationSet)
+df_result$AUC5<-eva_performance(pred5,TrainSet,ValidationSet)
+df_result$AUC6<-eva_performance(pred6,TrainSet,ValidationSet)
+df_result$AUC7<-eva_performance(pred7,TrainSet,ValidationSet)
+df_result$AUC8<-eva_performance(pred8,TrainSet,ValidationSet)
+
+
+#eva_performance(TestData$TotalScore,TrainSet,TestSet)
+result_iauc<-c()
+result_iauc<-c(result_iauc,eva_performance_iauc(TestData$TotalScore,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc_roc(pred1,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(pred2,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(-pred3,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(-pred4,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(pred5,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(pred6,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(pred7,TrainSet,TestSet))
+result_iauc<-c(result_iauc,eva_performance_iauc(pred8,TrainSet,TestSet))
+
+
+eva_performance_ci_iauc(TestData$TotalScore,TrainSet,TestSet)
+
+
+
+
+############=====================================
+############=====================================
+############=====================================
+############=====================================
+
+sAUC<- summary(model_step_validate)$rsq[1]
+print("R2:")
+print(sAUC)
+
+
+##R2XO
+model0 <- coxph(Surv(time, status)~1, data=TrainSet)
+model1 <- coxph(Surv(time, status)~bun_mean + Age + heartrate_mean +
+                  lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                  hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                  hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                  meanbp_mean + diasbp_mean + spo2_mean + sodium_mean, data=TrainSet)
+f0 <- rep(0,nrow(ValidationSet))
+f1 <- predict(model1, newdata=ValidationSet)
+Surv.res <- Surv(ValidationSet$time, ValidationSet$status)
+#OXS(Surv.res, f1, f0)
+#Nagelk(Surv.res, f1, f0)
+sAUC<- XO(Surv.res, f1, f0)
+print(sAUC)
+##0.478
+
+## integrate All AUC
+library(survAUC)
+
+train.fit <- coxph(Surv(time, status)~bun_mean + Age + heartrate_mean +
+                     lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                     hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                     hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                     meanbp_mean + diasbp_mean + spo2_mean + sodium_mean,
+                   x=TRUE, y=TRUE, method="breslow", data=TrainSet)
+lp<-predict(train.fit)
+lpnew <- predict(train.fit, newdata=ValidationSet)
+Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+times <- seq(1, 89, 1)#c(1,2,3,5,7,14,28,60,89)
+AUC_hc <- AUC.hc(Surv.rsp, Surv.rsp.new, lpnew, times)
+sAUC<- AUC_hc$iauc
+print(sAUC)
+AUC_sh <- AUC.sh(Surv.rsp, Surv.rsp.new,lp, lpnew = lpnew, times = times)
+sAUC<- AUC_sh$iauc
+print(sAUC)
+#plot(AUC_hc)
+##68.88056
+
+
+###
+###ROCt
+for(f in c("lp", "risk", "expected", "terms", "survival")){
+
+  print(f)
+  f<- "lp"
+  model1 <- coxph(Surv(time, status)~bun_mean + Age + heartrate_mean +
+                    lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                    hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                    hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                    meanbp_mean + diasbp_mean + spo2_mean + sodium_mean, data=TrainSet)
+  pred <- predict(model1, newdata = ValidationSet, type = f)
+  #library(survivalROC)
+  #data(mayo)
+  par(mfcol=c(3,3))
+  cutv<-c(1,2,3,5,7,14,28,60,89) ## Can change
+  for(i in cutv){
+    nobs <- NROW(ValidationSet3)
+    cutoff <-i
+    ## MAYOSCORE 4, METHOD = NNE
+    Mayo4.1= survivalROC(Stime=time_validation ,
+                         status=status_validation,
+                         marker = pred,
+                         predict.time = cutoff,span = 0.25*nobs^(-0.20) )
+    plot(Mayo4.1$FP, Mayo4.1$TP, type="l", xlim=c(0,1), ylim=c(0,1),
+         xlab=paste( "FP", "\n", "AUC = ",round(Mayo4.1$AUC,3)),
+         ylab="TP",main=paste("AutoScore, Method = KM \n time = ",i,sep = ""))
+
+    #Modelroc <- roc(y_validation, ValidationSet3$TotalScore, quiet = T)
+    print(Mayo4.1$AUC)}
+
+}
+
+
+
+
+
+###baseline3 LAsso (TBD)
+
+
+
+##???????????????????????????!!
+## ?????????????????????????????????!
+library(BART)
+#BART
+data(lung)
+group <- -which(is.na(lung[ , 7])) ## remove missing row for ph.karno
+times <- lung[group, 2] ##lung$time
+delta <- lung[group, 3]-1 ##lung$status: 1=censored, 2=dead
+##delta: 0=censored, 1=dead
+## this study reports time in days rather than months like other studies
+## coarsening from days to months will reduce the computational burden
+times <- ceiling(times/30)
+summary(times)
+table(delta)
+x.train <- as.matrix(lung[group, c(4, 5, 7)]) ## matrix of observed covariates
+set.seed(99)
+post <- surv.bart(x.train=x.train, times=times, delta=delta, nskip=5, ndpost=5, keepevery=1)
+
+
+x.test <- matrix(nrow=84, ncol=3) ## matrix of covariate scenarios
+dimnames(x.test)[[2]] <- dimnames(x.train)[[2]]
+i <- 1
+for(age in 5*(9:15)) for(sex in 1:2) for(ph.karno in 10*(5:10)) {
+  x.test[i, ] <- c(age, sex, ph.karno)
+  i <- i+1
+}
+
+
+
+pre <- surv.pre.bart(x.train=x.train, times=times, delta=delta, x.test=x.test)
+pred <- predict(post, pre$tx.test)
+##pred. <- surv.pwbart(pre$tx.test, post$treedraws, post$binaryOffset)
+
+
+
+###baseline4 RSF (TBD)
+
+
+src.grow <- rfsrc(Surv(time, status) ~ ., TrainSet, ntree = 30)
+src.pred <- predict(veteran.grow, ValidationSet)
+RF_pred<-src.pred[["predicted"]]
+
+
+
+###baseline5 parametric model
+TrainSet_weibull<-TrainSet
+model<- survreg(formula=Surv(time, status) ~ .,dist="weibull",data=TrainSet)
+#R2
+model_step<-coxph(formula = Surv(time, status) ~ bun_mean + Age + heartrate_mean +
+                    lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                    hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                    hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                    meanbp_mean + diasbp_mean + spo2_mean + sodium_mean, data = ValidationSet,
+                  method = "efron")
+
+sAUC<- summary(model_r2)$rsq[1]
+print("R2:")
+print(sAUC)
+
+
+##R2XO
+model0 <- coxph(Surv(time, status)~1, data=TrainSet)
+model1 <- coxph(Surv(time, status)~bun_mean + Age + heartrate_mean +
+                  lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                  hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                  hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                  meanbp_mean + diasbp_mean + spo2_mean + sodium_mean, data=TrainSet)
+f0 <- rep(0,nrow(ValidationSet))
+f1 <- predict(model1, newdata=ValidationSet)
+Surv.res <- Surv(ValidationSet$time, ValidationSet$status)
+#OXS(Surv.res, f1, f0)
+#Nagelk(Surv.res, f1, f0)
+sAUC<- XO(Surv.res, f1, f0)
+print(sAUC)
+##0.478
+
+## integrate All AUC
+library(survAUC)
+
+train.fit <- coxph(Surv(time, status)~bun_mean + Age + heartrate_mean +
+                     lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                     hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                     hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                     meanbp_mean + diasbp_mean + spo2_mean + sodium_mean,
+                   x=TRUE, y=TRUE, method="breslow", data=TrainSet)
+lp<-predict(train.fit)
+lpnew <- predict(train.fit, newdata=ValidationSet)
+Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+times <- seq(1, 89, 1)#c(1,2,3,5,7,14,28,60,89)
+AUC_hc <- AUC.hc(Surv.rsp, Surv.rsp.new, lpnew, times)
+sAUC<- AUC_hc$iauc
+print(sAUC)
+AUC_sh <- AUC.sh(Surv.rsp, Surv.rsp.new,lp, lpnew = lpnew, times = times)
+sAUC<- AUC_sh$iauc
+print(sAUC)
+#plot(AUC_hc)
+##68.88056
+
+
+###
+###ROCt
+for(f in c("lp", "risk", "expected", "terms", "survival")){
+
+  print(f)
+  f<- "lp"
+  model1 <- coxph(Surv(time, status)~bun_mean + Age + heartrate_mean +
+                    lactate_mean + resprate_mean + sysbp_mean + chloride_mean +
+                    hemoglobin_mean + tempc_mean + aniongap_mean + creatinine_mean +
+                    hematocrit_mean + platelet_mean + wbc_mean + potassium_mean +
+                    meanbp_mean + diasbp_mean + spo2_mean + sodium_mean, data=TrainSet)
+  pred <- predict(model1, newdata = ValidationSet, type = f)
+  #library(survivalROC)
+  #data(mayo)
+  par(mfcol=c(3,3))
+  cutv<-c(1,2,3,5,7,14,28,60,89) ## Can change
+  for(i in cutv){
+    nobs <- NROW(ValidationSet3)
+    cutoff <-i
+    ## MAYOSCORE 4, METHOD = NNE
+    Mayo4.1= survivalROC(Stime=time_validation ,
+                         status=status_validation,
+                         marker = pred,
+                         predict.time = cutoff,span = 0.25*nobs^(-0.20) )
+    plot(Mayo4.1$FP, Mayo4.1$TP, type="l", xlim=c(0,1), ylim=c(0,1),
+         xlab=paste( "FP", "\n", "AUC = ",round(Mayo4.1$AUC,3)),
+         ylab="TP",main=paste("AutoScore, Method = KM \n time = ",i,sep = ""))
+
+    #Modelroc <- roc(y_validation, ValidationSet3$TotalScore, quiet = T)
+    print(Mayo4.1$AUC)}
+
+}
+
+
+###baseline6 parametric stepwise model
+
+
+
+
+
+

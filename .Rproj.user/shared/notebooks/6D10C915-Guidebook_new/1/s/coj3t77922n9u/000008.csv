@@ -1,0 +1,10 @@
+"0","cut_vec <- AutoScore_weighting( "
+"0","    train_set,"
+"0","    validation_set,"
+"0","    final_variables,"
+"0","    max_score = 100,"
+"0","    categorize = ""quantile"","
+"0","    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)"
+"0","  )"
+"1","****Included Variables: 
+"

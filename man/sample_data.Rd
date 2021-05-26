@@ -11,6 +11,6 @@ An object of class \code{data.frame} with 20000 rows and 22 columns.
 sample_data
 }
 \description{
-20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demostration only in the Guidebook.
+20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook.
 }
 \keyword{datasets}

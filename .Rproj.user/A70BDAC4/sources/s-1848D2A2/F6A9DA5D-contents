@@ -1,7 +1,7 @@
 ---
 title: "AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator"
 output: 
-  rmarkdown::html_vignette:
+  github_document:
     toc: yes
 vignette: >
   %\VignetteIndexEntry{Guide_book}
@@ -321,16 +321,16 @@ AUC <- AutoScore_parsimony(
 - The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
 - Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge).
 ```{r}
-# Example 1: Top 6 variables are selected
-num_var <- 6
+# Example 1: Top 5 variables are selected
+num_var <- 5
 final_variables <- names(ranking[1:num_var])
 
 # Example 2: Top 9 variables are selected
 num_var <- 9
 final_variables <- names(ranking[1:num_var])
 
-# Example 3: Top 6 variables, the 9th and 10th variable are selected
-num_var <- 6
+# Example 3: Top 5 variables, the 9th and 10th variable are selected
+num_var <- 5
 final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
@@ -351,6 +351,8 @@ cut_vec <- AutoScore_weighting(
   )
 
 ```
+
+``
 
 ### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3) 
 - Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).

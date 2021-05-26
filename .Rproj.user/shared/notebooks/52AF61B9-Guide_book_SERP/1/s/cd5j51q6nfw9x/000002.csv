@@ -1,0 +1,8 @@
+"0","scoring_table <- AutoScore_fine_tuning(train_set,
+                        validation_set,
+                        final_variables,
+                        cut_vec,
+                        max_score = 100)
+"
+"1","***Fine-tuned Scores: 
+"

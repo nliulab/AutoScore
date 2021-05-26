@@ -1,0 +1,652 @@
+<<<<<<< HEAD
+load("D:/NBoxDocuments/EDData_SERP/CodeForPaperFormation/SERP5_for_survival.Rdata")
+load("D:/NBoxDocuments/EDData_SERP/CodeForPaperFormation/SERP5_for_survival_readmission.Rdata")
+=======
+load("C:/Users/E0238031/Documents/nBox/EDData_SERP/CodeForPaperFormation/SERP5_for_survival.Rdata")
+>>>>>>> 55f9313a4eec54464368c027838cfa2e4976cf5f
+load("D:/Document/Project_AutoScore_Survival/Auto_Survival_mimic.RData")
+source('D:/Document/Project_AutoScore_Survival/ScoreGenerator2.3_tidy1_survival.R')
+source('D:/Document/GitHub/AutoScore_Improvement/AutoScore_Survival/AutoScore_Survival.R')
+
+library(survival)
+library(ggplot2)
+library(randomForestSRC)
+library(survcomp)
+library(survAUC)
+library(knitr)
+
+library(ranger)
+library(dplyr)
+library(ggfortify)
+library(survivalROC)
+library(flexsurv)
+library(survminer)
+library(risksetROC)
+library(rpart)
+library(glmpath)
+library(survAUC)
+library(survcomp)
+=======
+library(dplyr)
+library(randomForestSRC)
+library(survAUC)
+library(survivalROC)
+library(survcomp)
+install.packages("survAUC")
+install.packages("randomForestSRC")
+install.packages("survivalROC")
+install.packages("C:/Users/E0238031/Downloads/survcomp_1.40.0.zip", repos = NULL, type = "win.binary")
+install.packages("prodlim")
+install.packages("SuppDists")
+install.packages("bootstrap")
+install.packages("rmeta")
+
+
+
+#-----
+library(ranger)
+library(ggfortify)
+library(flexsurv)
+library(survminer)
+
+>>>>>>> 55f9313a4eec54464368c027838cfa2e4976cf5f
+
+
+#install.packages("flexsurv")
+##-------------------------------------------------------------------
+##Ed data processing
+##-------------------------------------------------------------------
+
+
+##-------------------------------------------------------------------
+## Prepare data and preprocessing
+##-------------------------------------------------------------------
+
+
+## Preprocessing for testdf6_mimic data
+d_mimic<-testdf6_mimic
+w_obs<-90
+levels(d_mimic$ETHNICITY) <-
+  list("WHITE" = c("WHITE", "WHITE - BRAZILIAN", "WHITE - EASTERN EUROPEAN", "WHITE - OTHER EUROPEAN",
+                   "WHITE - RUSSIAN"),
+       "HISPANIC" = c("HISPANIC/LATINO - CENTRAL AMERICAN (OTHER)", "HISPANIC/LATINO - COLOMBIAN",
+                      "HISPANIC/LATINO - CUBAN", "HISPANIC/LATINO - DOMINICAN", "HISPANIC/LATINO - GUATEMALAN",
+                      "HISPANIC/LATINO - HONDURAN", "HISPANIC/LATINO - MEXICAN", "HISPANIC/LATINO - PUERTO RICAN",
+                      "HISPANIC/LATINO - SALVADORAN","HISPANIC OR LATINO"),
+       "ASIAN" = c("ASIAN", "ASIAN - ASIAN INDIAN", "ASIAN - CAMBODIAN", "ASIAN - CHINESE",
+                   "ASIAN - FILIPINO", "ASIAN - JAPANESE", "ASIAN - KOREAN", "ASIAN - OTHER",
+                   "ASIAN - THAI", "ASIAN - VIETNAMESE"),
+       "BLACK/AFRICAN" = c("BLACK/AFRICAN", "BLACK/AFRICAN AMERICAN",
+                           "BLACK/CAPE VERDEAN", "BLACK/HAITIAN"),
+       "Others" = c("AMERICAN INDIAN/ALASKA NATIVE", "AMERICAN INDIAN/ALASKA NATIVE FEDERALLY RECOGNIZED TRIBE","CARIBBEAN ISLAND",
+
+                    "MIDDLE EASTERN", "MULTI RACE ETHNICITY",
+                    "NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER", "OTHER", "PATIENT DECLINED TO ANSWER",
+                    "PORTUGUESE", "SOUTH AMERICAN", "UNABLE TO OBTAIN", "UNKNOWN/NOT SPECIFIED"))
+
+
+names(d_mimic)[names(d_mimic)=="EXPIRE_FLAG"]<-"status"
+names(d_mimic)[names(d_mimic)=="diffInICU"]<-"time"
+d_mimic$status[d_mimic$time>w_obs]<-0
+d_mimic$time[d_mimic$time>w_obs]<-w_obs
+d_mimic$time<-round(d_mimic$time)
+
+## For MIMIC Data round it or not?
+## Preprocessing for FD2 ED data
+## Preprocessing for SGH ED data
+
+
+## start basic analysis:
+d<-d_mimic
+
+##select some samples for it.
+set.seed(4)
+sampleindex<-sample((1:length(d[,1])),44918)
+d<-d[sampleindex,]
+
+str(d)
+
+
+
+## Change name of Dependent variable (Y)/Outcome to "label" before going on with this codebook
+#names(df_AutoScore)[names(df_AutoScore)=="EXPIRE_FLAG"]<-"label"
+#### only elderly
+d<-d[d$Age>65,]
+
+## basic survival curve
+km_fit <- survfit(Surv(time, status) ~ 1, data = FD2)
+summary(km_fit)
+plot(km_fit)
+
+
+## Data Splitting
+len<-length(d[,1])
+set.seed(4)
+Testindex <- sample((1:len), len*0.2)
+Validateindex <- sample((1:len)[!((1:len) %in% Testindex)], len*0.2)
+
+TrainSet <- d[-c(Validateindex, Testindex),]
+TestSet <- d[Testindex,]
+ValidationSet <- d[Validateindex,]
+
+
+## Data displaying
+head(TrainSet)
+head(ValidationSet)
+head(TestSet)
+
+
+
+#############################################################################----
+
+##-------------------------------------------------------------------
+## Run AutoScore to build clinical scores: generating scoring tables
+##-------------------------------------------------------------------
+
+## STEP (1): Generate variable ranking List (AutoScore Module 1)
+## - ntree: Number of trees in random forest algorithm, default:100
+<<<<<<< HEAD
+Ranking <- AutoScore_rank(TrainSet[1:30000,], ntree=50)
+Ranking <- AutoScore_rank(TrainSet, ntree=50)
+=======
+Ranking <- AutoScore_rank(TrainSet, ntree=30)
+>>>>>>> 55f9313a4eec54464368c027838cfa2e4976cf5f
+#a<-rfsrc(Surv(time, status) ~ ., TrainSet, nsplit = 3,ntree = 1,
+#      do.trace = T)
+
+
+
+
+AutoScore_parsimony(TrainSet, ValidationSet, rank = Ranking, nmin = 1, nmax = 24, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+#TrainSet$time1<-TrainSet$time+1
+
+#library(rpart)
+
+AutoScore_parsimony(TrainSet, ValidationSet, rank = Ranking, nmin = 1, nmax = 24, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+
+
+##Bring in a new concept
+s_i<-s[nmin:nmax]
+cutoff<-0.01
+p<-2
+len_AUC<-length(AUC)
+Rate_AUC <- c()
+for (i in 2:len_AUC){
+  Rate_AUC<-c(Rate_AUC,(AUC[i]-AUC[i-1])/AUC[i-1])
+}
+
+plot(Rate_AUC, main = "AUC increasing Rate on the Validation Set", xlab = "Number of Variables", ylab = "Increasing Rate", col = "red",
+     lwd = 2, type = "o")
+log_AUC<-Rate_AUC>=cutoff
+
+##1. thresold-based
+FinalVariable<-s_i[c(TRUE,log_AUC)]
+print(FinalVariable)
+
+##2. Consecutive:
+for (i in 1:(length(log_AUC)-p+1)) {if (all(log_AUC[i:(i+p-1)]==FALSE)) break}
+FinalVariable<-s_i[1:i][c(TRUE,log_AUC[1:(i-1)])]
+print(FinalVariable)
+#round(Rate_AUC, digits = 4)
+
+
+
+
+##-------------------------------------------------------------------
+## Regeneration-new
+##-------------------------------------------------------------------
+FinalVariable12<-c("Age", "bun_mean", "resprate_mean", "creatinine_mean", "aniongap_mean",
+                "lactate_mean", "tempc_mean", "platelet_mean", "sysbp_mean",
+                "hemoglobin_mean","heartrate_mean","chloride_mean")
+
+FinalVariable8<-c("Age", "bun_mean", "resprate_mean", "creatinine_mean", "aniongap_mean",
+             "lactate_mean", "tempc_mean", "platelet_mean")
+
+
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable8, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+AUC_f8 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable8, CutVec, MaxScore=100)
+
+
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable12, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+AUC_f12 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable12, CutVec, MaxScore=100)
+
+
+Parsimony1<-data.frame(a[[1]])
+
+TrainSet$AllCancer<-as.factor(TrainSet$AllCancer)
+ValidationSet$AllCancer<-as.factor(ValidationSet$AllCancer)
+TrainSet$Diabetes<-as.factor(TrainSet$Diabetes)
+ValidationSet$Diabetes<-as.factor(ValidationSet$Diabetes)
+
+
+##ED Readmission:
+#############################################################################---
+Ranking_first30000<-Ranking
+
+#############################################################################----
+
+##MIMIC data:
+TrainSet_time<-TrainSet
+ValidationSet_time<-ValidationSet
+
+TrainSet_time$time_range<-cut(TrainSet_time$time,c(0,10,20,40,60,91))
+ValidationSet_time$time_range<-cut(ValidationSet_time$time,c(0,10,20,40,60,91))
+
+for(num_var in 1:24){
+  FinalVariable <- c(Ranking[1:num_var],"time_range")
+  CutVec <- AutoScore_weighting(TrainSet_time, ValidationSet_time, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+  a<-AutoScore_fine_tuning(TrainSet_time, ValidationSet_time, FinalVariable, CutVec, MaxScore=100)
+  Parsimony1<-cbind(Parsimony1,a[[1]])
+}
+#############################################################################----
+Parsimony_iauc1<-c()
+for(num_var in 1:24){
+  FinalVariable <- c(Ranking[1:num_var])
+  CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+  a<-AutoScore_fine_tuning(TrainSet_time, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+  Parsimony_iauc1<-c(Parsimony_iauc1,a[[1]])
+}
+
+
+Parsimony_iauc_test1<-c()
+for(num_var in 1:24){
+  FinalVariable <- c(Ranking[1:num_var])
+  CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+  a<-AutoScore_fine_tuning(TrainSet_time, TestSet, FinalVariable, CutVec, MaxScore=100)
+  Parsimony_iauc_test1<-c(Parsimony_iauc_test1,a[[1]])
+}
+
+plot(Parsimony_iauc1, main = "(a) Parsimony Plot on the Validation Set", xlab = "Number of Variables (Complexity)",ylim=c(0.5,0.85), ylab = "Integrated Area Under the Curve", col = "deepskyblue",lwd = 2, type = "o")
+plot(Parsimony_iauc_test1, main = "(b) Parsimony Plot on the Test Set", xlab = "Number of Variables (Complexity)", ylim=c(0.5,0.85), ylab = "Integrated Area Under the Curve", col = "deepskyblue",lwd = 2, type = "o")
+
+
+
+##Calculate baseline hazard:
+model_base <- coxph(Surv(time, status)~TotalScore, data=SD2_n)
+a_base<-basehaz(model_base)
+a_base$score<-round(a_base$hazard * 100)
+a_base$log<-log(a_base$hazard)
+
+cbind(exp(cbind(OR = coef(model_base), confint.default(model_base))), summary(model_base)$coef[, "Pr(>|z|)"])
+#TotalScore 1.080676 1.078129 1.083228 0
+
+## How to calculate??
+#############################################################################----
+
+
+##-------------------------------------------------------------------
+## Regeneration
+##-------------------------------------------------------------------
+
+s_temporal<-c("AllCancer", "Age", "CHF", "MI", "Pulse", "Num_visit_last_1yr",
+                            "BP_Systol", "Respiration")
+
+
+###Regenrate
+MaxScore<-100
+num_var <- 10
+
+FinalVariable <- Ranking[1:num_var]
+FinalVariable<-c("Age", "bun_mean", "resprate_mean", "creatinine_mean", "aniongap_mean",
+                 "lactate_mean", "tempc_mean", "platelet_mean",
+                 "INSURANCE",  "heartrate_mean")
+
+FinalVariable<-c("Age", "bun_mean", "sysbp_mean", "bicarbonate_mean", "aniongap_mean",
+                 "chloride_mean", "tempc_mean", "platelet_mean",
+                 "INSURANCE",  "hemoglobin_mean")
+
+FinalVariable<-c("Age", "bun_mean", "resprate_mean", "creatinine_mean", "aniongap_mean")
+
+FinalVariable<-c("Age", "bun_mean", "tempc_mean", "creatinine_mean", "aniongap_mean")
+
+FinalVariable<-c("Age", "bun_mean", "tempc_mean", "platelet_mean", "chloride_mean")
+
+
+AUC4<-c()
+##AutoScore_weighting
+
+
+
+
+
+
+#STEP (3): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1)
+AUC4 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+
+## evalute different ranking systems
+df_AUC_select<-data.frame(AUC10,AUC5,AUC10_ranking1,AUC10_ranking2,AUC10_ranking3,AUC10_ranking1_5,AUC10_ranking2_5,AUC10_ranking3_5)
+
+AUC2,AUC5,AUC10,AUC15,
+df_AUC<-data.frame(AUC_1,AUC_2)
+#STEP (4): Fine-tune the initial score generated in STEP-3 (AutoScore Module 5 & Re-run AutoScore Modules 2+3)
+#Revise "CutVec" with domain knowledge to update the scoring table (AutoScore Module 5)
+#Rerun AutoScore Modules 2+3
+#Users can choose any cut-off values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values
+CutVec$AllCancer <- c(1,2)
+CutVec$Age <- c(30, 50, 80)
+CutVec$Pulse <- c(60, 70, 95, 110)
+CutVec$BP_Systolic <- c(100, 115, 150)
+#CutVec$BP_Systolic <- c(100, 115, 150)
+
+#~~~~
+CutVec$Age <- c(30, 48, 78, 85)
+CutVec$platelet_mean <- c(80, 150, 300, 450)
+CutVec$lactate_mean <- c(1, 2.5, 4)
+CutVec$resprate_mean <- c(12, 16, 22)
+CutVec$bun_mean <- c(7.5,12, 35,70)
+CutVec$tempc_mean <- c(36,36.5, 37.5,38)
+CutVec$sysbp_mean<- c(90,100, 130,150)
+
+
+ScoringTable <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+###Evaluation inside AutoScore_fine_tuning function
+
+##perfect!!!
+
+AutoScore_testing(TestSet, FinalVariable, CutVec, ScoringTable)
+
+
+
+
+##-------------------------------------------------------------------
+## Regeneration_ed
+##-------------------------------------------------------------------
+
+
+###Regenrate
+MaxScore<-100
+num_var <- 4
+FinalVariable <- Ranking[1:num_var]
+AUC4<-c()
+##AutoScore_weighting
+#STEP (3): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
+AUC4 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+
+
+FinalVariable <- Ranking[1:6]
+AUC6<-c()
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
+AUC6 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+
+FinalVariable <- Ranking[1:8]
+AUC8<-c()
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
+AUC8 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+
+FinalVariable <- Ranking[1:10]
+AUC10<-c()
+CutVec <- AutoScore_weighting(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
+AUC10 <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+
+df_AUC<-data.frame(AUC4,AUC6,AUC8,AUC10)
+save.image("~/nBox/EDData_SERP/SurvivalData/Survival_SERP_ERLDERLY.RData")
+
+
+#STEP (4): Fine-tune the initial score generated in STEP-3 (AutoScore Module 5 & Re-run AutoScore Modules 2+3)
+#Revise "CutVec" with domain knowledge to update the scoring table (AutoScore Module 5)
+#Rerun AutoScore Modules 2+3
+#Users can choose any cut-off values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values
+CutVec$AllCancer <- c(1,2)
+CutVec$Age <- c(30, 50, 80)
+CutVec$Pulse <- c(60, 70, 95, 110)
+CutVec$BP_Systolic <- c(100, 115, 150)
+#CutVec$BP_Systolic <- c(100, 115, 150)
+
+#~~~~
+CutVec$Age <- c(30, 48, 78, 85)
+CutVec$platelet_mean <- c(80, 150, 300, 450)
+CutVec$lactate_mean <- c(1, 2.5, 4)
+CutVec$resprate_mean <- c(12, 16, 22)
+CutVec$bun_mean <- c(7.5,12, 35,70)
+CutVec$tempc_mean <- c(36,36.5, 37.5,38)
+CutVec$sysbp_mean<- c(90,100, 130,150)
+
+
+ScoringTable <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+###Evaluation inside AutoScore_fine_tuning function
+
+##perfect!!!
+
+AutoScore_testing(TestSet, FinalVariable, CutVec, ScoringTable)
+
+
+
+
+
+##-------------------------------------------------------------------
+## Regeneration_weibull
+##-------------------------------------------------------------------
+
+s_temporal<-c("AllCancer", "Age", "CHF", "MI", "Pulse", "Num_visit_last_1yr",
+
+              "BP_Systol", "Respiration")
+###Regenrate
+MaxScore<-100
+num_var <- 10
+FinalVariable <- Ranking[1:num_var]
+AUC10_loglogistic<-c()
+##AutoScore_weighting
+
+
+#STEP (3): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
+CutVec <- AutoScore_weighting_weibull(TrainSet, ValidationSet, FinalVariable, MaxScore=100, probs=c(0, 0.05, 0.2, 0.8, 0.95, 1))
+AUC10_loglogistic<- AutoScore_fine_tuning_weibull(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+
+AUC2,AUC5,AUC10,AUC15,
+df_AUC_parametric<-data.frame(AUC5_weibull_real,AUC10_weibull_real,AUC15_weibull_real,AUC5_weibull,AUC10_weibull,AUC15_weibull)
+
+
+#STEP (4): Fine-tune the initial score generated in STEP-3 (AutoScore Module 5 & Re-run AutoScore Modules 2+3)
+#Revise "CutVec" with domain knowledge to update the scoring table (AutoScore Module 5)
+#Rerun AutoScore Modules 2+3
+#Users can choose any cut-off values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values
+CutVec$AllCancer <- c(1,2)
+CutVec$Age <- c(30, 50, 80)
+CutVec$Pulse <- c(60, 70, 95, 110)
+CutVec$BP_Systolic <- c(100, 115, 150)
+#CutVec$BP_Systolic <- c(100, 115, 150)
+
+#~~~~
+CutVec$Age <- c(30, 48, 78, 85)
+CutVec$platelet_mean <- c(80, 150, 300, 450)
+CutVec$lactate_mean <- c(1, 2.5, 4)
+CutVec$resprate_mean <- c(12, 16, 22)
+CutVec$bun_mean <- c(7.5,12, 35,70)
+CutVec$tempc_mean <- c(36,36.5, 37.5,38)
+CutVec$sysbp_mean<- c(90,100, 130,150)
+
+
+ScoringTable <- AutoScore_fine_tuning(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore=100)
+###Evaluation inside AutoScore_fine_tuning function
+
+##perfect!!!
+
+AutoScore_testing(TestSet, FinalVariable, CutVec, ScoringTable)
+
+
+
+
+############spare
+print("Select the number of Variables")
+print(num_var)
+SD <- TrainSet[, c(FinalVariable, "time","status")]
+ValidationSet1 <- ValidationSet[,c(FinalVariable,  "time","status")]
+
+
+SDlist <- Dftransform(SD, ValidationSet1, probs = probs)
+SD2 <- SDlist[[1]]
+ValidationSet2 <- SDlist[[2]]
+
+#y_validation <- ValidationSet2$label
+
+model<-coxph(Surv(time, status) ~ ., SD2)
+
+coefVec <- coef(model)
+SD2 <- ChangeRef(SD2, coefVec)
+model<-coxph(Surv(time, status) ~ ., SD2)
+
+
+# print(model) summary(model)
+coefVec <- coef(model)
+a <- round(coefVec/min(coefVec[-1]))
+myvec <- AddBaseline(SD2, a)
+
+total_max <- MaxScore
+total <- 0
+for (i in 1:length(FinalVariable)) total <- total + max(myvec[grepl(FinalVariable[i], names(myvec))])
+myvec <- round(myvec/(total/total_max))
+print("The generated Scores are shown below")
+print(as.data.frame(myvec))
+
+
+
+
+
+##
+##
+##Evaluating method list:(can transfer this to corespongding place )
+## method 1.## integrate All AUC
+library(survAUC)
+
+train.fit <- coxph(Surv(time, status)~TotalScore,
+                   x=TRUE, y=TRUE, method="breslow", data=SD2_n)
+lpnew <- predict(train.fit, newdata=ValidationSet3)
+Surv.rsp <- Surv(SD2_n$time, SD2_n$status)
+Surv.rsp.new <- Surv(ValidationSet3$time, ValidationSet3$status)
+times <- seq(1, 89, 1)
+AUC_hc <- AUC.hc(Surv.rsp, Surv.rsp.new, lpnew, times)
+sAUC<- AUC_hc$iauc
+plot(AUC_hc)
+
+
+
+
+###method 2. Key point: plotting or R2 value?
+# PlotROCCurve(ValidationSet3$TotalScore,as.numeric(y_validation)-1)
+##R2
+#TR <- ovarian[1:16,]
+#TE <- ovarian[17:26,]
+#train.fit <- coxph(Surv(futime, fustat) ~ age,
+#                   x=TRUE, y=TRUE, method="breslow", data=TR)
+model0 <- coxph(Surv(time, status)~1, data=ValidationSet3)
+model1 <- coxph(Surv(time, status)~TotalScore, data=ValidationSet3)
+f0 <- rep(0,nrow(ValidationSet3))
+f1 <- predict(model1, newdata=ValidationSet3)
+Surv.res <- Surv(ValidationSet3$time, ValidationSet3$status)
+#OXS(Surv.res, f1, f0)
+#Nagelk(Surv.res, f1, f0)
+sAUC<- XO(Surv.res, f1, f0)
+
+
+##method 3. R2 directly:
+#coxph(Surv(time, status)~1, data=ValidationSet3)
+model_r2<-coxph(Surv(time, status) ~ TotalScore,ValidationSet3)
+sAUC<- summary(model_r2)$rsq[1]
+
+
+
+##method4 AUC_sh
+train.fit <- coxph(Surv(time, status)~TotalScore,
+                   x=TRUE, y=TRUE, method="breslow", data=SD2_n)
+lp<-predict(train.fit)
+lpnew <- predict(train.fit, newdata=ValidationSet3)
+Surv.rsp <- Surv(SD2_n$time, SD2_n$status)
+Surv.rsp.new <- Surv(ValidationSet3$time, ValidationSet3$status)
+times <-seq(1, 89, 1)#seq(1, 365, 7)
+
+AUC_sh <- AUC.sh(Surv.rsp, Surv.rsp.new,lp, lpnew = lpnew, times = times)
+sAUC<- AUC_sh$iauc
+print(sAUC)
+
+
+
+#method5 c statistics
+
+AUC_c<-concordance.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time, surv.event=ValidationSet3$status, method="noether", comppairs=comppairs)
+sAUC<- AUC_c$c.index
+print(sAUC)
+
+
+#method6 d statistics
+
+AUC_d<-D.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time,surv.event=ValidationSet3$status)
+sAUC<- AUC_d$d.index
+print(sAUC)
+
+
+
+#4. median table
+table_surv<-ScoreGroup(SD2_n$TotalScore,SD2_n$time,SD2_n$status,v=5)
+table_surv_die<-ScoreGroup(SD2_n[SD2_n$status==1,]$TotalScore,SD2_n[SD2_n$status==1,]$time,SD2_n[SD2_n$status==1,]$status,v=5)
+#SD2_n[SD2_n$status==1,]
+
+
+ValidationSet3$TotalScore_c<-cut(ValidationSet3$TotalScore, breaks = c(min(ValidationSet3$TotalScore),20,30,40,50,60,max(ValidationSet3$TotalScore)), right = F, include.lowest = T, dig.lab = 3)
+
+sfit <- survfit(Surv(time, status)~TotalScore_c, data=ValidationSet3)
+summary(sfit, times=seq(0,90,10))
+#summary(sfit, times=seq(0,365,30))
+names(sfit$strata)<-c("Score<20", "[20,30)", "[30,40)",
+                      "[40,50)", "[50,60)", "Score>=60"
+)
+ggsurvplot(sfit, conf.int=TRUE, pval=TRUE, legend.title="Survival Score",
+           title="Kaplan-Meier Curve for Survival Score Stratification")
+
+
+
+
+
+
+
+
+
+
+
+
+ggsurvplot(sfit, conf.int=TRUE, pval=TRUE, risk.table=TRUE,
+           legend.labs=c("Male", "Female"), legend.title="Sex",
+           palette=c("dodgerblue2", "orchid2"),
+           title="Kaplan-Meier Curve for Lung Cancer Survival",
+           risk.table.height=.15)
+
+
+Uni_glmTable_survival<-function(x){
+  b<-data.frame()
+  for(i in names(x)[names(x)!=c("time","status")]){
+    model<-coxph(Surv(time, status)~.,data=subset(x,select=c("time","status",i)),na.action= na.omit)
+    a<-cbind(exp(cbind(OR = coef(model), confint.default(model))),summary(model)$coef[, "Pr(>|z|)"])
+    b<-rbind(b,a)
+  }
+  b<-b[!grepl("Intercept", row.names(b),ignore.case = T),]
+  b<-round(b,digits = 3)
+  b$OR<-paste(b$OR,"(",b$`2.5 %`,"-",b$`97.5 %`,")", sep = "")
+
+
+
+  return(b)
+}
+
+
+
+Multi_glmTable_survival<-function(x){
+  model<-coxph(Surv(time, status)~.,data=x,na.action= na.omit)
+  b<-cbind(exp(cbind(OR = coef(model), confint.default(model))),summary(model)$coef[, "Pr(>|z|)"])
+  b<-b[!grepl("Intercept", row.names(b),ignore.case = T),]
+  b<-round(b,digits = 3)
+  b<-as.data.frame(b)
+  b$OR<-paste(b$OR,"(",b$`2.5 %`,"-",b$`97.5 %`,")", sep = "")
+  return(b)
+
+}
+
+
+
+
+
+d_analysis<-d
+d_analysis$INSURANCE <- relevel(d_analysis$INSURANCE, ref = "Medicare")
+unitable<-Uni_glmTable_survival(d_analysis)
+multitable<-Multi_glmTable_survival(d_analysis)
+TableHR<-cbind(unitable,multitable)

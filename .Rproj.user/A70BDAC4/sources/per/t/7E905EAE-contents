@@ -1,0 +1,472 @@
+eva_performance<-function(marker,TrainSet,ValidationSet){
+  AUC<-c()
+  #1. iAUC_uno +
+  times<- seq(1, 89, 1)
+  Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+  Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+  AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker, times = times)
+  AUC<- c(AUC,AUC_uno$iauc)
+  
+  #2. C-index
+  AUC_c<-concordance.index(x=marker, surv.time=ValidationSet$time, surv.event=ValidationSet$status)
+  AUC_c1<-concordancefit(Surv.rsp.new, -marker)
+  
+  AUC<-c(AUC,AUC_c$c.index)
+  
+  #3. D-index
+  AUC_d<-D.index(x=marker, surv.time=ValidationSet$time,surv.event=ValidationSet$status)
+  
+  AUC<-c(AUC,AUC_d$d.index)
+  
+  #4. SurvivalROC package for AUCt
+  cutv<-c(1,3,7,14,28,60,90)
+  ## Can change
+  for(i in cutv){
+    cutoff <-i
+    ## MAYOSCORE 4, METHOD = NNE
+    Mayo4.1= survivalROC(Stime=ValidationSet$time ,
+                         status=ValidationSet$status,
+                         marker = marker, method = "KM",
+                         predict.time = cutoff )
+    AUC<-c(AUC,Mayo4.1$AUC)
+  }
+  
+  #5. timeROC
+  ROCa<-timeROC(ValidationSet$time,ValidationSet$status,cause=1,marker=marker,times =cutv)
+  AUC<-c(AUC,ROCa$AUC)
+  
+  #6.risketROC
+  for(i in cutv){
+    cutoff <-i
+    ## MAYOSCORE 4, METHOD = NNE
+    ROCb<-CoxWeights(marker=marker, Stime=ValidationSet$time, status=ValidationSet$status, predict.time=cutoff)
+    AUC<-c(AUC,ROCb$AUC)}
+  
+  #7. AUC_uno all
+  AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker, times = cutv)
+  AUC<-c(AUC,AUC_uno$auc)
+  
+  return(AUC)
+}
+
+
+
+
+
+
+
+
+model_weibull<- survreg(formula=Surv(time, status) ~ .,dist="weibull",data=TrainSet)
+pred3<-predict(model_weibull, ValidationSet,type="lp")
+pred3_1<-predict(model_weibull, ValidationSet)
+
+model_weibull2<- survreg(formula=Surv(time, status) ~ .,dist="weibull",data=SD2)
+pred4<-predict(model_weibull2, ValidationSet2,type="lp")
+
+pred5<-predict(model_weibull2, ValidationSet2)
+
+model2 <- coxph(Surv(time, status)~., data=SD2)
+pred2 <- predict(model2, newdata = ValidationSet2, type = "lp")
+
+df_compare<-data.frame(ValidationSet3$TotalScore,pred,pred2,pred3,pred4,pred5,RF_pred)
+
+
+
+model1 <- coxph(Surv(time, status)~., data=TrainSet)
+pred <- predict(model1, newdata = ValidationSet, type = "lp")
+#library(survivalROC)
+#data(mayo)
+par(mfcol=c(3,3))
+#cutv<-c(2,7,14,28,60,90,180,270,364) 
+cutv<-c(1,3,7,14,28,60,90)
+## Can change
+for(i in cutv){
+  nobs <- NROW(ValidationSet3)
+  cutoff <-i 
+  ## MAYOSCORE 4, METHOD = NNE
+  Mayo4.1= survivalROC(Stime=time_validation ,
+                       status=status_validation,
+                       marker = -pred3_1, method = "NNE",
+                       predict.time = cutoff)#,span = 0.25*nobs^(-0.20)
+  plot(Mayo4.1$FP, Mayo4.1$TP, type="l", xlim=c(0,1), ylim=c(0,1),
+       xlab=paste( "FP", "\n", "AUC = ",round(Mayo4.1$AUC,3)),
+       ylab="TP",main=paste("AutoScore, Method = KM \n time = ",i,sep = ""))
+  
+  #Modelroc <- roc(y_validation, ValidationSet3$TotalScore, quiet = T)
+  print(Mayo4.1$AUC)}
+  
+
+
+AUC_hc <- AUC.hc(Surv.rsp, Surv.rsp.new, lpnew = RF_pred, times = times)
+  
+
+###???testset???????????????::??????
+
+
+seq1<-c( "Age", 
+         "Triage_Class_Code", 
+         "Pulse", "Respiration",  "BP_Diastolic", "BP_Systolic", 
+         "SPO2",
+         
+         "MI", "CHF", "PVD", "Stroke", 
+         "Dementia", "Pulmonary", "Rheumatic", "PUD", "LiverMild", "DM1", "DM2",
+         "DMcx", "Paralysis", "Renal", "Cancer", "LiverSevere", "Mets","HIV", "Temperature","AVPU","FIO2","GCS",
+         "DeathLabel2", 
+         "Mortality_2d", "Mortality_30days_postDischarge", "DeathOverall",  "readmission_30d", "ICU_Admission2", "Mortality_1year", "label")
+TestSet4<-TestSet[,seq1]
+
+TestSet4<-ValidationSet
+
+#MD3$mortality_30d[is.na(MD3$mortality_30d)]<-0
+## CART
+TestSet4$Score1<-NA
+TestSet4$Score1<-ifelse(TestSet4$Age>69,9,TestSet4$Score1)
+TestSet4$Score1<-ifelse(TestSet4$Age<=69&TestSet4$Age>=55,4,TestSet4$Score1)
+TestSet4$Score1<-ifelse(TestSet4$Age<55,0,TestSet4$Score1)
+
+TestSet4$Score2<-NA
+TestSet4$Score2<-ifelse(TestSet4$Respiration>29,22,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<=29&TestSet4$Respiration>=26,15,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<=25&TestSet4$Respiration>=24,12,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<=23&TestSet4$Respiration>=21,8,TestSet4$Score2)
+TestSet4$Score2<-ifelse(TestSet4$Respiration<21,0,TestSet4$Score2)
+
+TestSet4$Score3<-NA
+TestSet4$Score3<-ifelse(TestSet4$Pulse>139,13,TestSet4$Score3)
+TestSet4$Score3<-ifelse(TestSet4$Pulse<=139&TestSet4$Pulse>=110,14,TestSet4$Score3)
+TestSet4$Score3<-ifelse(TestSet4$Pulse<110,0,TestSet4$Score3)
+
+TestSet4$Score4<-NA
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic>49,0,TestSet4$Score4)
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic<=49&TestSet4$BP_Diastolic>=40,4,TestSet4$Score4)
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic<=39&TestSet4$BP_Diastolic>=35,6,TestSet4$Score4)
+TestSet4$Score4<-ifelse(TestSet4$BP_Diastolic<35,13,TestSet4$Score4)
+
+##MEWS
+TestSet4$MEWS1<-NA
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration>=30,3,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<=29&TestSet4$Respiration>=21,2,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<=20&TestSet4$Respiration>=15,1,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<=14&TestSet4$Respiration>=9,0,TestSet4$MEWS1)
+TestSet4$MEWS1<-ifelse(TestSet4$Respiration<9,2,TestSet4$MEWS1)
+
+TestSet4$MEWS2<-NA
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse>=130,3,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=129&TestSet4$Pulse>=111,2,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=110&TestSet4$Pulse>=101,1,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=100&TestSet4$Pulse>=51,0,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=50&TestSet4$Pulse>=41,1,TestSet4$MEWS2)
+TestSet4$MEWS2<-ifelse(TestSet4$Pulse<=40,2,TestSet4$MEWS2)
+
+TestSet4$MEWS3<-NA
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic>199,2,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<=199&TestSet4$BP_Systolic>=100,0,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<=99&TestSet4$BP_Systolic>=80,1,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<=79&TestSet4$BP_Systolic>=70,2,TestSet4$MEWS3)
+TestSet4$MEWS3<-ifelse(TestSet4$BP_Systolic<70,3,TestSet4$MEWS3)
+
+
+TestSet4$MEWS4<-NA
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="A",0,TestSet4$MEWS4)
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="V",1,TestSet4$MEWS4)
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="P",2,TestSet4$MEWS4)
+TestSet4$MEWS4<-ifelse(TestSet4$AVPU=="U",3,TestSet4$MEWS4)
+
+TestSet4$MEWS5<-NA
+TestSet4$MEWS5<-ifelse(TestSet4$Temperature>=38.5,2,TestSet4$MEWS5)
+TestSet4$MEWS5<-ifelse(TestSet4$Temperature<38.5&TestSet4$Temperature>=35,0,TestSet4$MEWS5)
+TestSet4$MEWS5<-ifelse(TestSet4$Temperature<35,2,TestSet4$MEWS5)
+
+
+##NEWS
+sum(TestSet4$Respiration %% 1)
+TestSet4$NEWS1<-NA
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration>=25,3,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=24&TestSet4$Respiration>=21,2,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=20&TestSet4$Respiration>=12,0,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=11&TestSet4$Respiration>=9,1,TestSet4$NEWS1)
+TestSet4$NEWS1<-ifelse(TestSet4$Respiration<=8,3,TestSet4$NEWS1)
+
+sum(TestSet4$Pulse %% 1)
+TestSet4$NEWS2<-NA
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse>=131,3,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=130&TestSet4$Pulse>=111,2,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=110&TestSet4$Pulse>=91,1,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=90&TestSet4$Pulse>=51,0,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=50&TestSet4$Pulse>=41,1,TestSet4$NEWS2)
+TestSet4$NEWS2<-ifelse(TestSet4$Pulse<=40,3,TestSet4$NEWS2)
+
+sum(TestSet4$BP_Systolic %% 1)
+TestSet4$NEWS3<-NA
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic>=220,3,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<=219&TestSet4$BP_Systolic>=111,0,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<=110&TestSet4$BP_Systolic>=101,1,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<=100&TestSet4$BP_Systolic>=91,2,TestSet4$NEWS3)
+TestSet4$NEWS3<-ifelse(TestSet4$BP_Systolic<90,3,TestSet4$NEWS3)
+
+sum(TestSet4$SPO2 %% 1)
+TestSet4$NEWS4<-NA
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<=100&TestSet4$SPO2>=96,0,TestSet4$NEWS4)
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<=95&TestSet4$SPO2>=94,1,TestSet4$NEWS4)
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<=93&TestSet4$SPO2>=92,2,TestSet4$NEWS4)
+TestSet4$NEWS4<-ifelse(TestSet4$SPO2<91,3,TestSet4$NEWS4)
+
+sum(TestSet4$Temperature %% 0.1)
+TestSet4$NEWS5<-NA
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature>=39.1,2,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<39.1 & TestSet4$Temperature>=38,1,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<38&TestSet4$Temperature>=36,0,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<36&TestSet4$Temperature>=35,1,TestSet4$NEWS5)
+TestSet4$NEWS5<-ifelse(TestSet4$Temperature<35,3,TestSet4$NEWS5)
+
+TestSet4$NEWS6<-NA
+TestSet4$NEWS6<-ifelse(TestSet4$FIO2>=22,2,TestSet4$NEWS6)
+TestSet4$NEWS6<-ifelse(TestSet4$FIO2<22,0,TestSet4$NEWS6)
+
+TestSet4$NEWS7<-NA
+TestSet4$NEWS7<-ifelse(TestSet4$AVPU=="A",0,TestSet4$NEWS7)
+TestSet4$NEWS7<-ifelse(TestSet4$AVPU!="A",2,TestSet4$NEWS7)
+
+
+
+##CCI weighted
+TestSet4$AVPU<-as.factor(TestSet4$AVPU)
+c<-sapply(TestSet4, class)=="character"
+for(i in colnames(TestSet4)[c]){
+  TestSet4[,i]<-as.numeric(TestSet4[,i])
+}
+
+
+TestSet4$CCI<-rowSums(TestSet4[,c("MI", "CHF", "PVD", "Stroke", 
+                                  "Dementia", "Pulmonary", "Rheumatic", "PUD", "LiverMild", "DM1")])
+TestSet4$CCI<-TestSet4$CCI+(TestSet4$DMcx+TestSet4$Paralysis+TestSet4$Renal+TestSet4$Cancer)*2+(TestSet4$LiverSevere*3)+(TestSet4$Mets+TestSet4$HIV)*6
+
+TestSet4$SERP<-TestSet3$TotalScore
+
+TestSet4$NEWS<-TestSet4$NEWS1+TestSet4$NEWS2+TestSet4$NEWS3+TestSet4$NEWS4+TestSet4$NEWS5+TestSet4$NEWS6+TestSet4$NEWS7
+
+TestSet4$MEWS<-TestSet4$MEWS1+TestSet4$MEWS2+TestSet4$MEWS3+TestSet4$MEWS4+TestSet4$MEWS5
+
+TestSet4$CART<-TestSet4$Score1+TestSet4$Score2+TestSet4$Score3+TestSet4$Score4
+
+TestSet4$Triage_Class_Code<-as.numeric(TestSet4$Triage_Class_Code)
+
+
+
+
+
+
+
+ValidationSet3 <- AutoTest(ValidationSet2, myvec)
+#ValidationSet3$Age[is.na(ValidationSet3$Age)]<-10
+ValidationSet3$TotalScore <- rowSums(subset(ValidationSet3, select = -c(time, status)))
+SD2_n <- AutoTest(SD2, myvec)
+SD2_n$TotalScore <- rowSums(subset(SD2_n, select = -c(time, status)))
+status_validation <- ValidationSet3$status
+time_validation <- ValidationSet3$time
+
+
+
+# Several evaluation here: 
+AUC_f<-c()
+#1.R2
+model_r2<-coxph(Surv(time, status) ~ TotalScore,ValidationSet3)
+print("R2-standard")
+sAUC<- summary(model_r2)$rsq[1]
+print("R2:")
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+#0.109
+
+print("R2-XO")
+##2.R2XO
+model0 <- coxph(Surv(time, status)~1, data=ValidationSet3)
+model1 <- coxph(Surv(time, status)~TotalScore, data=ValidationSet3)
+f0 <- rep(0,nrow(ValidationSet3))
+f1 <- predict(model1, newdata=ValidationSet3)
+Surv.res <- Surv(ValidationSet3$time, ValidationSet3$status)
+#OXS(Surv.res, f1, f0)
+#Nagelk(Surv.res, f1, f0)
+sAUC<- XO(Surv.res, f1, f0)
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+print("R2-OXS")
+sAUC<- OXS(Surv.res, f1, f0)
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+##0.478
+
+##3. integrate All AUC
+print("AUC_SH")
+library(survAUC)
+
+train.fit <- coxph(Surv(time, status)~TotalScore,
+                   x=TRUE, y=TRUE, method="breslow", data=SD2_n)
+lp<-predict(train.fit)
+lpnew <- predict(train.fit, newdata=ValidationSet3)
+Surv.rsp <- Surv(SD2_n$time, SD2_n$status)
+Surv.rsp.new <- Surv(ValidationSet3$time, ValidationSet3$status)
+times <- seq(1, 89, 1)
+#times<-c(2,7,14,28,60,90,180,270,364) 
+#AUC_hc <- AUC.hc(Surv.rsp, Surv.rsp.new, lpnew, times)
+#sAUC<- AUC_hc$iauc
+#print(sAUC)
+#plot(AUC_hc)
+##68.88056
+AUC_sh <- AUC.sh(Surv.rsp, Surv.rsp.new,lp, lpnew = lpnew, times = times)
+sAUC<- AUC_sh$iauc
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+
+
+#4. median table
+#table_surv<-ScoreGroup(SD2_n$TotalScore,SD2_n$time,v=5)
+print("c stat")
+AUC_c<-concordance.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time, surv.event=ValidationSet3$status, method="noether", comppairs=comppairs)
+sAUC<- AUC_c$c.index
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+
+#method6 d statistics
+print("d stat")
+AUC_d<-D.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time,surv.event=ValidationSet3$status)
+sAUC<- AUC_d$d.index
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+###
+###ROCt
+#library(survivalROC)
+#data(mayo)
+par(mfcol=c(3,3))
+
+cutv<-c(1,3,7,14,28,60,90) ## Can change
+#cutv<-c(2,7,14,28,60,90,180,270,364) 
+for(i in cutv){
+  nobs <- NROW(ValidationSet3)
+  cutoff <-i 
+  ## MAYOSCORE 4, METHOD = NNE
+  Mayo4.1= survivalROC(Stime=time_validation ,
+                       status=status_validation,
+                       marker = ValidationSet3$TotalScore,
+                       predict.time = cutoff,
+                       method = "KM",
+                       span = 0.25*nobs^(-0.20) )
+  plot(Mayo4.1$FP, Mayo4.1$TP, type="l", xlim=c(0,1), ylim=c(0,1),
+       xlab=paste( "FP", "\n", "AUC = ",round(Mayo4.1$AUC,3)),
+       ylab="TP",main=paste("AutoScore, Method = KM \n time = ",i,sep = ""))
+  
+  #Modelroc <- roc(y_validation, ValidationSet3$TotalScore, quiet = T)
+  print(Mayo4.1$AUC)
+  AUC_f<-c(AUC_f,Mayo4.1$AUC)}
+
+
+
+
+
+
+##### spare ::::
+\
+AUC_f<-c()
+#1.R2
+model_r2<-coxph(Surv(time, status) ~ TotalScore,ValidationSet3)
+print("R2-standard")
+sAUC<- summary(model_r2)$rsq[1]
+print("R2:")
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+#0.109
+
+print("R2-XO")
+##2.R2XO
+model0 <- coxph(Surv(time, status)~1, data=ValidationSet3)
+model1 <- coxph(Surv(time, status)~TotalScore, data=ValidationSet3)
+f0 <- rep(0,nrow(ValidationSet3))
+f1 <- predict(model1, newdata=ValidationSet3)
+Surv.res <- Surv(ValidationSet3$time, ValidationSet3$status)
+#OXS(Surv.res, f1, f0)
+#Nagelk(Surv.res, f1, f0)
+sAUC<- XO(Surv.res, f1, f0)
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+print("R2-OXS")
+sAUC<- OXS(Surv.res, f1, f0)
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+##0.478
+
+##3. integrate All AUC
+print("AUC_SH")
+library(survAUC)
+
+train.fit <- coxph(Surv(time, status)~TotalScore,
+                   x=TRUE, y=TRUE, method="breslow", data=SD2_n)
+lp<-predict(train.fit)
+lpnew <- predict(train.fit, newdata=ValidationSet3)
+Surv.rsp <- Surv(SD2_n$time, SD2_n$status)
+Surv.rsp.new <- Surv(ValidationSet3$time, ValidationSet3$status)
+times <- seq(1, 89, 1)
+#times<-c(2,7,14,28,60,90,180,270,364) 
+#AUC_hc <- AUC.hc(Surv.rsp, Surv.rsp.new, lpnew, times)
+#sAUC<- AUC_hc$iauc
+#print(sAUC)
+#plot(AUC_hc)
+##68.88056
+AUC_sh <- AUC.sh(Surv.rsp, Surv.rsp.new,lp, lpnew = lpnew, times = times)
+sAUC<- AUC_sh$iauc
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+
+
+#4. median table
+#table_surv<-ScoreGroup(SD2_n$TotalScore,SD2_n$time,v=5)
+print("c stat")
+AUC_c<-concordance.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time, surv.event=ValidationSet3$status, method="noether", comppairs=comppairs)
+sAUC<- AUC_c$c.index
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+
+#method6 d statistics
+print("d stat")
+AUC_d<-D.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time,surv.event=ValidationSet3$status)
+sAUC<- AUC_d$d.index
+print(sAUC)
+AUC_f<-c(AUC_f,sAUC)
+###
+###ROCt
+#library(survivalROC)
+#data(mayo)
+par(mfcol=c(3,3))
+
+cutv<-c(1,3,7,14,28,60,90) ## Can change
+#cutv<-c(2,7,14,28,60,90,180,270,364) 
+for(i in cutv){
+  nobs <- NROW(ValidationSet3)
+  cutoff <-i 
+  ## MAYOSCORE 4, METHOD = NNE
+  Mayo4.1= survivalROC(Stime=time_validation ,
+                       status=status_validation,
+                       marker = ValidationSet3$TotalScore,
+                       predict.time = cutoff,
+                       method = "KM",
+                       span = 0.25*nobs^(-0.20) )
+  plot(Mayo4.1$FP, Mayo4.1$TP, type="l", xlim=c(0,1), ylim=c(0,1),
+       xlab=paste( "FP", "\n", "AUC = ",round(Mayo4.1$AUC,3)),
+       ylab="TP",main=paste("AutoScore, Method = KM \n time = ",i,sep = ""))
+  
+  #Modelroc <- roc(y_validation, ValidationSet3$TotalScore, quiet = T)
+  print(Mayo4.1$AUC)
+  AUC_f<-c(AUC_f,Mayo4.1$AUC)}
+
+
+##5. Calibration: 
+
+
+
+##6. parametric modeling: 
+
+# fitg <- flexsurvreg(formula = Surv(futime, fustat) ~ 1, data = ovarian, dist="gengamma")
+#  fitg
+#  fitw <- flexsurvreg(formula = Surv(futime, fustat) ~ 1, data = ovarian, dist="weibull")
+#  fitw
+
+
