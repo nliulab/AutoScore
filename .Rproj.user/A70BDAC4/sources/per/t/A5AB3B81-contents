@@ -1,0 +1,1005 @@
+#######################################################
+# Source Codes for AutoScore survival v0.01
+
+# preprocess
+# preprocessing: requirement of data finish preselection first 1.data type(only numeric or factor),all character will be transformed
+# to factor automatically 2.point out the outcome(should be factor and binary outcome) 3.The number of categories for each factor
+# should be less than 9
+# Preprocess(data,outcome) outcome: character class object wich point to the name of the outcome in the dataset data: should be a
+# dataframe
+
+
+eva_performance_ci<-function(marker,TrainSet,ValidationSet){
+
+  AUC_all<-data.frame(iAUC=0,C_index=0,C_index1=0,a1=0,a2=0,a3=0,a4=0,a5=0,a6=0,a7=0)
+
+  for(i in 1:100){
+    index<-sample(1:8983,8983,replace = TRUE)
+    Val_tmp<-ValidationSet[index,]
+    marker_tmp <- marker[index]
+
+    AUC<-c()
+    #1. iAUC_uno +
+    times<- seq(1, 90, 1)
+    Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+    Surv.rsp.new <- Surv(Val_tmp$time, Val_tmp$status)
+    AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker_tmp, times = times)
+    AUC<- c(AUC,AUC_uno$iauc)
+
+    #2. C-index
+    AUC_c<-concordance.index(x=marker_tmp, surv.time=Val_tmp$time, surv.event=Val_tmp$status)
+    AUC<-c(AUC,AUC_c$c.index)
+
+    AUC_c1<-concordancefit(Surv.rsp.new, marker_tmp)
+    AUC<-c(AUC,AUC_c1$concordance)
+
+    #3. D-index
+    AUC_d<-D.index(x=marker_tmp, surv.time=Val_tmp$time,surv.event=Val_tmp$status)
+    AUC<-c(AUC,AUC_d$d.index)
+
+    #4. SurvivalROC package for AUCt
+    cutv<-c(1,3,7,14,28,60,90)
+
+    #7. AUC_uno all
+    AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker_tmp, times = cutv)
+    AUC<-c(AUC,AUC_uno$auc)
+    AUC_all<-rbind(AUC_all,AUC)}
+
+
+  AUC_all_tmp<-AUC_all
+  AUC_all_tmp<-AUC_all_tmp[-1,]
+  colSums(AUC_all_tmp)
+  m<-colMeans(AUC_all_tmp)
+  d<-sapply(AUC_all_tmp,function(x)sd(x)/sqrt(length(x)))
+  up<-round(m+1.96*d,3)
+  down<-round(m-1.96*d,3)
+
+  result<-paste0(round(m,3)," (",down,"-",up,")")
+  names(result)<-names(AUC_all)
+
+
+  return(result)
+
+}
+
+
+sapply(AUC_all_tmp,quantile)
+sapply(AUC_all_tmp,function(x){quantile(x,probs = c(0.025,0.5,0.975))})
+
+eva_performance_ci_fianl<-function(marker,TrainSet,ValidationSet){
+
+  AUC_all<-data.frame(iAUC=0,C_index=0,C_index1=0,D_index=0,a1=0,a2=0,a3=0,a4=0,a5=0,a6=0,a7=0)
+
+  for(i in 1:100){
+    index<-sample(1:8983,8983,replace = TRUE)
+    Val_tmp<-ValidationSet[index,]
+    marker_tmp <- marker[index]
+
+    AUC<-c()
+    #1. iAUC_uno +
+    Surv.rsp.new <- Surv(Val_tmp$time, Val_tmp$status)
+
+
+    #iAUC
+    km_fit_test <- survfit(Surv.rsp.new ~ 1, data = Val_tmp)
+    km_time<-summary(km_fit_test)$time
+    km_survival<-summary(km_fit_test)$surv
+    km_time<-km_time[-length(km_time)]
+    km_survival<-km_survival[-length(km_survival)]
+
+    AUC_uno <- AUC.uno(Surv.rsp.new, Surv.rsp.new, lpnew = marker_tmp, times = km_time)
+    #iAUC<-IntAUC(AUC_uno$auc,AUC_uno$times,km_survival,90,auc.type = "cumulative")
+    km_survival_w<-c(1,km_survival[-length(km_survival)])
+    km_survival_sum<-sum(km_survival_w-km_survival)
+    weight<-(km_survival_w-km_survival)/km_survival_sum
+    iAUC<-sum(weight*AUC_uno$auc)
+    AUC<- c(AUC,iAUC)
+
+    #2. C-index
+    AUC_c<-concordance.index(x=marker_tmp, surv.time=Val_tmp$time, surv.event=Val_tmp$status)
+    AUC<-c(AUC,AUC_c$c.index)
+
+    AUC_c1<-concordancefit(Surv.rsp.new, marker_tmp)
+    AUC<-c(AUC,AUC_c1$concordance)
+
+    #3. D-index
+    AUC_d<-D.index(x=marker_tmp, surv.time=Val_tmp$time,surv.event=Val_tmp$status)
+    AUC<-c(AUC,AUC_d$d.index)
+
+    #4. SurvivalROC package for AUCt
+    cutv<-c(1,3,7,14,30,60,90)
+
+    #7. AUC_uno all
+    AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker_tmp, times = cutv)
+    AUC<-c(AUC,AUC_uno$auc)
+    AUC_all<-rbind(AUC_all,AUC)}
+
+
+
+    AUC_all<-rbind(AUC_all,AUC)}
+
+
+  AUC_all_tmp<-AUC_all
+  AUC_all_tmp<-AUC_all_tmp[-1,]
+  colSums(AUC_all_tmp)
+  m<-colMeans(AUC_all_tmp)
+  up<-sapply(AUC_all_tmp,function(x){quantile(x,probs = c(0.975))})
+  down<-sapply(AUC_all_tmp,function(x){quantile(x,probs = c(0.025))})
+  result<-paste0(round(m,3)," (",round(down,3),"-",round(up,3),")")
+  names(result)<-names(AUC_all)
+
+
+  return(result)
+
+}
+
+
+
+
+
+
+
+eva_performance<-function(marker,TrainSet,ValidationSet){
+  AUC<-c()
+  #1. iAUC_uno +
+  times<- seq(1, 365, 1)
+  Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+  Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+  AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker, times = times)
+  AUC<- c(AUC,AUC_uno$iauc)
+
+  #2. C-index
+  AUC_c<-concordance.index(x=marker, surv.time=ValidationSet$time, surv.event=ValidationSet$status)
+  AUC<-c(AUC,AUC_c$c.index)
+
+  AUC_c1<-concordancefit(Surv.rsp.new, -marker)
+  AUC<-c(AUC,AUC_c1$concordance)
+
+  #3. D-index
+  AUC_d<-D.index(x=marker, surv.time=ValidationSet$time,surv.event=ValidationSet$status)
+  AUC<-c(AUC,AUC_d$d.index)
+
+  #4. SurvivalROC package for AUCt
+  cutv<-c(3,7,14,30,90,180,360)
+
+  #7. AUC_uno all
+  AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker, times = cutv)
+  AUC<-c(AUC,AUC_uno$auc)
+
+  return(AUC)
+}
+
+
+eva_performance_iauc<-function(marker,TrainSet,ValidationSet){
+  AUC<-c()
+  #1. iAUC_uno +
+  Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+  Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+
+
+  #iAUC
+  km_fit_test <- survfit(Surv.rsp.new ~ 1, data = ValidationSet)
+  km_time<-summary(km_fit_test)$time
+  km_survival<-summary(km_fit_test)$surv
+  km_time<-km_time[-length(km_time)]
+  km_survival<-km_survival[-length(km_survival)]
+
+  AUC_uno <- AUC.uno(Surv.rsp.new, Surv.rsp.new, lpnew = marker, times = km_time)
+  #iAUC<-IntAUC(AUC_uno$auc,AUC_uno$times,km_survival,90,auc.type = "cumulative")
+  km_survival_w<-c(1,km_survival[-length(km_survival)])
+  km_survival_sum<-sum(km_survival_w-km_survival)
+  weight<-(km_survival_w-km_survival)/km_survival_sum
+  iAUC<-sum(weight*AUC_uno$auc)
+  print(iAUC)
+  return(iAUC)
+}
+
+eva_performance_iauc_roc<-function(marker,TrainSet,ValidationSet){
+  AUC<-c()
+  #1. iAUC_uno +
+  Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+  Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+
+
+  #iAUC
+  km_fit_test <- survfit(Surv.rsp.new ~ 1, data = ValidationSet)
+  km_time<-summary(km_fit_test)$time
+  km_survival<-summary(km_fit_test)$surv
+  km_time<-km_time[-length(km_time)]
+  km_survival<-km_survival[-length(km_survival)]
+
+  S_ROC_final<-c()
+  for(i in km_time){
+    S_ROC<-survivalROC(ValidationSet$time, ValidationSet$status,marker,predict.time = i,method = "KM")
+    S_ROC_final<-c(S_ROC_final,S_ROC$AUC)
+  }
+  iAUC<-IntAUC( S_ROC_final,km_time,km_survival,90,auc.type = "cumulative")
+  print(iAUC)
+  print(S_ROC_final)
+  return(iAUC)
+}
+
+eva_performance_quick<-function(marker,TrainSet,ValidationSet){
+  AUC<-c()
+  #1. iAUC_uno +
+  #times<- seq(1, 365, 1)
+  Surv.rsp <- Surv(TrainSet$time, TrainSet$status)
+  Surv.rsp.new <- Surv(ValidationSet$time, ValidationSet$status)
+  #AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker, times = times)
+  #AUC<- c(AUC,AUC_uno$iauc)
+
+  #2. C-index
+  AUC_c<-concordance.index(x=marker, surv.time=ValidationSet$time, surv.event=ValidationSet$status)
+  AUC<-c(AUC,AUC_c$c.index)
+
+  AUC_c1<-concordancefit(Surv.rsp.new, -marker)
+  AUC<-c(AUC,AUC_c1$concordance)
+
+  #3. D-index
+  AUC_d<-D.index(x=marker, surv.time=ValidationSet$time,surv.event=ValidationSet$status)
+  AUC<-c(AUC,AUC_d$d.index)
+
+  #4. SurvivalROC package for AUCt
+  cutv<-c(3,7,14,30,90,180,360)
+
+  #7. AUC_uno all
+  AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = marker, times = cutv)
+  AUC<-c(AUC,AUC_uno$auc)
+
+  return(AUC)
+}
+
+
+
+Dftransform <- function(x, testSet1, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1), Print_categories = FALSE, mode=1) {
+  CutVec <- list()
+  for (i in 1:(length(x) - 2)) {
+
+    if (class(x[, i]) == "factor") {
+      if (length(levels(x[, i])) < 10)
+        #(next)() else stop("Error!! The number of categories should be less than 10")
+        (next)() else print(cat("Warning!! The number of categories should be less than 10"), names(x)[i])
+    }
+
+    # select discretization method, default mode = 1
+    # mode 1 - quantiles, mode 2 - hierarchical clustering, mode 3 - k-means clustering
+    if (mode == 1) {
+      # options(scipen = 20)
+      a <- quantile(x[, i], probs = probs)
+      a <- CheckVector(a)
+      a1 <- signif(a, 3)  # remain 3 digits
+
+    } else if (mode == 2) {
+      #print("using k-means")
+      clusters <- kmeans(x[, i], 5)
+      a <- c()
+      for (j in unique(clusters$cluster)) {
+        #print(min(x[,i][clusters$cluster==j]))
+        #print(length(x[,i][clusters$cluster==j]))
+        a <- append(a, min(x[,i][clusters$cluster==j]))
+        #print(a)
+      }
+      a <- append(a, max(x[,i]))
+      a <- sort(a)
+      print(names(x)[i])
+
+      #assert (length(a) == 6)
+      a <- CheckVector(a)
+      a1 <- signif(a, 3)
+      #print (a1)
+    } else if (mode == 3) {
+      #print("using hierarchical")
+      dist_mat <- dist(x[, i], method = 'euclidean')
+      hclust_avg <- hclust(dist_mat, method = 'average')
+      cut_avg <- cutree(hclust_avg, k = 5)
+
+      a <- c()
+      for (j in unique(cut_avg)) {
+        #print(min(x[,i][cut_avg==j]))
+        #print(length(x[,i][cut_avg==j]))
+        a <- append(a, min(x[,i][cut_avg==j]))
+        #print(a)
+      }
+      a <- append(a, max(x[,i]))
+      a <- sort(a)
+      #print(names(x)[i])
+
+      #assert (length(a) == 6)
+      a <- CheckVector(a)
+      a1 <- signif(a, 3)
+      #print (a1)
+      #
+    } else if (mode == 4) {
+      ## assign weights to address the umbalanced dataset
+      # hardcode, might need to change
+      #w_positive <- nrow(x)/(length(unique(x$label))*sum(x$label == 1))
+      #w_negative <- nrow(x)/(length(unique(x$label))*sum(x$label == 0))
+      #print(w_positive)
+      #print(w_negative)
+      #w <- (as.numeric(x$label)-1)*w_positive + (2 - as.numeric(x$label))*w_negative
+
+      m <- rpart(Surv(x$time,x$status) ~ x[,i], method ="exp" )
+      a <- unname(m$splits[,4])
+      a <- head(a,4)
+      a <- append(a, max(x[,i]))
+      a <- append(a, min(x[,i]))
+      a <- sort(a)
+      #print(names(x)[i])
+
+      #assert (length(a) == 6)
+      a <- CheckVector(a)
+      a1 <- signif(a, 3)
+      #print (a1)
+      #
+    } else {
+
+      print('Warning, input value for mode invalid!')
+    }
+
+
+
+    if (Print_categories == TRUE)
+    {
+      print(names(x)[i])
+      # print(a1)
+      l <- list(a1)
+      #print("*****************************l***************************")
+      #print(l)
+      names(l)[1] <- names(x)[i]
+      CutVec <- append(CutVec, l)
+      #print("****************************CutVec*************************")
+      #print(CutVec)
+    }  #update
+
+    if (length(a1) <= 2) {
+      x[, i] <- as.factor(x[, i])
+      testSet1[, i] <- as.factor(testSet1[, i])
+    } else {
+      #avoid produce NaN value at cut due to round down
+      a1 <- c(a1[a1 < max(a1)], max(a1)*1.2)
+      a1 <- c(a1[a1 > min(a1)], min(a1)*0.8)
+      a1 <- sort(a1)
+      x[, i] <- cut(x[, i], breaks = a1, right = F, include.lowest = T, dig.lab = 3)
+      # xmin<-unlist(strsplit(levels(x[,i])[1],','))[1] xmax<-unlist(strsplit(levels(x[,i])[length(levels(x[,i]))],','))[2]
+      levels(x[, i])[1] <- gsub(".*,", "(,", levels(x[, i])[1])
+      levels(x[, i])[length(levels(x[, i]))] <- gsub(",.*", ",)", levels(x[, i])[length(levels(x[, i]))])
+
+      at <- a1
+      at[1] <- min(testSet1[, i])
+      at[length(at)] <- max(testSet1[, i])
+      at1 <- signif(at, 3)
+      at1 <- CheckVector(at1)  ###revised update##
+      testSet1[, i] <- cut(testSet1[, i], breaks = at1, right = F, include.lowest = T, dig.lab = 3)
+      # xmin<-as.character(min(at1)) xmax<-as.character(max(at1))
+      levels(testSet1[, i])[1] <- gsub(".*,", "(,", levels(testSet1[, i])[1])
+      levels(testSet1[, i])[length(levels(testSet1[, i]))] <- gsub(",.*", ",)", levels(testSet1[, i])[length(levels(testSet1[, i]))])
+
+    }
+    # print(summary(x[,i]))update print(summary(testSet1[,i]))update
+
+
+  }
+
+  if (Print_categories == TRUE)
+    return(list(x, testSet1, CutVec)) else return(list(x, testSet1))
+
+}
+
+
+
+
+Preprocess <- function(data, outcome) {
+  a <- data[, outcome]  #update
+  data[, outcome] <- NULL  #update
+  for (i in names(data)) {
+    if ((class(data[[i]]) != "factor") && (class(data[[i]]) != "numeric")) {
+      data[[i]] <- as.factor(data[[i]])
+      if (length(levels(data[[i]])) > 10) {
+        print(i)
+        stop("Error!! The number of categories should be less than 9")
+      }
+    }
+  }
+  print("Table of missing value for each observation ")
+  table(rowSums(is.na(data)))
+  print("Average missing rate for each feature")
+  print(colMeans(is.na(data)))
+  print("Median imputation processing:")
+  library(caret)
+  preProcValues <- preProcess(data, method = c("medianImpute"))
+  data <- predict(preProcValues, data)
+  sum(is.na(data))
+  data$label <- a
+  data$label <- as.factor(data$label)
+  return(data)
+}
+
+
+
+# Generate table one based on stratified outcomes
+tableone <- function(x) {
+  library(tableone)
+  MD_table <- CreateTableOne(vars = names(x), strata = "label", data = x)
+  MD_table_overall <- CreateTableOne(vars = names(x), data = x)
+  print(MD_table)
+  print(MD_table_overall)
+}
+
+
+
+
+
+############################################
+## built-in function for AutoScore below are functions
+
+
+selectionRF_list <- function(x, num) {
+  library(caret)
+  set.seed(4)
+  # prepare training scheme control <- trainControl(method='repeatedcv', number=10, repeats=3)
+  x$label <- as.factor(x$label)
+
+  # train the model
+  model <- randomForest(label ~ ., data = x, preProcess = "scale")
+
+  # estimate variable importance
+  importance <- importance(model, scale = FALSE)
+
+  # summarize importance
+  b <- importance$Overall
+  names(b) <- rownames(importance)
+  b <- sort(b, decreasing = T)
+
+  return(c(names(b)))
+}
+
+
+#x<-SD
+#testSet1<-ValidationSet1
+
+#
+# Dftransform <- function(x, testSet1, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1), Print_categories = FALSE) {
+#   CutVec <- list()
+#   for (i in 1:(length(x) - 2)) {
+#     if (class(x[, i]) == "factor") {
+#       if (length(levels(x[, i])) < 10)
+#         (next)() else stop("Error!! The number of categories should be less than 10")
+#     }
+#     # options(scipen = 20)
+#     a <- quantile(x[, i], probs = probs)
+#     a <- CheckVector(a)
+#     a1 <- signif(a, 3)  # remain 3 digits
+#     if (Print_categories == TRUE)
+#     {
+#       print(names(x)[i])
+#       # print(a1)
+#       l <- list(a1)
+#       names(l)[1] <- names(x)[i]
+#       CutVec <- append(CutVec, l)
+#     }  #update
+#
+#     if (length(a1) <= 2) {
+#       x[, i] <- as.factor(x[, i])
+#       testSet1[, i] <- as.factor(testSet1[, i])
+#     } else {
+#       x[, i] <- cut(x[, i], breaks = a1, right = F, include.lowest = T, dig.lab = 3)
+#       # xmin<-unlist(strsplit(levels(x[,i])[1],','))[1] xmax<-unlist(strsplit(levels(x[,i])[length(levels(x[,i]))],','))[2]
+#       levels(x[, i])[1] <- gsub(".*,", "(,", levels(x[, i])[1])
+#       levels(x[, i])[length(levels(x[, i]))] <- gsub(",.*", ",)", levels(x[, i])[length(levels(x[, i]))])
+#
+#       at <- a1
+#       at[1] <- min(testSet1[, i])*0.8 ##revised update 2020.10.6##
+#       at[length(at)] <- max(testSet1[, i])*1.2 ##revised update 2020.10.6##
+#       at1 <- signif(at, 3)
+#       at1 <- CheckVector(at1)  ###revised update##
+#       testSet1[, i] <- cut(testSet1[, i], breaks = at1, right = F, include.lowest = T,dig.lab = 3)
+#       # xmin<-as.character(min(at1)) xmax<-as.character(max(at1))
+#       levels(testSet1[, i])[1] <- gsub(".*,", "(,", levels(testSet1[, i])[1])
+#       levels(testSet1[, i])[length(levels(testSet1[, i]))] <- gsub(",.*", ",)", levels(testSet1[, i])[length(levels(testSet1[, i]))])
+#
+#     }
+#     # print(summary(x[,i]))update print(summary(testSet1[,i]))update
+#
+#   }
+#
+#   if (Print_categories == TRUE)
+#     return(list(x, testSet1, CutVec)) else return(list(x, testSet1))
+#
+# }
+
+
+
+Dftransform_FineTune <- function(x, testSet1, CutVec) {
+  j <- 1
+  for (i in 1:(length(x) - 2)) {
+    if (class(x[, i]) == "factor") {
+      if (length(levels(x[, i])) < 10)
+        (next)() else stop("Error!! The number of categories should be less than 10")
+    }
+    # options(scipen = 20)
+
+    a1 <- CutVec[[j]]
+    j <- j + 1
+    if (length(a1) <= 2) {
+      x[, i] <- as.factor(x[, i])
+      testSet1[, i] <- as.factor(testSet1[, i])
+    } else {
+      x[, i] <- cut(x[, i], breaks = a1, right = F, include.lowest = T, dig.lab = 3)
+      # xmin<-unlist(strsplit(levels(x[,i])[1],','))[1] xmax<-unlist(strsplit(levels(x[,i])[length(levels(x[,i]))],','))[2]
+      levels(x[, i])[1] <- gsub(".*,", "(,", levels(x[, i])[1])
+      levels(x[, i])[length(levels(x[, i]))] <- gsub(",.*", ",)", levels(x[, i])[length(levels(x[, i]))])
+
+      at <- a1
+      at[1] <- min(testSet1[, i])
+      at[length(at)] <- max(testSet1[, i])
+      at1 <- signif(at, 3)
+      at1 <- CheckVector(at1)  ###revised update##
+      testSet1[, i] <- cut(testSet1[, i], breaks = at1, right = F, include.lowest = T, dig.lab = 3)
+      # xmin<-as.character(min(at1)) xmax<-as.character(max(at1))
+      levels(testSet1[, i])[1] <- gsub(".*,", "(,", levels(testSet1[, i])[1])
+      levels(testSet1[, i])[length(levels(testSet1[, i]))] <- gsub(",.*", ",)", levels(testSet1[, i])[length(levels(testSet1[,
+                                                                                                                             i]))])
+
+
+    }
+    # print(summary(x[,i]))update print(summary(testSet1[,i]))update
+
+  }
+  return(list(x, testSet1))
+
+}
+
+
+Dftransform_insample <- function(x) {
+  for (i in 1:(length(x) - 2)) {
+    a <- quantile(x[, i], probs = c(0, 0.05, 0.2, 0.8, 0.95, 1))
+    a <- CheckVector(a)
+    # print(a)
+    if (length(a) <= 2)
+      x[, i] <- as.factor(x[, i]) else x[, i] <- cut(x[, i], breaks = a, right = F, include.lowest = T, dig.lab = 3)
+
+    # print(summary(x[,i]))
+  }
+  return(x)
+}
+
+
+## This function is for delete repeated items in the Variable tranforamtion
+CheckVector <- function(x) {
+  dele <- c()
+  for (i in 1:(length(x) - 1)) {
+    if (x[i] == x[i + 1]) {
+      dele <- c(dele, i + 1)
+    }
+  }
+  if (is.null(dele))
+    return(x) else return(x[-dele])
+}
+
+
+PlotROCCurve <- function(prob, labels) {
+  library(pROC)
+
+  # prob<-predict(model.glm,newdata=X_test, type = 'response')
+  Modelroc <- roc(labels, prob, quiet = TRUE)
+  auc <- auc(Modelroc)
+
+  roc.data <- data.frame(fpr = as.vector(coords(Modelroc, "local maximas", ret = "1-specificity", transpose = TRUE)), tpr = as.vector(coords(Modelroc,
+                                                                                                                                             "local maximas", ret = "sensitivity", transpose = TRUE)))
+  p <- ggplot(roc.data, aes(x = fpr, ymin = 0, ymax = tpr)) + geom_ribbon(alpha = 0.2) + geom_line(aes(y = tpr)) + xlab("1-Specificity") +
+    ylab("Sensitivity") + ggtitle(paste0("Receiver Operating Characteristic(ROC) Curve \nAUC=", round(auc, digits = 4)))
+  print(p)
+}
+
+
+ChangeRef <- function(df1, coefVec) {
+  df <- subset(df1, select = -status)
+  df <- subset(df, select = -time)
+  for (i in (1:length(df))) {
+    c1 <- paste("^", names(df)[i], sep = "")
+    a <- coefVec[grepl(c1, names(coefVec))]
+    if (min(a) < 0) {
+      ref <- gsub(names(df)[i], "", names(a)[which.min(a)])
+      df[, i] <- relevel(df[, i], ref = ref)
+    }
+  }
+
+  df$status <- df1$status
+  df$time <- df1$time
+  return(df)
+}
+
+
+AddBaseline <- function(df, coefVec) {
+  df <- subset(df, select = -status)
+  df <- subset(df, select = -time)
+  vec <- c()
+  m <- 0
+  n <- 1
+  for (i in (1:length(df))) {
+    vec <- c(vec, 0)
+    m <- m + 1
+    names(vec)[m] <- paste(names(df)[i], levels(df[, i])[1], sep = "")
+    for (j in levels(df[, i])[2:length(levels(df[, i]))]) {
+      vec <- c(vec, coefVec[n])
+      n <- n + 1
+      m <- m + 1
+    }
+  }
+  return(vec)
+}
+
+
+AutoTest <- function(df, myvec) {
+  df1<-df
+  df <- subset(df, select = -status)
+  df <- subset(df, select = -time)
+  for (i in 1:(length(names(df)))) {
+    a <- myvec[grepl(names(df)[i], names(myvec))]
+    df[, i] <- as.character(df[, i])
+    for (j in 1:length(names(a))) {
+      df[, i][df[, i] %in% gsub(names(df)[i], "", names(a)[j])] <- a[j]
+    }
+
+    df[, i] <- as.numeric(df[, i])
+  }
+
+  df$status <- df1$status
+  df$time <- df1$time
+  return(df)
+}
+
+
+############################################
+## Four main peplines for AutoScore
+
+AutoScore_rank <- function(TrainSet, ntree = 50) {
+  set.seed(4)
+
+  #d.obj <- ranger(Surv(time, status) ~ ., data = TrainSet,importance = "impurity",num.trees = ntree)
+  d.obj <- rfsrc(Surv(time, status) ~ ., TrainSet, nsplit = 10, ntree =ntree, importance="permute",
+                 do.trace = T)
+
+  vimp.na <- vimp(d.obj)
+  #summary(vimp.na)
+  vim<-data.frame(sort(vimp.na$importance,decreasing = T))
+
+  #vim<-data.frame(sort(d.obj$variable.importance,decreasing = T))
+  #print(vim)
+
+  b<-row.names(vim)
+  print(b)
+  return(b)
+}
+
+
+
+
+
+AutoScore_parsimony <- function(TrainSet, ValidationSet, rank = Ranking, nmin = 2, nmax = 24, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1),mode=1) {
+  s<-Ranking
+  #s<-s_temporal
+  AUC_XO<-c()
+  AUC_Ahc<-c()
+  AUC_c_all<-c()
+  AUC_d_all<-c()
+  MaxScore<-100
+  ## STEP (2):
+  #nmin<-1
+  #nmax<-24
+  #probs<-c(0, 0.05, 0.2, 0.8, 0.95, 1)
+
+  for (i in nmin:nmax) {
+    print("Select the number of Variables")
+    print(i)
+    SD <- TrainSet[, c(s[1:i], "time","status")]
+    ValidationSet1 <- ValidationSet[, c(s[1:i],  "time","status")]
+
+
+    SDlist <-Dftransform(SD, ValidationSet1)
+    SD2 <- SDlist[[1]]
+    ValidationSet2 <- SDlist[[2]]
+
+    #y_validation <- ValidationSet2$label
+
+    model<-coxph(Surv(time, status) ~ ., SD2)
+
+    coefVec <- coef(model)
+    SD2 <- ChangeRef(SD2, coefVec)
+    model<-coxph(Surv(time, status) ~ ., SD2)
+
+
+    # print(model) summary(model)
+    coefVec <- coef(model)
+    a <- round(coefVec/min(coefVec[-1]))
+    myvec <- AddBaseline(SD2, a)
+
+    total_max <- 100
+    total <- 0
+    for(j in 1:i) total <- total + max(myvec[grepl(s[j], names(myvec))])
+    myvec <- round(myvec/(total/total_max))
+    #print("The generated Scores are shown below")
+    #print(as.data.frame(myvec))
+    #myvec<-myvec[1:39]
+    ValidationSet3 <- AutoTest(ValidationSet2, myvec)
+    #ValidationSet3$Age[is.na(ValidationSet3$Age)]<-10
+    ValidationSet3$TotalScore <- rowSums(subset(ValidationSet3, select = -c(time, status)))
+    SD2_n <- AutoTest(SD2, myvec)
+    SD2_n$TotalScore <- rowSums(subset(SD2_n, select = -c(time, status)))
+    status_validation <- ValidationSet3$status
+    time_validation <- ValidationSet3$time
+
+
+    ##-------------------------------------------------------------------
+    # model0 <- coxph(Surv(time, status)~1, data=ValidationSet3)
+    # model1 <- coxph(Surv(time, status)~TotalScore, data=ValidationSet3)
+    # f0 <- rep(0,nrow(ValidationSet3))
+    # f1 <- predict(model1, newdata=ValidationSet3)
+    # Surv.res <- Surv(ValidationSet3$time, ValidationSet3$status)
+    # #OXS(Surv.res, f1, f0)
+    # #Nagelk(Surv.res, f1, f0)
+    # sAUC<-XO(Surv.res, f1, f0)
+    # print(sAUC)
+    # AUC_XO<-c(AUC_XO,sAUC)
+
+
+    ##method4 AUC_uno
+    Surv.rsp <- Surv(SD2_n$time, SD2_n$status)
+    Surv.rsp.new <- Surv(ValidationSet3$time, ValidationSet3$status)
+    times <-seq(2, 88, 3)#seq(1, 365, 7)
+
+    AUC_uno <- AUC.uno(Surv.rsp, Surv.rsp.new, lpnew = ValidationSet3$TotalScore, times = times)
+    sAUC<- AUC_uno$iauc
+    print(sAUC)
+    AUC_Ahc<-c(AUC_Ahc,sAUC)
+
+
+
+
+
+    #method5 c statistics
+
+    AUC_c<-concordance.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time, surv.event=ValidationSet3$status, method="noether", comppairs=comppairs)
+    sAUC<- AUC_c$c.index
+    print(sAUC)
+    AUC_c_all<-c(AUC_c_all,sAUC)
+
+
+    #method6 d statistics
+
+    AUC_d<-D.index(x=ValidationSet3$TotalScore, surv.time=ValidationSet3$time,surv.event=ValidationSet3$status)
+    sAUC<- AUC_d$d.index
+    print(sAUC)
+    AUC_d_all<-c(AUC_d_all,sAUC)
+
+    ##-------------------------------------------------------------------
+
+
+  }
+
+
+
+  par(mfcol=c(2,2))
+
+  AUC<-AUC_XO
+  names(AUC) <- nmin:nmax
+  print("list of AUC values are shown below")
+  #print(data.frame(AUC))
+  plot(AUC, main = "Parsimony plot on the Value of R2-XO", xlab = "Number of Variables (Complexity)", ylab = "Value of R2-XO", col = "red",
+       lwd = 2, type = "o")
+
+  AUC<-AUC_Ahc
+  names(AUC) <- nmin:nmax
+  plot(AUC, main = "Parsimony plot on the Intergrated AUC", xlab = "Number of Variables (Complexity)", ylab = "Intergrated AUC", col = "red",
+       lwd = 2, type = "o")
+
+  AUC<-AUC_c_all
+  names(AUC) <- nmin:nmax
+  plot(AUC, main = "Parsimony plot on the C statistic (Concordance)", xlab = "Number of Variables (Complexity)", ylab = "C statistic (Concordance)", col = "red",
+       lwd = 2, type = "o")
+
+  AUC<-AUC_d_all
+  names(AUC) <- nmin:nmax
+  plot(AUC, main = "Parsimony plot on the D statistic", xlab = "Number of Variables (Complexity)", ylab = "D statistic", col = "red",
+       lwd = 2, type = "o")
+
+  par(mfcol=c(2,2))
+  SelectParsimony(AUC_XO)
+  SelectParsimony(AUC_Ahc)
+  SelectParsimony(AUC_c_all)
+  SelectParsimony(AUC_d_all)
+
+}
+
+SelectParsimony<-function(AUC,p=3,cutoff=0.01){
+  #cutoff<-0.01
+  #p<-3
+  len_AUC<-length(AUC)
+  s_i<-s[1:len_AUC]
+  Rate_AUC <- c()
+  for (i in 2:len_AUC){
+    Rate_AUC<-c(Rate_AUC,(AUC[i]-AUC[i-1])/AUC[i-1])
+  }
+
+  plot(Rate_AUC, main = "Increasing Rate of ", xlab = "Number of Variables", ylab = "Increasing Rate", col = "red",
+       lwd = 2, type = "o", ylim=c(0,10*0.01))
+  abline(h=0.01,lty=2,col="grey50",lwd=2)
+  log_AUC<-Rate_AUC>=cutoff
+  for(i in 1:(length(log_AUC)-p+1)) {if(all(log_AUC[i:(i+p-1)]==FALSE)) break}
+  FinalVariable<-s_i[1:i][c(TRUE,log_AUC[1:(i-1)])]
+  print(FinalVariable)}
+#round(Rate_AUC, digits = 4)
+
+
+AutoScore_weighting <- function(TrainSet, ValidationSet, FinalVariable, MaxScore = 100, probs = c(0, 0.05, 0.2, 0.8, 0.95, 1), mode=1) {
+  SD <- TrainSet[, c(FinalVariable, "time","status")]
+  ValidationSet1 <- ValidationSet[, c(FinalVariable, "time","status")]
+
+  # AutoScore Module 2 : cut numeric and transfer categories
+  SDlist <- Dftransform(SD, ValidationSet1, probs = probs, Print_categories = TRUE, mode = mode)
+  SD2 <- SDlist[[1]]
+  ValidationSet2 <- SDlist[[2]]
+  CutVec1 <- SDlist[[3]]
+  CutVec <- CutVec1
+  for (i in 1:length(CutVec)) CutVec[[i]] <- CutVec[[i]][2:(length(CutVec[[i]]) - 1)]
+
+  # AutoScore Module 3 : Score weighting
+  model<-coxph(Surv(time, status) ~ ., SD2)
+  #y_validation <- ValidationSet2$label
+  coefVec <- coef(model)
+  SD2 <- ChangeRef(SD2, coefVec)
+  model<-coxph(Surv(time, status) ~ ., SD2)
+
+  # print(model)
+  coefVec <- coef(model)
+  a <- round(coefVec/min(coefVec[-1]))
+  myvec <- AddBaseline(SD2, a)
+  # print('The generated Scores are shown below') print(as.data.frame(myvec))
+
+  total_max <- MaxScore
+  total <- 0
+  for (i in 1:length(FinalVariable)) total <- total + max(myvec[grepl(FinalVariable[i], names(myvec))])
+  myvec <- round(myvec/(total/total_max))
+  ##print("The generated Scores are shown below")
+  ##print(as.data.frame(myvec))
+
+  ## intermediate evaluation based on Validation Set
+  ValidationSet3 <- AutoTest(ValidationSet2, myvec)
+  ValidationSet3$TotalScore <- rowSums(subset(ValidationSet3, select = -c(time, status)))
+  SD2_n <- AutoTest(SD2, myvec)
+  SD2_n$TotalScore <- rowSums(subset(SD2_n, select = -c(time, status)))
+  status_validation <- ValidationSet3$status
+  time_validation <- ValidationSet3$time
+
+  ##eVALUDATION::
+  ##print("Performance using AutoScore (based on internal validation):")
+
+  return(CutVec)
+}
+
+
+AutoScore_fine_tuning <- function(TrainSet, ValidationSet, FinalVariable, CutVec, MaxScore = 100) {
+  SD <- TrainSet[, c(FinalVariable, "time","status")]
+  ValidationSet1 <- ValidationSet[, c(FinalVariable, "time","status")]
+
+  # AutoScore Module 2 : cut numeric and transfer categories(fix)
+  SD2 <- Dftransform_fixed(SD, CutVec = CutVec)
+  ValidationSet2 <- Dftransform_fixed(ValidationSet1, CutVec = CutVec)
+
+  # AutoScore Module 3 : Score weighting
+  model<-coxph(Surv(time, status) ~ ., SD2)
+  #y_validation <- ValidationSet2$label
+  coefVec <- coef(model)
+  SD2 <- ChangeRef(SD2, coefVec)
+  model<-coxph(Surv(time, status) ~ ., SD2)
+  # print(model) summary(model)
+  coefVec <- coef(model)
+  a <- round(coefVec/min(coefVec[-1]))
+  myvec <- AddBaseline(SD2, a)
+  # print('The generated Scores are shown below') print(as.data.frame(myvec)) Revising Score values
+  total_max <- MaxScore
+  total <- 0
+  for (i in 1:length(FinalVariable)) total <- total + max(myvec[grepl(FinalVariable[i], names(myvec))])  #update
+  myvec <- round(myvec/(total/total_max))
+  print("The generated Scores are shown below")
+  #print(as.data.frame(myvec))
+
+  ValidationSet3 <- AutoTest(ValidationSet2, myvec)
+  #ValidationSet3$Age[is.na(ValidationSet3$Age)]<-10
+  ValidationSet3$TotalScore <- rowSums(subset(ValidationSet3, select = -c(time, status)))
+  SD2_n <- AutoTest(SD2, myvec)
+  SD2_n$TotalScore <- rowSums(subset(SD2_n, select = -c(time, status)))
+  status_validation <- ValidationSet3$status
+  time_validation <- ValidationSet3$time
+
+  # Several evaluation here:
+  AUC_f<-eva_performance_iauc(marker=ValidationSet3$TotalScore,TrainSet, ValidationSet)
+
+  return(list(AUC_f,myvec,SD2_n$TotalScore,ValidationSet3$TotalScore))
+}
+
+
+
+
+AutoScore_testing <- function(TestSet, FinalVariable, CutVec, ScoringTable) {
+  TestSet1 <- TestSet[, c(FinalVariable, "time","status")]
+  TestSet2 <- Dftransform_fixed(TestSet1, CutVec = CutVec)
+  TestSet3 <- AutoTest(TestSet2, ScoringTable)
+  TestSet3$TotalScore <- rowSums(subset(TestSet3, select = -c(time, status)))
+  return(TestSet3)
+
+
+}
+
+
+
+Dftransform_fixed <- function(x, CutVec = CutVec) {
+  j <- 1
+  for (i in 1:(length(x) - 2)) {
+    if (class(x[, i]) == "factor") {
+      if (length(levels(x[, i])) < 10)
+        (next)() else stop("Error!! The number of categories should be less than 9")
+    }
+    at <- c(min(x[, i])*0.8, CutVec[[j]], max(x[, i])*1.2) ## updated from 2020.10.16
+    at1 <- signif(at, 3)
+    at1 <- CheckVector(at1)  ###revised update##
+    x[, i] <- cut(x[, i], breaks = at1, right = F, include.lowest = T, dig.lab = 3)
+    # xmin<-as.character(min(at1)) xmax<-as.character(max(at1))
+    levels(x[, i])[1] <- gsub(".*,", "(,", levels(x[, i])[1])
+    levels(x[, i])[length(levels(x[, i]))] <- gsub(",.*", ",)", levels(x[, i])[length(levels(x[, i]))])
+    j <- j + 1
+  }
+  return(x)
+}
+
+
+
+ScoreGroup<-function(x,y,z,v=5){
+
+  a<-NA
+
+  for(i in 1:100*v) a<- ifelse(x<=i & x>i-v, i,a)
+  ScoreStratify_rate<-tapply(z, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_mean<-tapply(y, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_median<-tapply(y, a,function(x){median(x,na.rm = T)})
+  ScoreStratify_0.25<-tapply(y, a,function(x){quantile(x,1/4,na.rm = T)})
+  ScoreStratify_0.75<-tapply(y, a,function(x){quantile(x,3/4,na.rm = T)})
+  ScoreStratify_0.1<-tapply(y, a,function(x){quantile(x,0.1,na.rm = T)})
+  ScoreStratify_0.9<-tapply(y, a,function(x){quantile(x,0.9,na.rm = T)})
+  ScoreStratify_0.02<-tapply(y, a,function(x){quantile(x,0.02,na.rm = T)})
+  ScoreStratify_0.98<-tapply(y, a,function(x){quantile(x,0.98,na.rm = T)})
+  ScoreStratify_3day<-tapply(y<=3, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_7day<-tapply(y<=7, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_30day<-tapply(y<=30, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_90day<-tapply(y<90, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_sd<-tapply(y, a,function(x){sd(x,na.rm = T)})
+  b<-data.frame(table(a),ScoreStratify_rate,ScoreStratify_mean,ScoreStratify_sd,
+                ScoreStratify_0.02,ScoreStratify_0.1,ScoreStratify_0.25,ScoreStratify_median,ScoreStratify_0.75,
+                ScoreStratify_0.9,
+                ScoreStratify_0.98,ScoreStratify_3day,ScoreStratify_7day,ScoreStratify_30day,ScoreStratify_90day)
+  return(b)}
+
+
+
+ScoreGroup_specific<-function(x,y,z){
+
+  a<-cut(x, breaks = c(min(x),20,30,40,50,60,max(x)), right = F, include.lowest = T, dig.lab = 3)
+  ScoreStratify_rate<-tapply(z, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_mean<-tapply(y, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_median<-tapply(y, a,function(x){median(x,na.rm = T)})
+  ScoreStratify_0.25<-tapply(y, a,function(x){quantile(x,1/4,na.rm = T)})
+  ScoreStratify_0.75<-tapply(y, a,function(x){quantile(x,3/4,na.rm = T)})
+  ScoreStratify_0.1<-tapply(y, a,function(x){quantile(x,0.1,na.rm = T)})
+  ScoreStratify_0.9<-tapply(y, a,function(x){quantile(x,0.9,na.rm = T)})
+  ScoreStratify_0.02<-tapply(y, a,function(x){quantile(x,0.02,na.rm = T)})
+  ScoreStratify_0.98<-tapply(y, a,function(x){quantile(x,0.98,na.rm = T)})
+  ScoreStratify_3day<-tapply(y<=3, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_7day<-tapply(y<=7, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_30day<-tapply(y<=30, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_90day<-tapply(y<90, a,function(x){mean(x,na.rm = T)})
+  ScoreStratify_sd<-tapply(y, a,function(x){sd(x,na.rm = T)})
+  b<-data.frame(table(a),ScoreStratify_rate,ScoreStratify_mean,ScoreStratify_sd,
+                ScoreStratify_0.02,ScoreStratify_0.1,ScoreStratify_0.25,ScoreStratify_median,ScoreStratify_0.75,
+                ScoreStratify_0.9,
+                ScoreStratify_0.98,ScoreStratify_3day,ScoreStratify_7day,ScoreStratify_30day,ScoreStratify_90day)
+  return(b)}

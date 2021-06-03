@@ -1,5 +1,3 @@
-
-
 # Pipeline_function --------------------------------------------------------
 
 #' @title AutoScore STEP(i): Rank variables with machine learning (AutoScore Module 1)
@@ -56,15 +54,12 @@ AutoScore_rank <- function(train_set, ntree = 100) {
 #' @param quantiles Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.
 #' @param max_cluster The max number of cluster (Default: 5). Available if categorize = "kmeans".
 #' @param do_trace If set to TRUE, all results based on each fold of cross-validation would be printed out and plotted (Default: FALSE). Available if cross_validation = TRUE.
-#'
 #' @details This is the second step of the general AutoScore workflow, to generate the parsimony plot to help select parsimonious model.
 #'  In this step, it goes through AutoScore Module 2,3 and 4 multiple times and to evaluate the performance under different variable list.
 #'  The generated parsimony plot would give researcher an intuitive figure to choose the best models.
 #'  If data size is small (ie <5000), an independent validation set may not be a wise choice. Then we will use cross-validation
 #'  to maximize the utility of data. Set \code{cross_validation=TRUE}.
-#'
 #' @return List of AUC value for different number of variables
-#'
 #' @examples
 #' # see AutoScore Guidebook for the whole 5-step workflow
 #' data("sample_data")
@@ -83,7 +78,6 @@ AutoScore_rank <- function(train_set, ntree = 100) {
 #' categorize = "quantile",
 #' quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
 #' )
-#'
 #' @references
 #' \itemize{
 #'  \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N, AutoScore: A Machine Learning-Based Automatic Clinical
@@ -93,10 +87,8 @@ AutoScore_rank <- function(train_set, ntree = 100) {
 #' @seealso AutoScore_rank, AutoScore_parsimony, AutoScore_weighting, AutoScore_fine_tuning, AutoScore_testing
 #' @export
 #' @import  pROC
-#'
 AutoScore_parsimony <- function(train_set, validation_set, rank, max_score = 100, n_min = 1, n_max = 20, cross_validation = FALSE, fold = 10,
                                 categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), max_cluster = 5, do_trace = FALSE) {
-
   if(n_max > length(rank)){
     warning("WARNING: the n_max (",n_max,") is larger the number of all variables (",length(rank),"). We Automatically revise the n_max to ",length(rank))
     n_max <- length(rank)
@@ -144,12 +136,11 @@ AutoScore_parsimony <- function(train_set, validation_set, rank, max_score = 100
     if(do_trace){
     print(paste("list of AUC values for fold",j))
     print(data.frame(AUC))
-    plot(AUC, main = paste("Parsimony plot (cross validation) for fold",j), xlab = "Number of Variables", ylab = "Area Under the Curve", col = "red",
+    plot(AUC, main = paste("Parsimony plot (cross validation) for fold",j), xlab = "Number of Variables", ylab = "Area Under the Curve", col = "cadetblue1",
          lwd = 2, type = "o")}
 
     # store AUC result from each fold into "auc_set"
     auc_set<-cbind(auc_set,data.frame(AUC))
-
   }
 
   # finish loop and then output final results averaged by all folds
@@ -157,11 +148,9 @@ AutoScore_parsimony <- function(train_set, validation_set, rank, max_score = 100
   auc_set$sum<-rowSums(auc_set)/fold
   cat("***list of final mean AUC values through cross-validation are shown below \n")
   print(data.frame(auc_set$sum))
-  plot(auc_set$sum, main = paste("Final Parsimony Plot based on ", fold, "-fold Cross Validation",sep = ""), xlab = "Number of Variables", ylab = "Area Under the Curve", col = "red",
+  plot(auc_set$sum, main = paste("Final Parsimony Plot based on ", fold, "-fold Cross Validation",sep = ""), xlab = "Number of Variables", ylab = "Area Under the Curve", col = "cadetblue1",
        lwd = 2, type = "o")
   return(auc_set)}
-
-
 
 
   # if Cross validation is FALSE
@@ -241,7 +230,7 @@ AutoScore_weighting <- function(train_set, validation_set, final_variables, max_
   score_table<-compute_score_table(train_set_2,max_score,final_variables)
   cat("****Initial Scores: \n")
   #print(as.data.frame(score_table))
-  print_score_table(scoring_table = score_table, final_variable = final_variables)
+  print_scoring_table(scoring_table = score_table, final_variable = final_variables)
 
   # Using "assign_score" to generate score based on new dataset and Scoring table "score_table"
   validation_set_3 <- assign_score(validation_set_2, score_table)
@@ -258,21 +247,17 @@ AutoScore_weighting <- function(train_set, validation_set, final_variables, max_
 }
 
 
-
-
 #' @title AutoScore STEP(iv): Fine-tune the score by revising cut_vec with domain knowledge (AutoScore Module 5)
 #' @description Domain knowledge is essential in guiding risk model development.
 #'  For continuous variables, the variable transformation is a data-driven process (based on "quantile" or "kmeans" ).
 #'  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
 #'  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
 #' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. See Guidebook.
-#'
 #' @param train_set A processed \code{data.frame} that contains data to be analyzed, for training.
 #' @param validation_set A processed \code{data.frame} that contains data for validation purpose.
 #' @param final_variables A vector containing the list of selected variables, selected from Step(2). See Guidebook
 #' @param max_score Maximum total score (Default: 100).
 #' @param cut_vec Generated from STEP(iii) \code{AutoScore_weighting()}.Please follow the guidebook
-#'
 #' @return Generated final table of scoring model for downstream testing
 #' @examples
 #' \dontrun{
@@ -285,7 +270,6 @@ AutoScore_weighting <- function(train_set, validation_set, final_variables, max_
 #' }
 #' @export
 #' @import pROC ggplot2
-#'
 AutoScore_fine_tuning <- function(train_set, validation_set, final_variables, cut_vec, max_score = 100) {
   # Prepare train_set and Validation Set
   train_set_1 <- train_set[, c(final_variables, "label")]
@@ -299,7 +283,7 @@ AutoScore_fine_tuning <- function(train_set, validation_set, final_variables, cu
   score_table<-compute_score_table(train_set_2,max_score,final_variables)
   cat("***Fine-tuned Scores: \n")
   #print(as.data.frame(score_table))
-  print_score_table(scoring_table = score_table, final_variable = final_variables)
+  print_scoring_table(scoring_table = score_table, final_variable = final_variables)
 
   # Using "assign_score" to generate score based on new dataset and Scoring table "score_table"
   validation_set_3 <- assign_score(validation_set_2, score_table)
@@ -320,7 +304,6 @@ AutoScore_fine_tuning <- function(train_set, validation_set, final_variables, cu
 #'  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
 #'  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
 #' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. See Guidebook.
-#'
 #' @param test_set A processed \code{data.frame} that contains data for testing purpose. This \code{data.frame} should have same format as
 #'        \code{train_set} (same variable names and outcomes)
 #' @param final_variables A vector containing the list of selected variables, selected from Step(ii). See Guidebook
@@ -328,7 +311,7 @@ AutoScore_fine_tuning <- function(train_set, validation_set, final_variables, cu
 #' @param cut_vec Generated from STEP(iii) \code{AutoScore_weighting()}.Please follow the guidebook
 #' @param threshold Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to "best", the optimal threshold will be calculated (Default:"best").
 #' @param with_label Set to TRUE if there are labels in the test_set and performance will be evaluated accordingly (Default:TRUE).
-#'
+#' Set it to "FALSE" if there are not "label" in the "test_set" and the final predicted scores will be the output without performance evaluation.
 #' @return A data frame with predicted score and the outcome for downstream visualization.
 #' @examples
 #' \dontrun{
@@ -362,7 +345,6 @@ AutoScore_testing <- function(test_set, final_variables, cut_vec, scoring_table,
   pred_score <- data.frame(pred_score = test_set_3$total_score, Label = y_test)
   return(pred_score)
 
-
   } else { test_set_1 <- test_set[, c(final_variables)]
   test_set_2 <- transform_df_fixed(test_set_1, cut_vec = cut_vec)
   test_set_3 <- assign_score(test_set_2, scoring_table)
@@ -382,7 +364,6 @@ AutoScore_testing <- function(test_set, final_variables, cut_vec, scoring_table,
 # Preprocess(data,outcome) outcome: character class object wich point to the name of the outcome in the dataset data: should be a
 # dataframe
 
-
 #' @title AutoScore function: Check whether the input dataset fulfill the requirement of the AutoScore
 #' @param data The data to be checked
 #' @examples
@@ -400,7 +381,6 @@ check_data<-function(data){
   fac_large<-c()
   special_case<-c()
 
-
   for (i in names(data)) {
     if ((class(data[[i]]) != "factor") && (class(data[[i]]) != "numeric"))  non_num_fac<-c(non_num_fac,i)
     if ((length(levels(data[[i]])) > 10) && (class(data[[i]]) == "factor"))   fac_large<-c(fac_large,i)
@@ -411,7 +391,6 @@ check_data<-function(data){
   if(!is.null(non_num_fac)) warning(paste("WARNING: the dataset has variable of character and they will be transformed to factor:",non_num_fac))
   if(!is.null(fac_large)) warning(paste("WARNING: The number of categories for some variables is too many :larger than:",fac_large))
 
-
   #3. check missing values
   missing_rate<-colSums(is.na(data))
   if(sum(missing_rate)) {
@@ -420,13 +399,8 @@ check_data<-function(data){
   }
   else cat("missing value check passed.\n")
   #cat("Please fixed the problem of your dataset before AutoScore if you see any Wanings below.\n")
-
-
-
-
 }
 # check 1. missing value or not label is there and binary or not 3.only factor and numeric: 4. factor larger than 10?
-
 
 
 #' @title AutoScore function: Automatically splitting dataset to train, validation and test set
@@ -444,7 +418,6 @@ check_data<-function(data){
 #' out_split <- split_data(data = sample_data, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
 #' @export
 split_data <- function(data, ratio, cross_validation = FALSE) {
-
   # non cross validation: default
   if (cross_validation == FALSE) {
     n <- length(data[, 1])
@@ -488,8 +461,6 @@ split_data <- function(data, ratio, cross_validation = FALSE) {
 }
 
 
-
-
 #' @title AutoScore function: Descriptive Analysis
 #' @description Compute descriptive table (usually Table 1 in medical literature) for the dataset.
 #' @param df data frame after checking
@@ -506,7 +477,6 @@ compute_descriptive_table<- function(df) {
   print(descriptive_table)
   print(descriptive_table_overall)
 }
-
 
 
 #' @title AutoScore function: Univariable Analysis
@@ -537,7 +507,6 @@ compute_uni_variable_table <- function(df) {
 }
 
 
-
 #' @title AutoScore function: Multivariate Analysis
 #' @description Generate tables for Multivariate Analysis
 #' @param df data frame after checking
@@ -563,18 +532,17 @@ compute_multi_variable_table <- function(df) {
 }
 
 
-
-#' @title AutoScore Function: print_score_table
+#' @title AutoScore Function: print_scoring_table
 #' @description Print scoring tables for visulization
 #' @param scoring_table Raw scoring table generated by procedure
 #' @param final_variable Final included variables by predictor_rank
-#' @return dataframe of formatted scoring table
+#' @return Data frame of formatted scoring table
 #' @examples
 #' \dontrun{
-#' print_score_table(scoring_table,final_variable)}
+#' print_scoring_table(scoring_table,final_variable)}
 #' @export
 #' @importFrom knitr kable
-print_score_table<-function(scoring_table,final_variable){
+print_scoring_table<-function(scoring_table,final_variable){
   #library(knitr)
   table_tmp<-data.frame()
   for (i in 1:length(final_variable)) {
@@ -635,9 +603,6 @@ print_score_table<-function(scoring_table,final_variable){
 }
 
 
-
-
-
 # Build_in_function -------------------------------------------------------
 ## built-in function for AutoScore below are functions
 ## Those functions are cited by pepline functions
@@ -647,9 +612,7 @@ print_score_table<-function(scoring_table,final_variable){
 # default value.
 # function description
 # comments what u are trying to do.
-
-#print(paste("Select the number of Variables",i))
-
+# print(paste("Select the number of Variables",i))
 
 #' @title Internal function: Print receiver operating characteristic (ROC) performance
 #' @description Print receiver operating characteristic (ROC) performance
@@ -681,7 +644,6 @@ print_roc_performance<-function(label, score, threshold = "best"){
 
 
 compute_score_table<-function(train_set_2,max_score,variable_list){
-
   #AutoScore Module 3 : Score weighting
   # First-step logistic regression
   model <- glm(label ~ ., family = binomial(link = "logit"), data = train_set_2)
@@ -708,9 +670,7 @@ compute_score_table<-function(train_set_2,max_score,variable_list){
   return(score_table)}
 
 
-
 compute_auc_val <-function(train_set_1, validation_set_1, variable_list, categorize, quantiles, max_cluster, max_score){
-
   # AutoScore Module 2 : cut numeric and transfer categories
   cut_vec <- get_cut_vec(train_set_1, categorize = categorize, quantiles = quantiles, max_cluster = max_cluster)
   train_set_2 <- transform_df_fixed(train_set_1, cut_vec)
@@ -734,8 +694,6 @@ compute_auc_val <-function(train_set_1, validation_set_1, variable_list, categor
   model_roc <- roc(y_validation, validation_set_3$total_score, quiet = T)
 
   return(model_roc) }
-
-
 
 
 get_cut_vec <-
@@ -844,13 +802,6 @@ transform_df_fixed <- function(df, cut_vec) {
 }
 
 
-
-
-
-
-
-
-
 #' @title Internal Function: Plotting ROC curve
 #' @param prob Predicate probability
 #' @param labels Actual outcome(binary)
@@ -868,6 +819,7 @@ plot_roc_curve <- function(prob, labels, quiet = TRUE) {
     ylab("Sensitivity") + ggtitle(paste0("Receiver Operating Characteristic (ROC) Curve \nAUC=", round(auc, digits = 4)))
   print(p)
 }
+
 
 #' @title Build-in Function: Change Reference category after first-step logistic regression
 #' @param df A \code{data.frame} used for logistic regression
@@ -895,6 +847,7 @@ change_reference <- function(df, coef_vec) {
   return(df_tmp)
 }
 
+
 #' @title Internal Function: Add baselines after second-step logistic regression
 #' @param df A \code{data.frame} used for logistic regression
 #' @param coef_vec Generated from logistic regression
@@ -915,7 +868,6 @@ add_baseline <- function(df, coef_vec) { # Proposed new version
 }
 
 
-
 #' @title Internal Function: Automatically assign scores to each subjects given Test Set and scoring table.
 #' @param df A \code{data.frame} used for testing, where variables keep before categorization
 #' @param score_table A \code{vector} containing the scoring table
@@ -933,8 +885,6 @@ assign_score <- function(df, score_table) {
 
   return(df)
 }
-
-
 
 
 #' 20000 simulated ICU admission data, with the same distribution as the data in the MIMIC-III ICU database
