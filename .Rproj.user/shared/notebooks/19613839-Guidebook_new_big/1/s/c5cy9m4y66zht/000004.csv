@@ -1,6 +1,0 @@
-"0","set.seed(4)"
-"0","sample_data<-FD2"
-"0","out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2))"
-"0","train_set <- out_split$train_set"
-"0","validation_set <- out_split$validation_set"
-"0","test_set <- out_split$test_set"

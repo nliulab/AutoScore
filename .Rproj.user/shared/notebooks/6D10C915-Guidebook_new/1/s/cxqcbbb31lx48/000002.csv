@@ -1,4 +1,0 @@
-"0","out_split <- split_data(data = sample_data_small, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)"
-"0","train_set <- out_split$train_set"
-"0","validation_set <- out_split$validation_set"
-"0","test_set <- out_split$test_set"

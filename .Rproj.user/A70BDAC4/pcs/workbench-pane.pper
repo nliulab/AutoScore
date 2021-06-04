@@ -1,5 +1,13 @@
 {
     "TabSet1": 0,
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "TabSet2": 0,
+=======
     "TabSet2": 1,
+>>>>>>> parent of 20e51a4 (fix bugs)
+=======
+    "TabSet2": 1,
+>>>>>>> parent of 20e51a4 (fix bugs)
     "TabZoom": {}
 }

@@ -7,7 +7,7 @@
 split_data(data, ratio, cross_validation = FALSE)
 }
 \arguments{
-\item{data}{The dataset ro be splitted}
+\item{data}{The dataset to be splitted}
 
 \item{ratio}{The ratio to divide dataset into train, validation and test set.(Default: c(0.7, 0.1, 0.2))}
 

@@ -164,7 +164,7 @@ AUC <- AutoScore_parsimony(
 
 ```
 - Users could use the `AUC` for further analysis or export it as the CSV to other software for plotting.
-```{r csv_generate, eval=FALSE}
+```{r csv_generate2, eval=FALSE}
 write.csv(data.frame(AUC),file = "D:/AUC.csv")
 ```
 
@@ -259,8 +259,8 @@ head(pred_score)
 ```
 
 - Users could use the `pred_score` for further analysis or export it as the CSV to other software.
-```{r csv_generate, eval=FALSE}
-write.csv(pred_score,file = "D:/pred_score.csv")
+```{r csv_generate3, eval=FALSE}
+write.csv(pred_score, file = "D:/pred_score.csv")
 ```
 
 - Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 50).

@@ -44,3 +44,6 @@ scoring_table <- AutoScore_fine_tuning(train_set, validation_set,
   Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798}
 }
 }
+\seealso{
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_testing}}
+}

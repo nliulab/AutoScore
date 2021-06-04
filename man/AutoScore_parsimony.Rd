@@ -76,15 +76,14 @@ n_max = 20,
 categorize = "quantile",
 quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
 )
-
 }
 \references{
 \itemize{
- \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N, AutoScore: A Machine Learning?CBased Automatic Clinical
+ \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N, AutoScore: A Machine Learning-Based Automatic Clinical
   Score Generator and Its Application to Mortality Prediction Using Electronic Health Records,
   JMIR Med Inform 2020;8(10):e21798, doi: 10.2196/21798}
 }
 }
 \seealso{
-AutoScore_rank, AutoScore_parsimony, AutoScore_weighting, AutoScore_fine_tuning, AutoScore_testing
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}
 }

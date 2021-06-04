@@ -25,7 +25,8 @@ AutoScore_testing(
 
 \item{threshold}{Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to "best", the optimal threshold will be calculated (Default:"best").}
 
-\item{with_label}{Set to TRUE if there are labels in the test_set and performance will be evaluated accordingly (Default:TRUE).}
+\item{with_label}{Set to TRUE if there are labels in the test_set and performance will be evaluated accordingly (Default:TRUE).
+Set it to "FALSE" if there are not "label" in the "test_set" and the final predicted scores will be the output without performance evaluation.}
 }
 \value{
 A data frame with predicted score and the outcome for downstream visualization.
@@ -48,4 +49,7 @@ scoring_table, threshold = "best", with_label = TRUE)
  \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and
   Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798}
 }
+}
+\seealso{
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}
 }
