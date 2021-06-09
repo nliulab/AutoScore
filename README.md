@@ -134,16 +134,14 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
 # **AutoScore Demonstration**
 
-  - [Install /load the AutoScore package](#Demo0) and prepare the data.
-  - In [Demo \#1](#Demo1), we demonstrate the use of AutoScore on a
-    comparably large dataset where separate training and validation
-    datasets are available.
-  - In [Demo \#2](#Demo2), we demonstrate the use of AutoScore on a
-    comparably small dataset where no sufficient samples are available
-    to form separate training and validation datasets. Thus,
-    cross-validation is employed to create the parsimony plot.
-
-<h id="Demo0">
+  - Install /load the AutoScore package and prepare the data.
+  - In Demo \#1, we demonstrate the use of AutoScore on a comparably
+    large dataset where separate training and validation datasets are
+    available.
+  - In Demo \#2, we demonstrate the use of AutoScore on a comparably
+    small dataset where no sufficient samples are available to form
+    separate training and validation datasets. Thus, cross-validation is
+    employed to create the parsimony plot.
 
 ## **Install the package and prepare data**
 
@@ -153,7 +151,7 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 # From Github
 install.packages("devtools")
 library(devtools)
-install_github(repo = "nliulab/AutoScore")
+install_github(repo = "nliulab/AutoScore", build_vignettes = TRUE)
 
 # From CRAN (recommended)
 install.packages("AutoScore")
@@ -243,8 +241,6 @@ check_data(sample_data)
 ```
 
   - Modify your data to ensure no warning messages.
-
-<h id="Demo1">
 
 ## **AutoScore Demo \#1: Large dataset (sample size = 20000)**
 
@@ -343,7 +339,13 @@ AUC <- AutoScore_parsimony(
 #> Select 20 Variable(s):  Area under the curve: 0.8259
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> - Users could
+use the `AUC` for further analysis or export it as the CSV to other
+software for plotting.
+
+``` r
+write.csv(data.frame(AUC),file = "D:/AUC.csv")
+```
 
   - Determine the optimal number of variables (`num_var`) based on the
     parsimony plot obtained in STEP(ii).
@@ -557,6 +559,9 @@ scoring_table <- AutoScore_fine_tuning(train_set,
     threshold will be calculated (Default: `"best"`).
   - `with_label`: Set to `TRUE` if there are labels in the `test_set`
     and performance will be evaluated accordingly (Default: `TRUE`).
+  - Set the `with_label` to `FALSE` if there are not `label` in the
+    `test_set` and the final predicted scores will be the output without
+    performance evaluation.
 
 <!-- end list -->
 
@@ -585,6 +590,13 @@ pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_tabl
 
   - Users could use the `pred_score` for further analysis or export it
     as the CSV to other software.
+
+<!-- end list -->
+
+``` r
+write.csv(pred_score, file = "D:/pred_score.csv")
+```
+
   - Use `print_roc_performance()` to generate the performance under
     different score thresholds (e.g., 50).
 
@@ -600,8 +612,6 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
 #> PPV:         0.1442 95% CI: 0.1379-0.1506
 #> NPV:         0.9861 95% CI: 0.9809-0.9907
 ```
-
-<h id="Demo2">
 
 ## **AutoScore Demo \#2: Small dataset (sample size = 1000) with cross-validation**
 
@@ -643,7 +653,7 @@ test_set <- out_split$test_set
 <!-- end list -->
 
 ``` r
-ranking <- AutoScore_rank(train_set, ntree=100)
+ranking <- AutoScore_rank(train_set, ntree = 100)
 #> The ranking based on variable importance was shown below for each variable: 
 #>              Age    aniongap_mean     lactate_mean    resprate_mean 
 #>        37.406648        31.315285        25.564054        21.855069 
@@ -697,26 +707,26 @@ AUC <- AutoScore_parsimony(
   )
 #> ***list of final mean AUC values through cross-validation are shown below 
 #>    auc_set.sum
-#> 1    0.6337707
-#> 2    0.7219767
-#> 3    0.7277593
-#> 4    0.7537172
-#> 5    0.7516205
-#> 6    0.7619839
-#> 7    0.7616981
-#> 8    0.7582741
-#> 9    0.7636885
-#> 10   0.7552515
-#> 11   0.7534764
-#> 12   0.7547035
-#> 13   0.7542316
-#> 14   0.7618277
-#> 15   0.7589772
-#> 16   0.7578815
-#> 17   0.7562271
-#> 18   0.7597782
-#> 19   0.7603524
-#> 20   0.7558810
+#> 1    0.6332124
+#> 2    0.7254603
+#> 3    0.7381319
+#> 4    0.7623322
+#> 5    0.7695922
+#> 6    0.7735329
+#> 7    0.7728111
+#> 8    0.7700531
+#> 9    0.7665829
+#> 10   0.7634048
+#> 11   0.7651904
+#> 12   0.7617113
+#> 13   0.7571203
+#> 14   0.7694130
+#> 15   0.7650977
+#> 16   0.7572382
+#> 17   0.7603713
+#> 18   0.7650728
+#> 19   0.7656964
+#> 20   0.7645128
 ```
 
 ![](README_files/figure-gfm/parsi-1.png)<!-- -->
@@ -809,10 +819,10 @@ cut_vec <- AutoScore_weighting(
     #> AUC:  0.7891   95% CI: 0.7558-0.8224 (DeLong)
     #> Best score threshold: >= 48 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.706 95% CI: 0.6593-0.7501
-    #> Specificity: 0.7589 95% CI: 0.7113-0.8065
-    #> PPV:         0.7608 95% CI: 0.7235-0.7981
-    #> NPV:         0.7048 95% CI: 0.67-0.7391
+    #> Sensitivity: 0.706 95% CI: 0.6593-0.7555
+    #> Specificity: 0.7589 95% CI: 0.7113-0.8036
+    #> PPV:         0.7606 95% CI: 0.7233-0.7975
+    #> NPV:         0.7044 95% CI: 0.6703-0.7423
     #> ***The cutoffs of each variable generated by the AutoScore are saved in cut_vec. You can decide whether to revise or fine-tune them
 
 ### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3)
@@ -910,8 +920,8 @@ scoring_table <- AutoScore_fine_tuning(train_set,
     #> Other performance indicators based on this score threshold: 
     #> Sensitivity: 0.5714 95% CI: 0.522-0.6209
     #> Specificity: 0.8214 95% CI: 0.7827-0.8601
-    #> PPV:         0.7769 95% CI: 0.7354-0.8171
-    #> NPV:         0.6392 95% CI: 0.6105-0.6691
+    #> PPV:         0.7774 95% CI: 0.7341-0.8176
+    #> NPV:         0.6392 95% CI: 0.6105-0.669
 
 ### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
 
@@ -920,6 +930,9 @@ scoring_table <- AutoScore_fine_tuning(train_set,
     threshold will be calculated (Default: `"best"`).
   - `with_label`: Set to `TRUE` if there are labels in the `test_set`
     and performance will be evaluated accordingly (Default: `TRUE`).
+  - Set the `with_label` to `FALSE` if there are not `label` in the
+    `test_set` and the final predicted scores will be the output without
+    performance evaluation.
 
 <!-- end list -->
 
@@ -933,10 +946,10 @@ pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_tabl
     #> AUC:  0.7133   95% CI: 0.6556-0.7709 (DeLong)
     #> Best score threshold: >= 51 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.7421 95% CI: 0.673-0.8115
-    #> Specificity: 0.5887 95% CI: 0.5035-0.6738
-    #> PPV:         0.6721 95% CI: 0.6243-0.7212
-    #> NPV:         0.6719 95% CI: 0.6061-0.7391
+    #> Sensitivity: 0.7421 95% CI: 0.673-0.8113
+    #> Specificity: 0.5887 95% CI: 0.5035-0.6667
+    #> PPV:         0.6707 95% CI: 0.6263-0.7207
+    #> NPV:         0.6696 95% CI: 0.6061-0.7381
     head(pred_score)
     #>   pred_score Label
     #> 1         53  TRUE
@@ -948,6 +961,13 @@ pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_tabl
 
   - Users could use the `pred_score` for further analysis or export it
     as the CSV to other software.
+
+<!-- end list -->
+
+``` r
+write.csv(pred_score,file = "D:/pred_score.csv")
+```
+
   - Use `print_roc_performance()` to generate the performance under
     different score thresholds (e.g., 90).
   - Note: It is just a demo using simulated data, and thus, the result
