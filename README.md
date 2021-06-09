@@ -339,7 +339,9 @@ AUC <- AutoScore_parsimony(
 #> Select 20 Variable(s):  Area under the curve: 0.8259
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> - Users could
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> 
+
+- Users could
 use the `AUC` for further analysis or export it as the CSV to other
 software for plotting.
 
