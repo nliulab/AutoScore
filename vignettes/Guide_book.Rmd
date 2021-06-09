@@ -73,7 +73,7 @@ Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learnin
 # From Github
 install.packages("devtools")
 library(devtools)
-install_github(repo = "nliulab/AutoScore")
+install_github(repo = "nliulab/AutoScore", build_vignettes = TRUE)
 
 # From CRAN (recommended)
 install.packages("AutoScore")
