@@ -10,10 +10,10 @@ compute_multi_variable_table(df)
 \item{df}{data frame after checking}
 }
 \value{
-result of Multivariate Analysis
+result of the multivariate analysis
 }
 \description{
-Generate tables for Multivariate Analysis
+Generate tables for multivariate analysis
 }
 \examples{
 data("sample_data")

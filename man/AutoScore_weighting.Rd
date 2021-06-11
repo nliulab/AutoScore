@@ -19,18 +19,18 @@ AutoScore_weighting(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(2). See Guidebook}
+\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 
 \item{max_score}{Maximum total score (Default: 100).}
 
 \item{categorize}{Methods for categorize continuous variables. Options include "quantile" or "kmeans" (Default: "quantile").}
 
-\item{max_cluster}{The max number of cluster (Default: 5). Available if categorize = "kmeans".}
+\item{max_cluster}{The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.}
 
 \item{quantiles}{Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.}
 }
 \value{
-Generated \code{cut_vec} for downstream fine-tuning process [STEP(iv)]
+Generated \code{cut_vec} for downstream fine-tuning process STEP(iv)[AutoScore_fine_tuning()]
 }
 \description{
 AutoScore STEP(iii): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
@@ -60,5 +60,5 @@ quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
 }
 }
 \seealso{
-\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 }

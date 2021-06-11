@@ -17,9 +17,9 @@ AutoScore_fine_tuning(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(2). See Guidebook}
+\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 
-\item{cut_vec}{Generated from STEP(iii) \code{AutoScore_weighting()}.Please follow the guidebook}
+\item{cut_vec}{Generated from STEP(iii) [AutoScore_weighting()].Please follow the guidebook}
 
 \item{max_score}{Maximum total score (Default: 100).}
 }
@@ -30,8 +30,8 @@ Generated final table of scoring model for downstream testing
 Domain knowledge is essential in guiding risk model development.
  For continuous variables, the variable transformation is a data-driven process (based on "quantile" or "kmeans" ).
  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
- by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
-update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. See Guidebook.
+ by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input with domain knowledge to
+update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette..
 }
 \examples{
 \dontrun{
@@ -45,5 +45,5 @@ scoring_table <- AutoScore_fine_tuning(train_set, validation_set,
 }
 }
 \seealso{
-\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_testing}}
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_testing},Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/AutoScore.R
 \name{transform_df_fixed}
 \alias{transform_df_fixed}
-\title{Internal function: Categorizing continuous variables based on fixed cut_vec}
+\title{Internal function: Categorizing continuous variables based on cut_vec (AutoScore Module 2)}
 \usage{
 transform_df_fixed(df, cut_vec)
 }
 \arguments{
-\item{df}{dataset to be processed}
+\item{df}{dataset(training, validation or testing) to be processed}
 
 \item{cut_vec}{fixed cut vector}
 }
@@ -15,5 +15,5 @@ transform_df_fixed(df, cut_vec)
 Processed \code{data.frame} after categorizing based on fixed cut_vec
 }
 \description{
-Internal function: Categorizing continuous variables based on fixed cut_vec
+Internal function: Categorizing continuous variables based on cut_vec (AutoScore Module 2)
 }

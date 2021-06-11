@@ -7,9 +7,9 @@
 split_data(data, ratio, cross_validation = FALSE)
 }
 \arguments{
-\item{data}{The dataset to be splitted}
+\item{data}{The dataset to be split}
 
-\item{ratio}{The ratio to divide dataset into train, validation and test set.(Default: c(0.7, 0.1, 0.2))}
+\item{ratio}{The ratio for dividing dataset into training, validation and testing set.(Default: c(0.7, 0.1, 0.2))}
 
 \item{cross_validation}{If set to \code{TRUE}, cross-validation would be used for generating parsimony plot, which is
 suitable for small-size data. Default to \code{FALSE}}
@@ -25,6 +25,6 @@ data("sample_data")
 set.seed(4)
 #large sample size
 out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2))
-#small sample size
+#small sample size (for cross-validation)
 out_split <- split_data(data = sample_data, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
 }

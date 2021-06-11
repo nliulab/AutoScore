@@ -2,12 +2,12 @@
 % Please edit documentation in R/AutoScore.R
 \name{print_roc_performance}
 \alias{print_roc_performance}
-\title{Internal function: Print receiver operating characteristic (ROC) performance}
+\title{AutoScore function: Print receiver operating characteristic (ROC) performance}
 \usage{
 print_roc_performance(label, score, threshold = "best")
 }
 \arguments{
-\item{label}{outcome}
+\item{label}{outcome variable}
 
 \item{score}{predicted score}
 
@@ -19,4 +19,7 @@ Print receiver operating characteristic (ROC) performance
 \examples{
 \dontrun{
 print_roc_performance<-function(label, score, threshold = "best")}
+}
+\seealso{
+\code{\link{AutoScore_testing}}
 }

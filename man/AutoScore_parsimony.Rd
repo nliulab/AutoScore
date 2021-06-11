@@ -24,7 +24,7 @@ AutoScore_parsimony(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{rank}{the raking result generated from AutoScore STEP(i) \code{AutoScore_rank}}
+\item{rank}{the raking result generated from AutoScore STEP(i)[AutoScore_rank()]}
 
 \item{max_score}{Maximum total score (Default: 100).}
 
@@ -35,15 +35,15 @@ AutoScore_parsimony(
 \item{cross_validation}{If set to \code{TRUE}, cross-validation would be used for generating parsimony plot, which is
 suitable for small-size data. Default to \code{FALSE}}
 
-\item{fold}{The number of folds used in cross validation (Default: 10). Available if cross_validation = TRUE.}
+\item{fold}{The number of folds used in cross validation (Default: 10). Available if \code{cross_validation = TRUE}.}
 
 \item{categorize}{Methods for categorize continuous variables. Options include "quantile" or "kmeans" (Default: "quantile").}
 
 \item{quantiles}{Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.}
 
-\item{max_cluster}{The max number of cluster (Default: 5). Available if categorize = "kmeans".}
+\item{max_cluster}{The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.}
 
-\item{do_trace}{If set to TRUE, all results based on each fold of cross-validation would be printed out and plotted (Default: FALSE). Available if cross_validation = TRUE.}
+\item{do_trace}{If set to TRUE, all results based on each fold of cross-validation would be printed out and plotted (Default: FALSE). Available if \code{cross_validation = TRUE}.}
 }
 \value{
 List of AUC value for different number of variables
@@ -52,11 +52,11 @@ List of AUC value for different number of variables
 AutoScore STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
 }
 \details{
-This is the second step of the general AutoScore workflow, to generate the parsimony plot to help select parsimonious model.
+This is the second step of the general AutoScore workflow, to generate the parsimony plot to help select a parsimonious model.
  In this step, it goes through AutoScore Module 2,3 and 4 multiple times and to evaluate the performance under different variable list.
  The generated parsimony plot would give researcher an intuitive figure to choose the best models.
- If data size is small (ie <5000), an independent validation set may not be a wise choice. Then we will use cross-validation
- to maximize the utility of data. Set \code{cross_validation=TRUE}.
+ If data size is small (ie, <5000), an independent validation set may not be a wise choice. Then, we suggest using cross-validation
+ to maximize the utility of data. Set \code{cross_validation=TRUE}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 }
 \examples{
 # see AutoScore Guidebook for the whole 5-step workflow
@@ -85,5 +85,5 @@ quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
 }
 }
 \seealso{
-\code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 }

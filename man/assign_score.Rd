@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore.R
 \name{assign_score}
 \alias{assign_score}
-\title{Internal Function: Automatically assign scores to each subjects given Test Set and scoring table.}
+\title{Internal Function: Automatically assign scores to each subjects given new data set and scoring table (Used for intermediate and final evaluation)}
 \usage{
 assign_score(df, score_table)
 }
@@ -15,5 +15,5 @@ assign_score(df, score_table)
 Processed \code{data.frame} with assigned scores for each variables
 }
 \description{
-Internal Function: Automatically assign scores to each subjects given Test Set and scoring table.
+Internal Function: Automatically assign scores to each subjects given new data set and scoring table (Used for intermediate and final evaluation)
 }

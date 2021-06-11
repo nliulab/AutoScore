@@ -7,10 +7,10 @@
 compute_descriptive_table(df)
 }
 \arguments{
-\item{df}{data frame after checking}
+\item{df}{data frame after checking and fulfilling the requirement of AutoScore}
 }
 \description{
-Compute descriptive table (usually Table 1 in medical literature) for the dataset.
+Compute descriptive table (usually Table 1 in the medical literature) for the dataset.
 }
 \examples{
 data("sample_data")

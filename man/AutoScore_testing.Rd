@@ -17,11 +17,11 @@ AutoScore_testing(
 \item{test_set}{A processed \code{data.frame} that contains data for testing purpose. This \code{data.frame} should have same format as
 \code{train_set} (same variable names and outcomes)}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii). See Guidebook}
+\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony()]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 
-\item{cut_vec}{Generated from STEP(iii) \code{AutoScore_weighting()}.Please follow the guidebook}
+\item{cut_vec}{Generated from STEP(iii)[AutoScore_weighting()].Please follow the guidebook}
 
-\item{scoring_table}{The final scoring table after fine-tuning, generated from STEP(iv) \code{AutoScore_fine_tuning}.Please follow the guidebook}
+\item{scoring_table}{The final scoring table after fine-tuning, generated from STEP(iv)[AutoScore_fine_tuning()].Please follow the guidebook}
 
 \item{threshold}{Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to "best", the optimal threshold will be calculated (Default:"best").}
 
@@ -36,7 +36,7 @@ Domain knowledge is essential in guiding risk model development.
  For continuous variables, the variable transformation is a data-driven process (based on "quantile", "kmeans" or "decision_tree).
  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
-update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. See Guidebook.
+update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette..
 }
 \examples{
 \dontrun{
@@ -51,5 +51,5 @@ scoring_table, threshold = "best", with_label = TRUE)
 }
 }
 \seealso{
-\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{print_roc_performance}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 }

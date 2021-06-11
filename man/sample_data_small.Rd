@@ -11,6 +11,6 @@ An object of class \code{data.frame} with 1000 rows and 22 columns.
 sample_data_small
 }
 \description{
-1000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook.
+1000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 }
 \keyword{datasets}

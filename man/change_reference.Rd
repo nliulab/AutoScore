@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore.R
 \name{change_reference}
 \alias{change_reference}
-\title{Build-in Function: Change Reference category after first-step logistic regression}
+\title{Internal Function: Change Reference category after first-step logistic regression (part of AutoScore Module 3)}
 \usage{
 change_reference(df, coef_vec)
 }
@@ -15,5 +15,5 @@ change_reference(df, coef_vec)
 Processed \code{data.frame} after changing reference category
 }
 \description{
-Build-in Function: Change Reference category after first-step logistic regression
+Internal Function: Change Reference category after first-step logistic regression (part of AutoScore Module 3)
 }

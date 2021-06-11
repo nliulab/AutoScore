@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore.R
 \name{add_baseline}
 \alias{add_baseline}
-\title{Internal Function: Add baselines after second-step logistic regression}
+\title{Internal Function: Add baselines after second-step logistic regression (part of AutoScore Module 3)}
 \usage{
 add_baseline(df, coef_vec)
 }
@@ -15,5 +15,5 @@ add_baseline(df, coef_vec)
 Processed \code{vector} for generating the scoring table
 }
 \description{
-Internal Function: Add baselines after second-step logistic regression
+Internal Function: Add baselines after second-step logistic regression (part of AutoScore Module 3)
 }
