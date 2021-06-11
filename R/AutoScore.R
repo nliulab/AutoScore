@@ -18,7 +18,7 @@
 #'  \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and
 #'   Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798}
 #' }
-#' @seealso \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}
+#' @seealso \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 #' @export
 #' @importFrom randomForest randomForest importance
 #'
@@ -46,22 +46,22 @@ AutoScore_rank <- function(train_set, ntree = 100) {
 #' @title AutoScore STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
 #' @param train_set A processed \code{data.frame} that contains data to be analyzed, for training.
 #' @param validation_set A processed \code{data.frame} that contains data for validation purpose.
-#' @param rank the raking result generated from AutoScore STEP(i) \code{AutoScore_rank}
+#' @param rank the raking result generated from AutoScore STEP(i)[AutoScore_rank()]
 #' @param n_min Minimum number of selected variables (Default: 1).
 #' @param n_max Maximum number of selected variables (Default: 20).
 #' @param max_score Maximum total score (Default: 100).
 #' @param cross_validation If set to \code{TRUE}, cross-validation would be used for generating parsimony plot, which is
 #'   suitable for small-size data. Default to \code{FALSE}
-#' @param fold The number of folds used in cross validation (Default: 10). Available if cross_validation = TRUE.
+#' @param fold The number of folds used in cross validation (Default: 10). Available if \code{cross_validation = TRUE}.
 #' @param categorize  Methods for categorize continuous variables. Options include "quantile" or "kmeans" (Default: "quantile").
 #' @param quantiles Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.
-#' @param max_cluster The max number of cluster (Default: 5). Available if categorize = "kmeans".
-#' @param do_trace If set to TRUE, all results based on each fold of cross-validation would be printed out and plotted (Default: FALSE). Available if cross_validation = TRUE.
-#' @details This is the second step of the general AutoScore workflow, to generate the parsimony plot to help select parsimonious model.
+#' @param max_cluster The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.
+#' @param do_trace If set to TRUE, all results based on each fold of cross-validation would be printed out and plotted (Default: FALSE). Available if \code{cross_validation = TRUE}.
+#' @details This is the second step of the general AutoScore workflow, to generate the parsimony plot to help select a parsimonious model.
 #'  In this step, it goes through AutoScore Module 2,3 and 4 multiple times and to evaluate the performance under different variable list.
 #'  The generated parsimony plot would give researcher an intuitive figure to choose the best models.
-#'  If data size is small (ie <5000), an independent validation set may not be a wise choice. Then we will use cross-validation
-#'  to maximize the utility of data. Set \code{cross_validation=TRUE}.
+#'  If data size is small (ie, <5000), an independent validation set may not be a wise choice. Then, we suggest using cross-validation
+#'  to maximize the utility of data. Set \code{cross_validation=TRUE}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 #' @return List of AUC value for different number of variables
 #' @examples
 #' # see AutoScore Guidebook for the whole 5-step workflow
@@ -87,7 +87,7 @@ AutoScore_rank <- function(train_set, ntree = 100) {
 #'   Score Generator and Its Application to Mortality Prediction Using Electronic Health Records,
 #'   JMIR Med Inform 2020;8(10):e21798, doi: 10.2196/21798}
 #' }
-#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}
+#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 #' @export
 #' @import  pROC
 AutoScore_parsimony <-
@@ -252,12 +252,12 @@ AutoScore_parsimony <-
 #' @title AutoScore STEP(iii): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
 #' @param train_set A processed \code{data.frame} that contains data to be analyzed, for training.
 #' @param validation_set A processed \code{data.frame} that contains data for validation purpose.
-#' @param final_variables A vector containing the list of selected variables, selected from Step(2). See Guidebook
+#' @param final_variables A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 #' @param max_score Maximum total score (Default: 100).
 #' @param categorize  Methods for categorize continuous variables. Options include "quantile" or "kmeans" (Default: "quantile").
 #' @param quantiles Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.
-#' @param max_cluster The max number of cluster (Default: 5). Available if categorize = "kmeans".
-#' @return Generated \code{cut_vec} for downstream fine-tuning process [STEP(iv)]
+#' @param max_cluster The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.
+#' @return Generated \code{cut_vec} for downstream fine-tuning process STEP(iv)[AutoScore_fine_tuning()]
 #' @examples
 #' data("sample_data")
 #' names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
@@ -280,7 +280,7 @@ AutoScore_parsimony <-
 #'  \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and
 #'   Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798}
 #' }
-#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}
+#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 #' @export
 #' @import pROC ggplot2
 AutoScore_weighting <-
@@ -340,13 +340,13 @@ AutoScore_weighting <-
 #' @description Domain knowledge is essential in guiding risk model development.
 #'  For continuous variables, the variable transformation is a data-driven process (based on "quantile" or "kmeans" ).
 #'  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
-#'  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
-#' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. See Guidebook.
+#'  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input with domain knowledge to
+#' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette..
 #' @param train_set A processed \code{data.frame} that contains data to be analyzed, for training.
 #' @param validation_set A processed \code{data.frame} that contains data for validation purpose.
-#' @param final_variables A vector containing the list of selected variables, selected from Step(2). See Guidebook
+#' @param final_variables A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 #' @param max_score Maximum total score (Default: 100).
-#' @param cut_vec Generated from STEP(iii) \code{AutoScore_weighting()}.Please follow the guidebook
+#' @param cut_vec Generated from STEP(iii) [AutoScore_weighting()].Please follow the guidebook
 #' @return Generated final table of scoring model for downstream testing
 #' @examples
 #' \dontrun{
@@ -357,7 +357,7 @@ AutoScore_weighting <-
 #'  \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and
 #'   Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798}
 #' }
-#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_testing}}
+#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_testing},Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 #' @export
 #' @import pROC ggplot2
 AutoScore_fine_tuning <-
@@ -404,12 +404,12 @@ AutoScore_fine_tuning <-
 #'  For continuous variables, the variable transformation is a data-driven process (based on "quantile", "kmeans" or "decision_tree).
 #'  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
 #'  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
-#' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. See Guidebook.
+#' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette..
 #' @param test_set A processed \code{data.frame} that contains data for testing purpose. This \code{data.frame} should have same format as
 #'        \code{train_set} (same variable names and outcomes)
-#' @param final_variables A vector containing the list of selected variables, selected from Step(ii). See Guidebook
-#' @param scoring_table The final scoring table after fine-tuning, generated from STEP(iv) \code{AutoScore_fine_tuning}.Please follow the guidebook
-#' @param cut_vec Generated from STEP(iii) \code{AutoScore_weighting()}.Please follow the guidebook
+#' @param final_variables A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony()]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
+#' @param scoring_table The final scoring table after fine-tuning, generated from STEP(iv)[AutoScore_fine_tuning()].Please follow the guidebook
+#' @param cut_vec Generated from STEP(iii)[AutoScore_weighting()].Please follow the guidebook
 #' @param threshold Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to "best", the optimal threshold will be calculated (Default:"best").
 #' @param with_label Set to TRUE if there are labels in the test_set and performance will be evaluated accordingly (Default:TRUE).
 #' Set it to "FALSE" if there are not "label" in the "test_set" and the final predicted scores will be the output without performance evaluation.
@@ -424,7 +424,7 @@ AutoScore_fine_tuning <-
 #'  \item{Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and
 #'   Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798}
 #' }
-#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{print_roc_performance}}
+#' @seealso \code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{print_roc_performance}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 #' @export
 #' @import pROC ggplot2
 AutoScore_testing <-
@@ -620,7 +620,6 @@ split_data <- function(data, ratio, cross_validation = FALSE) {
 #' compute_descriptive_table(sample_data)
 #' @export
 #' @import tableone
-# Generate table one based on stratified outcomes
 compute_descriptive_table <- function(df) {
   descriptive_table <-
     CreateTableOne(vars = names(df),
@@ -642,7 +641,6 @@ compute_descriptive_table <- function(df) {
 #' names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 #' uni_table<-compute_uni_variable_table(sample_data)
 #' @export
-# Univariable analysis
 compute_uni_variable_table <- function(df) {
   uni_table <- data.frame()
   for (i in names(df)[names(df) != "label"]) {
@@ -685,7 +683,6 @@ compute_uni_variable_table <- function(df) {
 #' names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 #' multi_table<-compute_multi_variable_table(sample_data)
 #' @export
-# full logistic model-multivariable analysis
 compute_multi_variable_table <- function(df) {
   model <-
     glm(label ~ .,
@@ -719,7 +716,7 @@ compute_multi_variable_table <- function(df) {
 
 
 #' @title AutoScore Function: Print scoring tables for visualization
-#' @param scoring_table Raw scoring table generated by AutoScore step(iv)
+#' @param scoring_table Raw scoring table generated by AutoScore step(iv)[AutoScore_fine_tuning()]
 #' @param final_variable Final included variables
 #' @return Data frame of formatted scoring table
 #' @examples
@@ -906,12 +903,12 @@ print_roc_performance <-
 
 
 # Internal_function -------------------------------------------------------
-## built-in function for AutoScore below are functions
+## built-in function for AutoScore below
 ## Those functions are cited by pipeline functions
 
 #' @title Internal function: Compute scoring table based on training dataset (AutoScore Module 3)
 #' @description Compute scoring table based on training dataset
-#' @param train_set_2 Processed training set after variable transformation(AutoScore Module 2)
+#' @param train_set_2 Processed training set after variable transformation (AutoScore Module 2)
 #' @param max_score Maximum total score
 #' @param variable_list List of included variables
 #' @return A scoring table
@@ -1010,7 +1007,7 @@ compute_auc_val <-
     return(model_roc)
   }
 
-#' @title Internal function: Calculate cut_vec from training set (AutoScore Module 2)
+#' @title Internal function: Calculate cut_vec from the training set (AutoScore Module 2)
 #' @param df training set to be used for calculate the cut vector
 #' @param categorize  Methods for categorize continuous variables. Options include "quantile" or "kmeans" (Default: "quantile").
 #' @param quantiles Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.
@@ -1035,9 +1032,6 @@ get_cut_vec <-
           warning("WARNING: The number of categories should be less than 10",
                   names(df)[i])
       }
-
-      # for continuous variable: variable transformation
-      # select discretization method, default mode = 1
 
       ## mode 1 - quantiles
       if (categorize == "quantile") {
@@ -1244,7 +1238,7 @@ add_baseline <- function(df, coef_vec) {
 }
 
 
-#' @title Internal Function: Automatically assign scores to each subjects given new data set and scoring table
+#' @title Internal Function: Automatically assign scores to each subjects given new data set and scoring table (Used for intermediate and final evaluation)
 #' @param df A \code{data.frame} used for testing, where variables keep before categorization
 #' @param score_table A \code{vector} containing the scoring table
 #' @return Processed \code{data.frame} with assigned scores for each variables
@@ -1273,12 +1267,12 @@ getmode <- function(vect) {
 
 #' 20000 simulated ICU admission data, with the same distribution as the data in the MIMIC-III ICU database
 #'
-#' @description 20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook.
+#' @description 20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 "sample_data"
 
 
 #' 1000 simulated ICU admission data, with the same distribution as the data in the MIMIC-III ICU database
 #'
-#' @description 1000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook.
+#' @description 1000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 "sample_data_small"
 
