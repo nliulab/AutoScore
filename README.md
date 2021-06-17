@@ -59,9 +59,9 @@ Score Generator
             6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6-1)
       - [**Appendix: Other functions**](#appendix-other-functions)
 
-  - **AutoScore R package (version 0.2.0)**
-
 # **AutoScore Introduction**
+
+  - **AutoScore R package (version 0.2.0)**
 
 ### Description
 
@@ -169,7 +169,7 @@ library(AutoScore)
   - For this demo, use the integrated `sample_data` in the package.
   - `sample_data` has 20000 simulated samples, with the same
     distribution as the data in the MIMIC-III ICU database
-    (<https://mimic.physionet.org/>).
+    (<https://mimic.mit.edu/>).
 
 <!-- end list -->
 
@@ -210,7 +210,9 @@ head(sample_data)
 
   - Handle missing values (AutoScore requires a complete dataset).
   - Remove special characters from variable names, e.g., `[`, `]`, `(`,
-    `)`,`,`.
+    `)`,`,`. (Suggest using `_` to replace them if needed)
+  - Name of the variable should be unique and not entirely included by
+    other variable names.
   - Ensure that the dependent variable (outcome) should be binary, and
     its name should be changed to “label” (Can use the codes below to do
     it).
@@ -237,10 +239,12 @@ names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 
 ``` r
 check_data(sample_data)
-#> missing value check passed.
+#> 
+#>  missing value check passed.
 ```
 
-  - Modify your data to ensure no warning messages.
+  - Modify your data, and run the `check_data` again until there are no
+    warning messages.
 
 ## **AutoScore Demo \#1: Large dataset (sample size = 20000)**
 
@@ -339,14 +343,15 @@ AUC <- AutoScore_parsimony(
 #> Select 20 Variable(s):  Area under the curve: 0.8259
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> 
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-- Users could
-use the `AUC` for further analysis or export it as the CSV to other
-software for plotting.
+  - Users could use the `AUC` for further analysis or export it as the
+    CSV to other software for plotting.
+
+<!-- end list -->
 
 ``` r
-write.csv(data.frame(AUC),file = "D:/AUC.csv")
+write.csv(data.frame(AUC), file = "D:/AUC.csv")
 ```
 
   - Determine the optimal number of variables (`num_var`) based on the
@@ -733,6 +738,15 @@ AUC <- AutoScore_parsimony(
 
 ![](README_files/figure-gfm/parsi-1.png)<!-- -->
 
+  - Users could use the `AUC` for further analysis or export it as the
+    CSV to other software for plotting.
+
+<!-- end list -->
+
+``` r
+write.csv(data.frame(AUC), file = "D:/AUC.csv")
+```
+
   - Determine the optimal number of variables (`num_var`) based on the
     parsimony plot obtained in STEP(ii).
   - The final list of variables is the first `num_var` variables in the
@@ -967,7 +981,7 @@ pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_tabl
 <!-- end list -->
 
 ``` r
-write.csv(pred_score,file = "D:/pred_score.csv")
+write.csv(pred_score, file = "D:/pred_score.csv")
 ```
 
   - Use `print_roc_performance()` to generate the performance under
