@@ -62,7 +62,7 @@ Score Generator
 # **AutoScore Introduction**
 
   - **AutoScore R package (version 0.2.0)**
-  - <https://cran.r-project.org/web/packages/AutoScore/>
+  - CRAN Repository: <https://cran.r-project.org/web/packages/AutoScore/>
 
 ### Description
 
