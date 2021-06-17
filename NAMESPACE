@@ -18,5 +18,6 @@ import(tableone)
 importFrom(knitr,kable)
 importFrom(randomForest,importance)
 importFrom(randomForest,randomForest)
-importFrom("stats", "binomial", "coef", "confint.default", "glm",
-           "kmeans", "na.omit", "quantile", "relevel")
+importFrom("stats", "as.formula", "binomial", "coef",
+               "confint.default", "glm", "kmeans", "na.omit", "quantile",
+               "relevel")

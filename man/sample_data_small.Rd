@@ -12,5 +12,8 @@ sample_data_small
 }
 \description{
 1000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database. It is used for demonstration only in the Guidebook. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
+ \itemize{
+ \item{Johnson, A., Pollard, T., Shen, L. et al. MIMIC-III, a freely accessible critical care database. Sci Data 3, 160035 (2016).}
+}
 }
 \keyword{datasets}

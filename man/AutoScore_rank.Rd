@@ -26,7 +26,7 @@ This step correspond to Module 1 in the AutoScore paper.
 # see AutoScore Guidebook for the whole 5-step workflow
 data("sample_data")
 names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
-ranking <- AutoScore_rank(sample_data, ntree=100)
+ranking <- AutoScore_rank(sample_data, ntree = 50)
 }
 \references{
 \itemize{
@@ -36,5 +36,5 @@ ranking <- AutoScore_rank(sample_data, ntree=100)
 }
 }
 \seealso{
-\code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 }

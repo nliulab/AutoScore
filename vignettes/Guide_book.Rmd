@@ -90,7 +90,7 @@ library(AutoScore)
 ### Load data 
 - Read data from CSV or Excel files.
 - For this demo, use the integrated `sample_data` in the package.
-- `sample_data` has 20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database (<https://mimic.physionet.org/>).
+- `sample_data` has 20000 simulated samples, with the same distribution as the data in the MIMIC-III ICU database (<https://mimic.mit.edu/>).
 ```{r}
 data("sample_data")
 head(sample_data)
@@ -98,7 +98,8 @@ head(sample_data)
 
 ### Data preprocessing (Users to check the following)
 - Handle missing values (AutoScore requires a complete dataset).
-- Remove special characters from variable names, e.g., `[`, `]`, `(`, `)`,`,`.
+- Remove special characters from variable names, e.g., `[`, `]`, `(`, `)`,`,`. (Suggest using `_` to replace them if needed)
+- Name of the variable should be unique and not entirely included by other variable names.
 - Ensure that the dependent variable (outcome) should be binary, and its name should be changed to "label" (Can use the codes below to do it).
 - Independent variables should be numeric (class: num/int) or categorical (class: factor/logic).
 - Handle outliers (optional).
@@ -116,7 +117,7 @@ names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 check_data(sample_data)
 ```
 
-- Modify your data to ensure no warning messages.
+- Modify your data, and run the `check_data` again until there are no warning messages.
 
 <h id="Demo1">
 

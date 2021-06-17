@@ -13,6 +13,9 @@ plot_roc_curve(prob, labels, quiet = TRUE)
 
 \item{quiet}{if set to TRUE, there will be no trace printing}
 }
+\value{
+No return value and the ROC curve will be plotted.
+}
 \description{
 Internal Function: Plotting ROC curve
 }

@@ -9,6 +9,9 @@ check_data(data)
 \arguments{
 \item{data}{The data to be checked}
 }
+\value{
+No return value, the result of the checking will be printed out.
+}
 \description{
 AutoScore function: Check whether the input dataset fulfill the requirement of the AutoScore
 }

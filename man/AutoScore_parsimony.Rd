@@ -24,7 +24,7 @@ AutoScore_parsimony(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{rank}{the raking result generated from AutoScore STEP(i)[AutoScore_rank()]}
+\item{rank}{the raking result generated from AutoScore STEP(i) \code{\link{AutoScore_rank}}}
 
 \item{max_score}{Maximum total score (Default: 100).}
 
@@ -59,6 +59,7 @@ This is the second step of the general AutoScore workflow, to generate the parsi
  to maximize the utility of data. Set \code{cross_validation=TRUE}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 }
 \examples{
+\donttest{
 # see AutoScore Guidebook for the whole 5-step workflow
 data("sample_data")
 names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
@@ -75,7 +76,7 @@ n_min = 1,
 n_max = 20,
 categorize = "quantile",
 quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
-)
+)}
 }
 \references{
 \itemize{
@@ -85,5 +86,5 @@ quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
 }
 }
 \seealso{
-\code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 }

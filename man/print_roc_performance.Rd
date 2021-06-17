@@ -13,12 +13,11 @@ print_roc_performance(label, score, threshold = "best")
 
 \item{threshold}{Threshold for analyze sensitivity, specificity and other metrics. Default to "best"}
 }
+\value{
+No return value and the ROC performance will be printed out directly.
+}
 \description{
 Print receiver operating characteristic (ROC) performance
-}
-\examples{
-\dontrun{
-print_roc_performance<-function(label, score, threshold = "best")}
 }
 \seealso{
 \code{\link{AutoScore_testing}}

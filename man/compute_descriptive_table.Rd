@@ -9,6 +9,9 @@ compute_descriptive_table(df)
 \arguments{
 \item{df}{data frame after checking and fulfilling the requirement of AutoScore}
 }
+\value{
+No return value and the result of the descriptive analysis will be printed out.
+}
 \description{
 Compute descriptive table (usually Table 1 in the medical literature) for the dataset.
 }

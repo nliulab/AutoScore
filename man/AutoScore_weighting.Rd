@@ -19,7 +19,7 @@ AutoScore_weighting(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii)[AutoScore_parsimony]. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii)\code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
 
 \item{max_score}{Maximum total score (Default: 100).}
 
@@ -30,28 +30,10 @@ AutoScore_weighting(
 \item{quantiles}{Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.}
 }
 \value{
-Generated \code{cut_vec} for downstream fine-tuning process STEP(iv)[AutoScore_fine_tuning()]
+Generated \code{cut_vec} for downstream fine-tuning process STEP(iv) \code{\link{AutoScore_fine_tuning}}.
 }
 \description{
 AutoScore STEP(iii): Generate the initial score with the final list of variables (Re-run AutoScore Modules 2+3)
-}
-\examples{
-data("sample_data")
-names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
-out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2))
-train_set <- out_split$train_set
-validation_set <- out_split$validation_set
-ranking <- AutoScore_rank(train_set, ntree=100)
-num_var <- 6
-final_variables <- names(ranking[1:num_var])
-cut_vec <- AutoScore_weighting(
-train_set,
-validation_set,
-final_variables,
-max_score = 100,
-categorize = "quantile",
-quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
-)
 }
 \references{
 \itemize{
@@ -60,5 +42,5 @@ quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
 }
 }
 \seealso{
-\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\code{\link{AutoScore_rank}}, \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 }
