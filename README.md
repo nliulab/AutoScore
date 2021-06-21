@@ -135,7 +135,7 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
 # **AutoScore Demonstration**
 
-  - Install /load the AutoScore package and prepare the data.
+  - Install / load the AutoScore package and prepare the data.
   - In Demo \#1, we demonstrate the use of AutoScore on a comparably
     large dataset where separate training and validation datasets are
     available.
