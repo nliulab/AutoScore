@@ -468,10 +468,10 @@ check_data <- function(data) {
   #1. check label and binary
   if (is.null(data$label))
     stop(
-      "ERROR: for this dataset: These is no dependent variable 'lable' to indicate the outcome. Please add one first\n"
+      "ERROR: for this dataset: These is no dependent variable 'label' to indicate the outcome. Please add one first\n"
     )
   if (length(levels(factor(data$label))) != 2)
-    warning("Please keep outcome lable variable binary\n")
+    warning("Please keep outcome label variable binary\n")
 
   #2. check each variable
   non_num_fac <- c()
@@ -550,7 +550,7 @@ check_data <- function(data) {
   if (!is.null(non_num_fac))
     warning(
       paste(
-        "\nWARNING: the dataset has variable of character and user should transform them to factor before using AutoScore:\n",
+        "\nWARNING: the dataset has variable of character and user should transform them to factor or numeric before using AutoScore:(consider using 'df$xxx  <- as.factor(df$xxx))' or 'df$xxx  <- as.numeric(df$xxx))'\n",
         non_num_fac
       )
     )
@@ -1232,7 +1232,7 @@ change_reference <- function(df, coef_vec) {
     # }
   }
 
-  # add lable again
+  # add label again
   df_tmp$label <- df$label
   return(df_tmp)
 }

@@ -257,7 +257,15 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 - `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
 - Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
 ```{r}
-pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
+pred_score <-
+  AutoScore_testing(
+    test_set,
+    final_variables,
+    cut_vec,
+    scoring_table,
+    threshold = "best",
+    with_label = TRUE
+  )
 head(pred_score)
 ```
 
@@ -422,7 +430,15 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 - `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
 - Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
 ```{r}
-pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
+pred_score <-
+  AutoScore_testing(
+    test_set,
+    final_variables,
+    cut_vec,
+    scoring_table,
+    threshold = "best",
+    with_label = TRUE
+  )
 head(pred_score)
 ```
 
