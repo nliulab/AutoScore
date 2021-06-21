@@ -61,8 +61,8 @@ Score Generator
 
 # **AutoScore Introduction**
 
-  - **AutoScore R package (version 0.2.0)**
-  - **CRAN Repository**: <https://cran.r-project.org/web/packages/AutoScore/>
+  - **GitHub Package (version 0.2.0)**
+  - **CRAN Repository (version 0.2.0)**: <https://cran.r-project.org/web/packages/AutoScore/>
 
 ### Description
 
@@ -135,7 +135,7 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
 # **AutoScore Demonstration**
 
-  - Install /load the AutoScore package and prepare the data.
+  - Install / load the AutoScore package and prepare the data.
   - In Demo \#1, we demonstrate the use of AutoScore on a comparably
     large dataset where separate training and validation datasets are
     available.
@@ -507,6 +507,7 @@ cut_vec$lactate_mean <- c(0.2, 1, 3, 4)
 cut_vec$bun_mean <- c(10, 40)
 cut_vec$aniongap_mean <- c(10, 17)
 cut_vec$heartrate_mean<- c(70, 98)
+
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
@@ -893,6 +894,7 @@ cut_vec$lactate_mean <- c(1, 2, 3)
 cut_vec$Age <- c(35, 50, 80)
 cut_vec$aniongap_mean <- c(8, 12, 18)
 cut_vec$resprate_mean <- c(15, 22)
+
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
