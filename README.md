@@ -575,7 +575,12 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 <!-- end list -->
 
 ``` r
-pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
+pred_score <- AutoScore_testing(test_set, 
+                    final_variables, 
+                    cut_vec, 
+                    scoring_table, 
+                    threshold = "best", 
+                    with_label = TRUE)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
@@ -956,7 +961,12 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 <!-- end list -->
 
 ``` r
-pred_score <- AutoScore_testing(test_set, final_variables, cut_vec, scoring_table, threshold = "best", with_label = TRUE)
+pred_score <- AutoScore_testing(test_set, 
+                    final_variables, 
+                    cut_vec, 
+                    scoring_table, 
+                    threshold = "best", 
+                    with_label = TRUE)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
