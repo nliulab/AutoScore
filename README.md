@@ -149,13 +149,13 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 ### Install the development version from GitHub or the stable version from CRAN (recommended):
 
 ``` r
+# From CRAN (recommended)
+install.packages("AutoScore")
+
 # From Github
 install.packages("devtools")
 library(devtools)
 install_github(repo = "nliulab/AutoScore", build_vignettes = TRUE)
-
-# From CRAN (recommended)
-install.packages("AutoScore")
 ```
 
 ### Load R package
