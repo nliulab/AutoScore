@@ -1,6 +1,5 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/AutoScore)](http://cran.rstudio.com/web/packages/AutoScore/index.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/AutoScore)](http://www.rdocumentation.org/packages/AutoScore)
-CRAN cranbadge(“badgecreatr”) 
 
 AutoScore: An Interpretable Machine Learning-Based Automatic Clinical
 Score Generator
