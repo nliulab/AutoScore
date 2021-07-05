@@ -1,7 +1,7 @@
-[![](https://www.r-pkg.org/badges/version/badger?color=green)](https://cran.r-project.org/package=AutoScore)
-[![](http://cranlogs.r-pkg.org/badges/grand-total/badger?color=green)](https://cran.r-project.org/package=AutoScore)
-[![](http://cranlogs.r-pkg.org/badges/last-month/badger?color=green)](https://cran.r-project.org/package=AutoScore)
-[![](http://cranlogs.r-pkg.org/badges/last-week/badger?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](https://www.r-pkg.org/badges/version/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](http://cranlogs.r-pkg.org/badges/last-month/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](http://cranlogs.r-pkg.org/badges/last-week/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
 
 
 AutoScore: An Interpretable Machine Learning-Based Automatic Clinical
