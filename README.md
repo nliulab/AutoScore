@@ -1,3 +1,4 @@
+[![CRANchecks](https://cranchecks.info/badges/summary/AutoScore)](https://cran.r-project.org/web/checks/check_results_AutoScore.html)
 [![](https://www.r-pkg.org/badges/version/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
 [![](http://cranlogs.r-pkg.org/badges/grand-total/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
 [![](http://cranlogs.r-pkg.org/badges/last-month/AutoScore?color=green)](https://cran.r-project.org/package=AutoScore)
