@@ -1,5 +1,8 @@
-[![](http://cranlogs.r-pkg.org/badges/grand-total/AutoScore)](http://cran.rstudio.com/web/packages/AutoScore/index.html)
-[![Rdoc](http://www.rdocumentation.org/badges/version/AutoScore)](http://www.rdocumentation.org/packages/AutoScore)
+[![](https://www.r-pkg.org/badges/version/badger?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/badger?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](http://cranlogs.r-pkg.org/badges/last-month/badger?color=green)](https://cran.r-project.org/package=AutoScore)
+[![](http://cranlogs.r-pkg.org/badges/last-week/badger?color=green)](https://cran.r-project.org/package=AutoScore)
+
 
 AutoScore: An Interpretable Machine Learning-Based Automatic Clinical
 Score Generator
