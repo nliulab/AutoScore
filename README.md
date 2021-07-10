@@ -15,9 +15,7 @@ Score Generator
       - [Citation](#citation)
       - [Contact](#contact)
   - **Install Package and Prepare Data**
-      - [Install the development version from GitHub or the stable
-            version from CRAN
-            (recommended):](#install-the-development-version-from-github-or-the-stable-version-from-cran-recommended)
+      - [Install the package from CRAN or GitHub](#install-the-package-from-cran-or-github)
       - [Load R package](#load-r-package)
       - [Load data](#load-data)
       - [Data preprocessing (Users to check the
@@ -150,7 +148,7 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
     separate training and validation datasets. Thus, cross-validation is
     employed to create the parsimony plot.
 
-### Install the development version from GitHub or the stable version from CRAN (recommended):
+### Install the package from CRAN or GitHub
 
 ``` r
 # From CRAN (recommended)
