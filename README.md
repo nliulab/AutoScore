@@ -137,7 +137,7 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
   - Feng Xie (Email: <xief@u.duke.nus.edu>)
   - Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
 
-# **Install Package and Prepare Data**
+## **Install Package and Prepare Data**
 
   - Install / load the AutoScore package and prepare the data.
   - In Demo \#1, we demonstrate the use of AutoScore on a comparably
