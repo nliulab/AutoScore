@@ -9,64 +9,63 @@ AutoScore: An Interpretable Machine Learning-Based Automatic Clinical
 Score Generator
 ================
 
-  - [**AutoScore Introduction**](#autoscore-introduction)
+  - **AutoScore Introduction**
       - [Description](#description)
       - [Functions and pipeline](#functions-and-pipeline)
       - [Citation](#citation)
       - [Contact](#contact)
-  - [**AutoScore Demonstration**](#autoscore-demonstration)
-      - [**Install the package and prepare
-        data**](#install-the-package-and-prepare-data)
-          - [Install the development version from GitHub or the stable
+  - **Install Package and Prepare Data**
+      - [Install the development version from GitHub or the stable
             version from CRAN
             (recommended):](#install-the-development-version-from-github-or-the-stable-version-from-cran-recommended)
-          - [Load R package](#load-r-package)
-          - [Load data](#load-data)
-          - [Data preprocessing (Users to check the
+      - [Load R package](#load-r-package)
+      - [Load data](#load-data)
+      - [Data preprocessing (Users to check the
             following)](#data-preprocessing-users-to-check-the-following)
-          - [AutoScore preprocessing (Users to check the
+      - [AutoScore preprocessing (Users to check the
             following)](#autoscore-preprocessing-users-to-check-the-following)
-      - [**AutoScore Demo \#1: Large dataset (sample size =
-        20000)**](#autoscore-demo-1-large-dataset-sample-size--20000)
-          - [Prepare training, validation, and test
+  - **AutoScore Demo \#1: Large Dataset (Sample Size = 20000)**
+      - [Prepare training, validation, and test
             datasets](#prepare-training-validation-and-test-datasets)
-          - [STEP(i): Generate variable ranking list (AutoScore Module
+      - [STEP(i): Generate variable ranking list (AutoScore Module
             1)](#stepi-generate-variable-ranking-list-autoscore-module-1)
-          - [STEP(ii): Select the best model with parsimony plot
+      - [STEP(ii): Select the best model with parsimony plot
             (AutoScore Modules
             2+3+4)](#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234)
-          - [STEP(iii): Generate initial scores with the final list of
+      - [STEP(iii): Generate initial scores with the final list of
             variables (Re-run AutoScore Modules
             2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23)
-          - [STEP(iv): Fine-tune the initial score generated in
+      - [STEP(iv): Fine-tune the initial score generated in
             STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
             2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23)
-          - [STEP(v): Evaluate final risk scores on test dataset
+      - [STEP(v): Evaluate final risk scores on test dataset
             (AutoScore Module
             6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6)
-      - [**AutoScore Demo \#2: Small dataset (sample size = 1000) with
-        cross-validation**](#autoscore-demo-2-small-dataset-sample-size--1000-with-cross-validation)
-          - [Get small dataset with 1000
+  - **AutoScore Demo \#2: Small Dataset (Sample Size = 1000) with Cross-Validation**
+      - [Get small dataset with 1000
             samples](#get-small-dataset-with-1000-samples)
-          - [Prepare training and test
+      - [Prepare training and test
             datasets](#prepare-training-and-test-datasets)
-          - [STEP(i): Generate variable ranking list (AutoScore Module
+      - [STEP(i): Generate variable ranking list (AutoScore Module
             1)](#stepi-generate-variable-ranking-list-autoscore-module-1-1)
-          - [STEP(ii): Select the best model with parsimony plot
+      - [STEP(ii): Select the best model with parsimony plot
             (AutoScore Modules
             2+3+4)](#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234-1)
-          - [STEP(iii): Generate initial scores with the final list of
+      - [STEP(iii): Generate initial scores with the final list of
             variables (Re-run AutoScore Modules
             2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23-1)
-          - [STEP(iv): Fine-tune the initial score generated in
+      - [STEP(iv): Fine-tune the initial score generated in
             STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
             2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23-1)
-          - [STEP(v): Evaluate final risk scores on test dataset
+      - [STEP(v): Evaluate final risk scores on test dataset
             (AutoScore Module
             6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6-1)
-      - [**Appendix: Other functions**](#appendix-other-functions)
+  - **Appendix: Other Functions**
+      - [Descriptive analysis](#descriptive-analysis)
+      - [Univariable analysis](#univariable-analysis)
+      - [Multivariable analysis](#multivariable-analysis)
 
-# **AutoScore Introduction**
+## **AutoScore Introduction**
 
   - **GitHub Package (version 0.2.0)**
   - [**CRAN Repository (version 0.2.0)**](<https://cran.r-project.org/web/packages/AutoScore/>)
@@ -140,7 +139,7 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
   - Feng Xie (Email: <xief@u.duke.nus.edu>)
   - Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
 
-# **AutoScore Demonstration**
+# **Install Package and Prepare Data**
 
   - Install / load the AutoScore package and prepare the data.
   - In Demo \#1, we demonstrate the use of AutoScore on a comparably
@@ -150,8 +149,6 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
     small dataset where no sufficient samples are available to form
     separate training and validation datasets. Thus, cross-validation is
     employed to create the parsimony plot.
-
-## **Install the package and prepare data**
 
 ### Install the development version from GitHub or the stable version from CRAN (recommended):
 
@@ -254,7 +251,7 @@ check_data(sample_data)
   - Modify your data, and run the `check_data` again until there are no
     warning messages.
 
-## **AutoScore Demo \#1: Large dataset (sample size = 20000)**
+## **AutoScore Demo \#1: Large Dataset (Sample Size = 20000)**
 
 In Demo \#1, we demonstrate the use of AutoScore on a comparably large
 dataset where separate training and validation sets are available.
@@ -634,7 +631,7 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
 #> NPV:         0.9861 95% CI: 0.9809-0.9907
 ```
 
-## **AutoScore Demo \#2: Small dataset (sample size = 1000) with cross-validation**
+## **AutoScore Demo \#2: Small Dataset (Sample Size = 1000) with Cross-Validation**
 
 In Demo \#2, we demonstrate the use of AutoScore on a comparably small
 dataset where there are no sufficient samples to form a separate
@@ -1022,8 +1019,9 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
 #> NPV:         0.4716 95% CI: 0.47-0.4747
 ```
 
-## **Appendix: Other functions**
+## **Appendix: Other Functions**
 
+### Descriptive analysis
   - Compute descriptive table (usually Table 1 in medical literature)
     for the dataset.
 
@@ -1083,6 +1081,7 @@ compute_descriptive_table(sample_data)
 #>   label = TRUE (%)               1588 (7.9)
 ```
 
+### Univariable analysis
   - Perform univariable analysis and generate the result table with odd
     ratios.
 
@@ -1115,6 +1114,7 @@ print(uni_table)
 #> Age              1.042(1.039-1.046)  <0.001
 ```
 
+### Multivariable analysis
   - Perform multivariable analysis and generate the result table with
     adjusted odd ratios.
 
