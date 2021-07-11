@@ -18,10 +18,8 @@ Score Generator
       - [Install the package from CRAN or GitHub](#install-the-package-from-cran-or-github)
       - [Load R package](#load-r-package)
       - [Load data](#load-data)
-      - [Data preprocessing (Users to check the
-            following)](#data-preprocessing-users-to-check-the-following)
-      - [AutoScore preprocessing (Users to check the
-            following)](#autoscore-preprocessing-users-to-check-the-following)
+      - [Data preprocessing](#data-preprocessing-users-to-check-the-following)
+      - [AutoScore preprocessing](#autoscore-preprocessing-users-to-check-the-following)
   - **AutoScore Demo \#1: Large Dataset (Sample Size = 20000)**
       - [Prepare training, validation, and test
             datasets](#prepare-training-validation-and-test-datasets)
@@ -34,7 +32,7 @@ Score Generator
             variables (Re-run AutoScore Modules
             2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23)
       - [STEP(iv): Fine-tune the initial score generated in
-            STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
+            STEP(iii) (AutoScore Module 5 & Re-run Modules
             2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23)
       - [STEP(v): Evaluate final risk scores on test dataset
             (AutoScore Module
@@ -53,7 +51,7 @@ Score Generator
             variables (Re-run AutoScore Modules
             2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23-1)
       - [STEP(iv): Fine-tune the initial score generated in
-            STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
+            STEP(iii) (AutoScore Module 5 & Re-run Modules
             2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23-1)
       - [STEP(v): Evaluate final risk scores on test dataset
             (AutoScore Module
