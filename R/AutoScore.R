@@ -187,20 +187,35 @@ AutoScore_parsimony <-
       auc_set$sum <- rowSums(auc_set) / fold
       cat("***list of final mean AUC values through cross-validation are shown below \n")
       print(data.frame(auc_set$sum))
-      plot(
-        auc_set$sum,
-        main = paste(
-          "Final Parsimony Plot based on ",
-          fold,
-          "-fold Cross Validation",
-          sep = ""
-        ),
-        xlab = "Number of Variables",
-        ylab = "Area Under the Curve",
-        col = "#2b8cbe",
-        lwd = 2,
-        type = "o"
-      )
+
+      # output final results and plot parsimony plot
+
+      var_names <- factor(names(rank)[n_min:n_max], levels = names(rank)[n_min:n_max])
+      dt <- data.frame(AUC = auc_set$sum, variables = var_names, num = n_min:n_max)
+      names(AUC) <- n_min:n_max
+      #cat("list of AUC values are shown below")
+      #print(data.frame(AUC))
+      p <- ggplot(data = dt, mapping = aes_string(x = "variables", y = "AUC")) +
+        geom_bar(stat = "identity", fill = "steelblue") +
+        coord_cartesian(ylim = c(0.5, 1))+
+        theme_bw() +
+        labs(x = "Added Variables", y = "AUC", title = paste("Final Parsimony Plot based on ", fold,
+                                                             "-fold Cross Validation", sep = "")) +
+        theme(legend.position = "none",
+              axis.text = element_text(size = 12),
+              axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+      paste("Final Parsimony Plot based on ", fold,
+        "-fold Cross Validation", sep = "")
+
+      # Add number of variables to bar:
+      if (nrow(dt) >= 100) {
+        print( p + geom_text(aes(label = num), vjust = 1.5, colour = "white", angle = 90))
+      } else {
+        print( p + geom_text(aes(label = num), vjust = 1.5, colour = "white"))
+      }
+
+
       return(auc_set)
     }
 
@@ -232,18 +247,29 @@ AutoScore_parsimony <-
       }
 
       # output final results and plot parsimony plot
+      var_names <- factor(names(rank)[n_min:n_max], levels = names(rank)[n_min:n_max])
+      dt <- data.frame(AUC = AUC, variables = var_names, num = n_min:n_max)
       names(AUC) <- n_min:n_max
       #cat("list of AUC values are shown below")
       #print(data.frame(AUC))
-      plot(
-        AUC,
-        main = "Parsimony Plot on the Validation Set",
-        xlab = "Number of Variables",
-        ylab = "Area Under the Curve",
-        col = "#2b8cbe",
-        lwd = 2,
-        type = "o"
-      )
+      p <- ggplot(data = dt, mapping = aes_string(x = "variables", y = "AUC")) +
+        geom_bar(stat = "identity", fill = "steelblue") +
+        coord_cartesian(ylim = c(0.5, 1))+
+        theme_bw() +
+        labs(x = "Added Variables", y = "AUC", title = "Parsimony plot on the Validation Set") +
+        theme(legend.position = "none",
+              axis.text = element_text(size = 12),
+              axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+
+
+      # Add number of variables to bar:
+      if (nrow(dt) >= 100) {
+        print( p + geom_text(aes(label = num), vjust = 1.5, colour = "white", angle = 90))
+      } else {
+        print( p + geom_text(aes(label = num), vjust = 1.5, colour = "white"))
+      }
+
 
       return(AUC)
     }
