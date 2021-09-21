@@ -103,7 +103,9 @@ AutoScore_parsimony <-
            categorize = "quantile",
            quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
            max_cluster = 5,
-           do_trace = FALSE) {
+           do_trace = FALSE,
+           auc_lim_min = 0.5,
+           auc_lim_max = "adaptive") {
     if (n_max > length(rank)) {
       warning(
         "WARNING: the n_max (",
@@ -190,17 +192,22 @@ AutoScore_parsimony <-
 
       # output final results and plot parsimony plot
 
+      if(auc_lim_max == "adaptive"){
+        auc_lim_max <- ceiling(max(auc_set$sum)*10)/10
+
+      }
+
       var_names <- factor(names(rank)[n_min:n_max], levels = names(rank)[n_min:n_max])
       dt <- data.frame(AUC = auc_set$sum, variables = var_names, num = n_min:n_max)
-      names(AUC) <- n_min:n_max
+      #names(AUC) <- n_min:n_max
       #cat("list of AUC values are shown below")
       #print(data.frame(AUC))
       p <- ggplot(data = dt, mapping = aes_string(x = "variables", y = "AUC")) +
         geom_bar(stat = "identity", fill = "steelblue") +
-        coord_cartesian(ylim = c(0.5, 1))+
+        coord_cartesian(ylim = c(auc_lim_min, auc_lim_max))+
         theme_bw() +
-        labs(x = "Added Variables", y = "AUC", title = paste("Final Parsimony Plot based on ", fold,
-                                                             "-fold Cross Validation", sep = "")) +
+        labs(x = "", y = "Area Under the Curve", title = paste("Final parsimony plot based on ", fold,
+                                                             "-fold cross validation", sep = "")) +
         theme(legend.position = "none",
               axis.text = element_text(size = 12),
               axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
@@ -246,6 +253,12 @@ AutoScore_parsimony <-
         AUC <- c(AUC, auc(model_roc))
       }
 
+      if(auc_lim_max == "adaptive"){
+        auc_lim_max <- ceiling(max(AUC)*10)/10
+
+      }
+
+
       # output final results and plot parsimony plot
       var_names <- factor(names(rank)[n_min:n_max], levels = names(rank)[n_min:n_max])
       dt <- data.frame(AUC = AUC, variables = var_names, num = n_min:n_max)
@@ -254,9 +267,9 @@ AutoScore_parsimony <-
       #print(data.frame(AUC))
       p <- ggplot(data = dt, mapping = aes_string(x = "variables", y = "AUC")) +
         geom_bar(stat = "identity", fill = "steelblue") +
-        coord_cartesian(ylim = c(0.5, 1))+
+        coord_cartesian(ylim = c(auc_lim_min, auc_lim_max))+
         theme_bw() +
-        labs(x = "Added Variables", y = "AUC", title = "Parsimony plot on the Validation Set") +
+        labs(x = "", y = "Area Under the Curve", title = "Parsimony plot on the validation set") +
         theme(legend.position = "none",
               axis.text = element_text(size = 12),
               axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))

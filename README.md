@@ -309,6 +309,10 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
   - `max_cluster`: The max number of cluster (Default: 5). Available if
     `categorize = "kmeans"`.
   - `max_score`: Maximum total score (Default: 100).
+  - `auc_lim_min`: y-axis limits (Min) of the parsimony plot (Default:
+    0.5)
+  - `auc_lim_max`: y-axis limits (max) of the parsimony plot (Default:
+    `"adaptive"`)
 
 <!-- end list -->
 
@@ -321,7 +325,9 @@ AUC <- AutoScore_parsimony(
     n_min = 1,
     n_max = 20,
     categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+    auc_lim_min = 0.5,
+    auc_lim_max = "adaptive"
   )
 #> Select 1 Variable(s):  Area under the curve: 0.6649
 #> Select 2 Variable(s):  Area under the curve: 0.7466
@@ -703,6 +709,10 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
   - `do_trace` If set to `TRUE`, all results based on each fold of
     cross-validation would be printed out and plotted (Default:
     `FALSE`). Available if `cross_validation = TRUE`.
+  - `auc_lim_min`: y-axis limits (Min) of the parsimony plot (Default:
+    0.5)
+  - `auc_lim_max`: y-axis limits (max) of the parsimony plot (Default:
+    `"adaptive"`)
 
 <!-- end list -->
 
@@ -718,7 +728,9 @@ AUC <- AutoScore_parsimony(
     categorize = "quantile",
     fold = 10,
     quantiles = c(0, 0.25, 0.5, 0.75, 1), #c(0, 0.05, 0.2, 0.8, 0.95, 1)
-    do_trace = FALSE
+    do_trace = FALSE,
+    auc_lim_min = 0.5,
+    auc_lim_max = "adaptive"
   )
 #> ***list of final mean AUC values through cross-validation are shown below 
 #>    auc_set.sum
