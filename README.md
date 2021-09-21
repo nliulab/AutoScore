@@ -63,9 +63,9 @@ Score Generator
 
 ## **AutoScore Introduction**
 
-  - GitHub Package (version 0.2.1)
+  - **GitHub Package (version 0.2.1)**
       - 2021.9.15: Updated to version 0.2.1 with imporved parsimony plot
-  - [CRAN Repository (version 0.2.0)](<https://cran.r-project.org/web/packages/AutoScore/>)
+  - **[CRAN Repository (version 0.2.0)](<https://cran.r-project.org/web/packages/AutoScore/>)**
 
 ### Description
 
