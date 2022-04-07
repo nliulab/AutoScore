@@ -153,16 +153,15 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
 # **AutoScore Demonstration**
 
-  - [Install /load the AutoScore package](#Demo0) and prepare the data.
-  - In [Demo \#1](#Demo1), we demonstrate the use of AutoScore on a
+  - Install /load the AutoScore package and prepare the data.
+  - In Demo \#1, we demonstrate the use of AutoScore on a
     comparably large dataset where separate training and validation
     datasets are available.
-  - In [Demo \#2](#Demo2), we demonstrate the use of AutoScore on a
+  - In Demo \#2 we demonstrate the use of AutoScore on a
     comparably small dataset where no sufficient samples are available
     to form separate training and validation datasets. Thus,
     cross-validation is employed to create the parsimony plot.
 
-<h id="Demo0">
 
 ## **Install the package and prepare data**
 
