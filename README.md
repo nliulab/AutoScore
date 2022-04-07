@@ -9,63 +9,78 @@ AutoScore: An Interpretable Machine Learning-Based Automatic Clinical
 Score Generator
 ================
 
-  - **AutoScore Introduction**
+  - [**AutoScore Introduction**](#autoscore-introduction)
       - [Description](#description)
       - [Functions and pipeline](#functions-and-pipeline)
       - [Citation](#citation)
       - [Contact](#contact)
-  - **Install Package and Prepare Data**
-      - [Install the package from CRAN or GitHub](#install-the-package-from-cran-or-github)
-      - [Load R package](#load-r-package)
-      - [Load data](#load-data)
-      - [Data preprocessing](#data-preprocessing-users-to-check-the-following)
-      - [AutoScore preprocessing](#autoscore-preprocessing-users-to-check-the-following)
-  - **AutoScore Demo \#1: Large Dataset (Sample Size = 20000)**
-      - [Prepare training, validation, and test
+  - [**AutoScore Demonstration**](#autoscore-demonstration)
+      - [**Install the package and prepare
+        data**](#install-the-package-and-prepare-data)
+          - [Install the development version from GitHub or the stable
+            version from CRAN
+            (recommended):](#install-the-development-version-from-github-or-the-stable-version-from-cran-recommended)
+          - [Load R package](#load-r-package)
+          - [Load data](#load-data)
+          - [Data preprocessing (Users to check the
+            following)](#data-preprocessing-users-to-check-the-following)
+          - [AutoScore preprocessing (Users to check the
+            following)](#autoscore-preprocessing-users-to-check-the-following)
+      - [**AutoScore Demo \#1: Large dataset (sample size =
+        20000)**](#autoscore-demo-1-large-dataset-sample-size--20000)
+          - [Prepare training, validation, and test
             datasets](#prepare-training-validation-and-test-datasets)
-      - [STEP(i): Generate variable ranking list (AutoScore Module
+          - [STEP(i): Generate variable ranking list (AutoScore Module
             1)](#stepi-generate-variable-ranking-list-autoscore-module-1)
-      - [STEP(ii): Select the best model with parsimony plot
+          - [STEP(ii): Select the best model with parsimony plot
             (AutoScore Modules
             2+3+4)](#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234)
-      - [STEP(iii): Generate initial scores with the final list of
+          - [STEP(iii): Generate initial scores with the final list of
             variables (Re-run AutoScore Modules
             2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23)
-      - [STEP(iv): Fine-tune the initial score generated in
-            STEP(iii) (AutoScore Module 5 & Re-run Modules
+          - [STEP(iv): Fine-tune the initial score generated in
+            STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
             2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23)
-      - [STEP(v): Evaluate final risk scores on test dataset
+          - [STEP(v): Evaluate final risk scores on test dataset
             (AutoScore Module
             6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6)
-  - **AutoScore Demo \#2: Small Dataset (Sample Size = 1000) with Cross-Validation**
-      - [Get small dataset with 1000
+          - [STEP(vi): Further analysis based on the final scoring
+            systems (e.g., conversion table, model calibration, output
+            the
+            score)](#stepvi-further-analysis-based-on-the-final-scoring-systems-eg-conversion-table-model-calibration-output-the-score)
+      - [**AutoScore Demo \#2: Small dataset (sample size = 1000) with
+        cross-validation**](#autoscore-demo-2-small-dataset-sample-size--1000-with-cross-validation)
+          - [Get small dataset with 1000
             samples](#get-small-dataset-with-1000-samples)
-      - [Prepare training and test
+          - [Prepare training and test
             datasets](#prepare-training-and-test-datasets)
-      - [STEP(i): Generate variable ranking list (AutoScore Module
+          - [STEP(i): Generate variable ranking list (AutoScore Module
             1)](#stepi-generate-variable-ranking-list-autoscore-module-1-1)
-      - [STEP(ii): Select the best model with parsimony plot
+          - [STEP(ii): Select the best model with parsimony plot
             (AutoScore Modules
             2+3+4)](#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234-1)
-      - [STEP(iii): Generate initial scores with the final list of
+          - [STEP(iii): Generate initial scores with the final list of
             variables (Re-run AutoScore Modules
             2+3)](#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23-1)
-      - [STEP(iv): Fine-tune the initial score generated in
-            STEP(iii) (AutoScore Module 5 & Re-run Modules
+          - [STEP(iv): Fine-tune the initial score generated in
+            STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules
             2+3)](#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5--re-run-autoscore-modules-23-1)
-      - [STEP(v): Evaluate final risk scores on test dataset
+          - [STEP(v): Evaluate final risk scores on test dataset
             (AutoScore Module
             6)](#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6-1)
-  - **Appendix: Other Functions**
-      - [Descriptive analysis](#descriptive-analysis)
-      - [Univariable analysis](#univariable-analysis)
-      - [Multivariable analysis](#multivariable-analysis)
+          - [STEP(vi): Further analysis based on the final scoring
+            systems (e.g., conversion table, model calibration, output
+            the
+            score)](#stepvi-further-analysis-based-on-the-final-scoring-systems-eg-conversion-table-model-calibration-output-the-score-1)
+      - [**Appendix: Other functions**](#appendix-other-functions)
 
-## **AutoScore Introduction**
+# **AutoScore Introduction**
 
-  - **GitHub Package (version 0.2.1)**
+  - **GitHub Package (version 0.3.0)**
       - 2021.9.15: Updated to version 0.2.1 with imporved parsimony plot
-  - **[CRAN Package (version 0.2.0)](<https://cran.r-project.org/web/packages/AutoScore/>)**
+      - 2022.4.5: Updated to version 0.3.0 with more functions (including conversion tables, improved ROC curve, AUC-based varaible ranking, etc.)
+  - **[CRAN Package (version 0.3.0)](<https://cran.r-project.org/web/packages/AutoScore/>)**
+  - **AutoScore R package (version 0.3.0)**
 
 ### Description
 
@@ -136,27 +151,31 @@ Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
   - Feng Xie (Email: <xief@u.duke.nus.edu>)
   - Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
 
-## **Install Package and Prepare Data**
+# **AutoScore Demonstration**
 
-  - Install / load the AutoScore package and prepare the data.
-  - In Demo \#1, we demonstrate the use of AutoScore on a comparably
-    large dataset where separate training and validation datasets are
-    available.
-  - In Demo \#2, we demonstrate the use of AutoScore on a comparably
-    small dataset where no sufficient samples are available to form
-    separate training and validation datasets. Thus, cross-validation is
-    employed to create the parsimony plot.
+  - [Install /load the AutoScore package](#Demo0) and prepare the data.
+  - In [Demo \#1](#Demo1), we demonstrate the use of AutoScore on a
+    comparably large dataset where separate training and validation
+    datasets are available.
+  - In [Demo \#2](#Demo2), we demonstrate the use of AutoScore on a
+    comparably small dataset where no sufficient samples are available
+    to form separate training and validation datasets. Thus,
+    cross-validation is employed to create the parsimony plot.
 
-### Install the package from CRAN or GitHub
+<h id="Demo0">
+
+## **Install the package and prepare data**
+
+### Install the development version from GitHub or the stable version from CRAN (recommended):
 
 ``` r
-# From CRAN (recommended)
-install.packages("AutoScore")
-
 # From Github
 install.packages("devtools")
 library(devtools)
 install_github(repo = "nliulab/AutoScore", build_vignettes = TRUE)
+
+# From CRAN (recommended)
+install.packages("AutoScore")
 ```
 
 ### Load R package
@@ -248,7 +267,9 @@ check_data(sample_data)
   - Modify your data, and run the `check_data` again until there are no
     warning messages.
 
-## **AutoScore Demo \#1: Large Dataset (Sample Size = 20000)**
+<h id="Demo1">
+
+## **AutoScore Demo \#1: Large dataset (sample size = 20000)**
 
 In Demo \#1, we demonstrate the use of AutoScore on a comparably large
 dataset where separate training and validation sets are available.
@@ -275,13 +296,17 @@ test_set <- out_split$test_set
 
 ### STEP(i): Generate variable ranking list (AutoScore Module 1)
 
-  - `ntree`: Number of trees in the random forest algorithm (Default:
-    100).
+  - `method`: “rf” (default) or “auc”.
+
+  - method = `rf`: “rf” refers to random forest-based ranking  
+
+  - `ntree`: Number of trees required only if when `method` is “rf”
+    (Default: 100).
 
 <!-- end list -->
 
 ``` r
-ranking <- AutoScore_rank(train_set, ntree = 100)
+ranking <- AutoScore_rank(train_set, method = "rf", ntree = 100)
 #> The ranking based on variable importance was shown below for each variable: 
 #>              Age     lactate_mean         bun_mean    aniongap_mean 
 #>        152.24380        151.60648        147.96133        134.85962 
@@ -297,6 +322,33 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
 #>         56.08578
 ```
 
+  - method = `auc`: “auc” refers to the AUC-based ranking. For “auc”,
+    univariate models will be built based on the train set, and the
+    variable ranking is constructed via the AUC performance of
+    corresponding univariate models on the validation set
+    (`validation_set`).  
+  - `validation_set`: validation set required only if when `method` is
+    “auc”.
+
+<!-- end list -->
+
+``` r
+ranking <- AutoScore_rank(train_set, method = "auc", validation_set = validation_set)
+#> The auc-based ranking based on variable importance was shown below for each variable: 
+#>     lactate_mean              Age    aniongap_mean         bun_mean 
+#>        0.7016120        0.6926165        0.6796975        0.6741446 
+#>    resprate_mean   heartrate_mean         wbc_mean bicarbonate_mean 
+#>        0.6708401        0.6319503        0.6010980        0.6010525 
+#>  hemoglobin_mean      diasbp_mean      meanbp_mean  hematocrit_mean 
+#>        0.5777848        0.5743282        0.5617414        0.5606434 
+#>      sodium_mean     glucose_mean       tempc_mean        spo2_mean 
+#>        0.5427415        0.5392167        0.5380191        0.5345188 
+#>       sysbp_mean  creatinine_mean    platelet_mean    chloride_mean 
+#>        0.5326130        0.5186835        0.5139225        0.4888609 
+#>   potassium_mean 
+#>        0.4845179
+```
+
 ### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
 
   - `nmin`: Minimum number of selected variables (Default: 1).
@@ -309,10 +361,10 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
   - `max_cluster`: The max number of cluster (Default: 5). Available if
     `categorize = "kmeans"`.
   - `max_score`: Maximum total score (Default: 100).
-  - `auc_lim_min`: y-axis limits (Min) of the parsimony plot (Default:
-    0.5)
-  - `auc_lim_max`: y-axis limits (max) of the parsimony plot (Default:
-    `"adaptive"`)
+  - `auc_lim_min`: Min y\_axis limit in the parsimony plot (Default:
+    0.5).
+  - `auc_lim_max`: Max y\_axis limit in the parsimony plot (Default:
+    “adaptive”).
 
 <!-- end list -->
 
@@ -351,7 +403,7 @@ AUC <- AutoScore_parsimony(
 #> Select 20 Variable(s):  Area under the curve: 0.8259
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
   - Users could use the `AUC` for further analysis or export it as the
     CSV to other software for plotting.
@@ -514,7 +566,6 @@ cut_vec$lactate_mean <- c(0.2, 1, 3, 4)
 cut_vec$bun_mean <- c(10, 40)
 cut_vec$aniongap_mean <- c(10, 17)
 cut_vec$heartrate_mean<- c(70, 98)
-
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
@@ -582,17 +633,20 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 <!-- end list -->
 
 ``` r
-pred_score <- AutoScore_testing(test_set, 
-                    final_variables, 
-                    cut_vec, 
-                    scoring_table, 
-                    threshold = "best", 
-                    with_label = TRUE)
+pred_score <-
+  AutoScore_testing(
+    test_set,
+    final_variables,
+    cut_vec,
+    scoring_table,
+    threshold = "best",
+    with_label = TRUE
+  )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
-    #> ***Performance using AutoScore (based on unseen test Set):
+    #> ***Performance using AutoScore:
     #> AUC:  0.8337   95% CI: 0.8125-0.8548 (DeLong)
     #> Best score threshold: >= 59 
     #> Other performance indicators based on this score threshold: 
@@ -608,15 +662,6 @@ pred_score <- AutoScore_testing(test_set,
     #> 4         37 FALSE
     #> 5         49 FALSE
     #> 6         34 FALSE
-
-  - Users could use the `pred_score` for further analysis or export it
-    as the CSV to other software.
-
-<!-- end list -->
-
-``` r
-write.csv(pred_score, file = "D:/pred_score.csv")
-```
 
   - Use `print_roc_performance()` to generate the performance under
     different score thresholds (e.g., 50).
@@ -634,7 +679,102 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
 #> NPV:         0.9861 95% CI: 0.9809-0.9907
 ```
 
-## **AutoScore Demo \#2: Small Dataset (Sample Size = 1000) with Cross-Validation**
+### STEP(vi): Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)
+
+  - Use `conversion_table()` to generate the performance under different
+    risk (i.e., probability of mortality based on logistic regression
+    estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5).
+
+<!-- end list -->
+
+``` r
+conversion_table(pred_score, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
+```
+
+| Predicted Risk \[\>=\] | Score cut-off \[\>=\] | Percentage of patients (%) | Accuracy (95% CI)  | Sensitivity (95% CI) | Specificity (95% CI) |    PPV (95% CI)    |    NPV (95% CI)    |
+| :--------------------: | :-------------------: | :------------------------: | :----------------: | :------------------: | :------------------: | :----------------: | :----------------: |
+|           1%           |          38           |             82             | 25.8% (24.7-27.1%) |   99% (97.7-100%)    |  19.7% (18.5-21.1%)  |  9.3% (9.1-9.5%)   | 99.6% (99.1-100%)  |
+|           5%           |          54           |             42             |   63.5% (62-65%)   |   87% (83.1-90.6%)   |  61.6% (59.9-63.2%)  |  15.9% (15-16.6%)  | 98.3% (97.8-98.7%) |
+|          10%           |          61           |             25             | 78.2% (76.9-79.4%) |   72% (67.1-76.9%)   |   78.7% (77.4-80%)   |  22% (20.4-23.6%)  | 97.1% (96.6-97.6%) |
+|          20%           |          68           |             11             |  88% (87.1-88.9%)  |   45% (39.4-50.5%)   |  91.6% (90.7-92.5%)  | 30.8% (27.5-34.3%) | 95.2% (94.8-95.7%) |
+|          50%           |          81           |             1              | 92.5% (92.2-92.9%) |   11.1% (7.8-15%)    |   99.3% (99-99.6%)   | 58.1% (45.1-70.2%) | 93.1% (92.8-93.4%) |
+
+  - Use `conversion_table()` to generate the performance under different
+    score thresholds (e.g., 20, 40, 60, 75, 90).
+
+<!-- end list -->
+
+``` r
+conversion_table(pred_score, by = "score", values = c(20,40,60,75,90))
+```
+
+| Score cut-off \[\>=\] | Predicted Risk \[\>=\] | Percentage of patients (%) | Accuracy (95% CI)  | Sensitivity (95% CI) | Specificity (95% CI) |    PPV (95% CI)    |    NPV (95% CI)    |
+| :-------------------: | :--------------------: | :------------------------: | :----------------: | :------------------: | :------------------: | :----------------: | :----------------: |
+|          20           |          0.1%          |             99             |   8.3% (8-8.5%)    |   100% (100-100%)    |   0.6% (0.4-0.9%)    |  7.7% (7.7-7.7%)   |  100% (100-100%)   |
+|          40           |          1.2%          |             79             | 28.6% (27.4-29.9%) |   99% (97.7-100%)    |  22.8% (21.5-24.2%)  |  9.6% (9.5-9.8%)   | 99.6% (99.2-100%)  |
+|          60           |          9.7%          |             25             | 78.2% (76.9-79.5%) |   72% (66.8-76.9%)   |   78.7% (77.4-80%)   |  22% (20.3-23.6%)  | 97.1% (96.6-97.6%) |
+|          75           |         34.8%          |             3              | 92.3% (91.8-92.8%) |  19.5% (15.3-24.1%)  |   98.4% (98-98.8%)   | 50.4% (41.9-58.9%) |  93.6% (93.3-94%)  |
+|          90           |         72.7%          |             0              | 92.3% (92.3-92.4%) |    0.7% (0-1.6%)     |   100% (99.9-100%)   |   66.7% (0-100%)   | 92.4% (92.3-92.4%) |
+
+  - You can also generate the `pred_score_train` based on training data
+    for further analysis (e.g., conversion table based on the training
+    data).
+
+<!-- end list -->
+
+``` r
+pred_score_train <-
+  AutoScore_testing(
+    train_set,
+    final_variables,
+    cut_vec,
+    scoring_table,
+    threshold = "best",
+    with_label = TRUE
+  )
+#> ***Performance using AutoScore:
+#> AUC:  0.8352   95% CI: 0.8239-0.8466 (DeLong)
+#> Best score threshold: >= 58 
+#> Other performance indicators based on this score threshold: 
+#> Sensitivity: 0.7611 95% CI: 0.7371-0.786
+#> Specificity: 0.7586 95% CI: 0.7507-0.7655
+#> PPV:         0.2161 95% CI: 0.2085-0.2239
+#> NPV:         0.9732 95% CI: 0.9705-0.976
+```
+
+  - Generate conversion table based on the training data based on
+    predictive risk (i.e., probability of mortality based on logistic
+    regression estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5)
+    using `conversion_table()`
+
+<!-- end list -->
+
+``` r
+conversion_table(pred_score_train, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
+```
+
+| Predicted Risk \[\>=\] | Score cut-off \[\>=\] | Percentage of patients (%) | Accuracy (95% CI)  | Sensitivity (95% CI) | Specificity (95% CI) |    PPV (95% CI)    |    NPV (95% CI)    |
+| :--------------------: | :-------------------: | :------------------------: | :----------------: | :------------------: | :------------------: | :----------------: | :----------------: |
+|           1%           |          39           |             81             |  27% (26.3-27.6%)  |  99.2% (98.7-99.6%)  |  20.7% (19.9-21.4%)  |  9.9% (9.8-9.9%)   | 99.7% (99.4-99.9%) |
+|           5%           |          54           |             43             | 62.7% (61.9-63.5%) |  87.5% (85.5-89.3%)  |  60.6% (59.7-61.4%)  | 16.2% (15.8-16.7%) |  98.2% (98-98.5%)  |
+|          10%           |          60           |             26             | 77.2% (76.6-77.9%) |  73.2% (70.6-75.6%)  |  77.6% (76.9-78.3%)  |  22.2% (21.4-23%)  | 97.1% (96.8-97.3%) |
+|          20%           |          67           |             12             | 87.7% (87.1-88.2%) |  48.4% (45.5-51.2%)  |  91.1% (90.6-91.6%)  | 32.2% (30.4-33.9%) |  95.3% (95-95.5%)  |
+|          50%           |          79           |             2              | 92.1% (91.9-92.3%) |   10.7% (9-12.6%)    |   99.2% (99-99.3%)   | 53.4% (47.3-59.8%) | 92.7% (92.6-92.8%) |
+
+  - Users could use the `pred_score` or `pred_score_train` for further
+    analysis or export it as the CSV to other software (e.g., generating
+    the calibration curve).
+
+<!-- end list -->
+
+``` r
+write.csv(pred_score, file = "D:/pred_score.csv")
+write.csv(pred_score_train, file = "D:/pred_score_train.csv")
+```
+
+<h id="Demo2">
+
+## **AutoScore Demo \#2: Small dataset (sample size = 1000) with cross-validation**
 
 In Demo \#2, we demonstrate the use of AutoScore on a comparably small
 dataset where there are no sufficient samples to form a separate
@@ -668,13 +808,17 @@ test_set <- out_split$test_set
 
 ### STEP(i): Generate variable ranking list (AutoScore Module 1)
 
-  - `ntree`: umber of trees in the random forest algorithm (Default:
-    100).
+  - `method`: “rf” (default) or “auc”.
 
-<!-- end list -->
+method = `auc`: “auc” refers to the AUC-based ranking. For “auc”,
+univariate models will be built based on the train set, and the variable
+ranking is constructed via the AUC performance of corresponding
+univariate models on the validation set (`validation_set`).  
+\- `validation_set`: validation set required only if when `method` is
+“auc”.
 
 ``` r
-ranking <- AutoScore_rank(train_set, ntree = 100)
+ranking <- AutoScore_rank(train_set, validation_set = validation_set, ntree = 100)
 #> The ranking based on variable importance was shown below for each variable: 
 #>              Age    aniongap_mean     lactate_mean    resprate_mean 
 #>        37.406648        31.315285        25.564054        21.855069 
@@ -688,6 +832,27 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
 #>        11.649415        11.431833        10.108408         9.297786 
 #>        spo2_mean 
 #>         7.680821
+```
+
+method = `rf`: “rf” refers to random forest-based ranking  
+\- `ntree`: Number of trees required only if when `method` is “rf”
+(Default: 100).
+
+``` r
+ranking <- AutoScore_rank(train_set, ntree = 100)
+#> The ranking based on variable importance was shown below for each variable: 
+#>              Age    aniongap_mean     lactate_mean         bun_mean 
+#>        33.661071        30.937904        25.129836        23.696395 
+#>    resprate_mean   heartrate_mean    platelet_mean     glucose_mean 
+#>        20.572556        19.405187        16.609492        15.938134 
+#>   potassium_mean      diasbp_mean       sysbp_mean       tempc_mean 
+#>        14.991216        14.839592        14.576851        14.465937 
+#>         wbc_mean bicarbonate_mean  creatinine_mean      meanbp_mean 
+#>        14.461607        13.750307        13.282037        13.245753 
+#>  hematocrit_mean    chloride_mean      sodium_mean  hemoglobin_mean 
+#>        12.097335        10.795598        10.617640         8.980531 
+#>        spo2_mean 
+#>         6.903336
 ```
 
 ### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
@@ -709,10 +874,6 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
   - `do_trace` If set to `TRUE`, all results based on each fold of
     cross-validation would be printed out and plotted (Default:
     `FALSE`). Available if `cross_validation = TRUE`.
-  - `auc_lim_min`: y-axis limits (Min) of the parsimony plot (Default:
-    0.5)
-  - `auc_lim_max`: y-axis limits (max) of the parsimony plot (Default:
-    `"adaptive"`)
 
 <!-- end list -->
 
@@ -728,32 +889,30 @@ AUC <- AutoScore_parsimony(
     categorize = "quantile",
     fold = 10,
     quantiles = c(0, 0.25, 0.5, 0.75, 1), #c(0, 0.05, 0.2, 0.8, 0.95, 1)
-    do_trace = FALSE,
-    auc_lim_min = 0.5,
-    auc_lim_max = "adaptive"
+    do_trace = FALSE
   )
 #> ***list of final mean AUC values through cross-validation are shown below 
 #>    auc_set.sum
-#> 1    0.6332124
-#> 2    0.7254603
-#> 3    0.7381319
-#> 4    0.7623322
-#> 5    0.7695922
-#> 6    0.7735329
-#> 7    0.7728111
-#> 8    0.7700531
-#> 9    0.7665829
-#> 10   0.7634048
-#> 11   0.7651904
-#> 12   0.7617113
-#> 13   0.7571203
-#> 14   0.7694130
-#> 15   0.7650977
-#> 16   0.7572382
-#> 17   0.7603713
-#> 18   0.7650728
-#> 19   0.7656964
-#> 20   0.7645128
+#> 1    0.6396675
+#> 2    0.7231147
+#> 3    0.7315859
+#> 4    0.7457606
+#> 5    0.7624567
+#> 6    0.7669644
+#> 7    0.7703138
+#> 8    0.7642128
+#> 9    0.7665648
+#> 10   0.7713672
+#> 11   0.7674212
+#> 12   0.7664641
+#> 13   0.7584156
+#> 14   0.7558671
+#> 15   0.7629152
+#> 16   0.7636249
+#> 17   0.7689182
+#> 18   0.7656851
+#> 19   0.7625896
+#> 20   0.7593715
 ```
 
 ![](README_files/figure-gfm/parsi-1.png)<!-- -->
@@ -811,8 +970,8 @@ cut_vec <- AutoScore_weighting(
 #> 1           Age
 #> 2 aniongap_mean
 #> 3  lactate_mean
-#> 4 resprate_mean
-#> 5      bun_mean
+#> 4      bun_mean
+#> 5 resprate_mean
 #> ****Initial Scores: 
 #> 
 #> 
@@ -836,16 +995,16 @@ cut_vec <- AutoScore_weighting(
 #>                [3.1,4.1)     14  
 #>                >=4.1         22  
 #>                                  
+#> bun_mean       <9             0  
+#>                [9,43.2)       1  
+#>                [43.2,59)      9  
+#>                >=59          13  
+#>                                  
 #> resprate_mean  <12            0  
 #>                [12,15)        7  
 #>                [15,22)       11  
 #>                [22,25)       16  
 #>                >=25          28  
-#>                                  
-#> bun_mean       <9             0  
-#>                [9,43.2)       1  
-#>                [43.2,59)      9  
-#>                >=59          13  
 #> =============  ===========  =====
 ```
 
@@ -855,10 +1014,10 @@ cut_vec <- AutoScore_weighting(
     #> AUC:  0.7891   95% CI: 0.7558-0.8224 (DeLong)
     #> Best score threshold: >= 48 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.706 95% CI: 0.6593-0.7555
+    #> Sensitivity: 0.706 95% CI: 0.6566-0.7527
     #> Specificity: 0.7589 95% CI: 0.7113-0.8036
-    #> PPV:         0.7606 95% CI: 0.7233-0.7975
-    #> NPV:         0.7044 95% CI: 0.6703-0.7423
+    #> PPV:         0.7611 95% CI: 0.7232-0.7975
+    #> NPV:         0.7046 95% CI: 0.6694-0.7406
     #> ***The cutoffs of each variable generated by the AutoScore are saved in cut_vec. You can decide whether to revise or fine-tune them
 
 ### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3)
@@ -912,7 +1071,6 @@ cut_vec$lactate_mean <- c(1, 2, 3)
 cut_vec$Age <- c(35, 50, 80)
 cut_vec$aniongap_mean <- c(8, 12, 18)
 cut_vec$resprate_mean <- c(15, 22)
-
 scoring_table <- AutoScore_fine_tuning(train_set,
                         validation_set,
                         final_variables,
@@ -939,13 +1097,13 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 #>                [2,3)      13  
 #>                >=3        18  
 #>                               
-#> resprate_mean  <15         0  
-#>                [15,22)    10  
-#>                >=22       20  
-#>                               
 #> bun_mean       <45         0  
 #>                [45,60)    10  
 #>                >=60       17  
+#>                               
+#> resprate_mean  <15         0  
+#>                [15,22)    10  
+#>                >=22       20  
 #> =============  ========  =====
 ```
 
@@ -955,10 +1113,10 @@ scoring_table <- AutoScore_fine_tuning(train_set,
     #> AUC:  0.7623   95% CI: 0.7275-0.7971 (DeLong)
     #> Best score threshold: >= 60 
     #> Other performance indicators based on this score threshold: 
-    #> Sensitivity: 0.5714 95% CI: 0.522-0.6209
+    #> Sensitivity: 0.5742 95% CI: 0.522-0.6209
     #> Specificity: 0.8214 95% CI: 0.7827-0.8601
-    #> PPV:         0.7774 95% CI: 0.7341-0.8176
-    #> NPV:         0.6392 95% CI: 0.6105-0.669
+    #> PPV:         0.7774 95% CI: 0.7343-0.8192
+    #> NPV:         0.6394 95% CI: 0.6101-0.6691
 
 ### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
 
@@ -974,24 +1132,27 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 <!-- end list -->
 
 ``` r
-pred_score <- AutoScore_testing(test_set, 
-                    final_variables, 
-                    cut_vec, 
-                    scoring_table, 
-                    threshold = "best", 
-                    with_label = TRUE)
+pred_score <-
+  AutoScore_testing(
+    test_set,
+    final_variables,
+    cut_vec,
+    scoring_table,
+    threshold = "best",
+    with_label = TRUE
+  )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
-    #> ***Performance using AutoScore (based on unseen test Set):
+    #> ***Performance using AutoScore:
     #> AUC:  0.7133   95% CI: 0.6556-0.7709 (DeLong)
     #> Best score threshold: >= 51 
     #> Other performance indicators based on this score threshold: 
     #> Sensitivity: 0.7421 95% CI: 0.673-0.8113
-    #> Specificity: 0.5887 95% CI: 0.5035-0.6667
-    #> PPV:         0.6707 95% CI: 0.6263-0.7207
-    #> NPV:         0.6696 95% CI: 0.6061-0.7381
+    #> Specificity: 0.5887 95% CI: 0.5034-0.6667
+    #> PPV:         0.6708 95% CI: 0.6209-0.7209
+    #> NPV:         0.6719 95% CI: 0.6053-0.7385
     head(pred_score)
     #>   pred_score Label
     #> 1         53  TRUE
@@ -1000,15 +1161,6 @@ pred_score <- AutoScore_testing(test_set,
     #> 4         38 FALSE
     #> 5         51  TRUE
     #> 6         40  TRUE
-
-  - Users could use the `pred_score` for further analysis or export it
-    as the CSV to other software.
-
-<!-- end list -->
-
-``` r
-write.csv(pred_score, file = "D:/pred_score.csv")
-```
 
   - Use `print_roc_performance()` to generate the performance under
     different score thresholds (e.g., 90).
@@ -1028,9 +1180,22 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
 #> NPV:         0.4716 95% CI: 0.47-0.4747
 ```
 
-## **Appendix: Other Functions**
+### STEP(vi): Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)
 
-### Descriptive analysis
+  - You can also generate conversion table using `conversion_table()`.
+    Please refer to our. But we skipped it here.
+
+  - Users could use the `pred_score` for further analysis or export it
+    as the CSV to other software.
+
+<!-- end list -->
+
+``` r
+write.csv(pred_score, file = "D:/pred_score.csv")
+```
+
+## **Appendix: Other functions**
+
   - Compute descriptive table (usually Table 1 in medical literature)
     for the dataset.
 
@@ -1090,7 +1255,6 @@ compute_descriptive_table(sample_data)
 #>   label = TRUE (%)               1588 (7.9)
 ```
 
-### Univariable analysis
   - Perform univariable analysis and generate the result table with odd
     ratios.
 
@@ -1123,7 +1287,6 @@ print(uni_table)
 #> Age              1.042(1.039-1.046)  <0.001
 ```
 
-### Multivariable analysis
   - Perform multivariable analysis and generate the result table with
     adjusted odd ratios.
 
