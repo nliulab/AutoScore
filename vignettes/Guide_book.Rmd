@@ -25,7 +25,7 @@ knitr::opts_chunk$set()
 
 # **AutoScore Introduction**
 
-- **AutoScore R package (version 0.2.0)**
+- **AutoScore R package (version 0.3.0)**
 
 ### Description
 
@@ -140,10 +140,31 @@ test_set <- out_split$test_set
 
 
 ### STEP(i): Generate variable ranking list (AutoScore Module 1)
-- `ntree`: Number of trees in the random forest algorithm (Default: 100).
+- `method`: "rf" (default) or "auc".
+
+- method = `rf`: "rf" refers to random forest-based ranking  
+- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).
 ```{r}
-ranking <- AutoScore_rank(train_set, ntree = 100)
+ranking <- AutoScore_rank(train_set, method = "rf", ntree = 100)
 ```
+
+
+```{r,echo=FALSE}
+ranking_temp <- ranking
+```
+
+
+- method = `auc`: "auc" refers to the AUC-based ranking. For "auc", univariate models will be built based on the train set, and the variable ranking is constructed via the AUC performance of corresponding univariate models on the validation set (`validation_set`).  
+- `validation_set`: validation set required only if when `method` is "auc".
+```{r}
+ranking <- AutoScore_rank(train_set, method = "auc", validation_set = validation_set)
+```
+
+```{r,echo=FALSE}
+ranking <- ranking_temp
+```
+
+
 
 ### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
 - `nmin`: Minimum number of selected variables (Default: 1).
@@ -152,6 +173,8 @@ ranking <- AutoScore_rank(train_set, ntree = 100)
 - `quantiles`: Predefined quantiles to convert continuous variables to categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if `categorize = "quantile"`.
 - `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
 - `max_score`: Maximum total score (Default: 100).
+- `auc_lim_min`: Min y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Max y_axis limit in the parsimony plot (Default: "adaptive"). 
 ```{r, }
 AUC <- AutoScore_parsimony(
     train_set,
@@ -161,7 +184,9 @@ AUC <- AutoScore_parsimony(
     n_min = 1,
     n_max = 20,
     categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+    auc_lim_min = 0.5,
+    auc_lim_max = "adaptive"
   )
 
 ```
@@ -196,7 +221,7 @@ final_variables <- names(ranking[1:num_var])
 
 ### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
 - Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
-```{r weighting,  warning = FALSE}
+```{r weighting,fig.width=5,fig.height=5,warning = FALSE}
 cut_vec <- AutoScore_weighting( 
     train_set,
     validation_set,
@@ -239,7 +264,7 @@ cut_vec$Age <- c(50, 75, 90)
 
 ```
 - Then we do similar checks for other variables and update scoring table using new cutoffs if needed.
-```{r scoring, warning = FALSE}
+```{r scoring,fig.width=5,fig.height=5, warning = FALSE}
 cut_vec$lactate_mean <- c(0.2, 1, 3, 4)
 cut_vec$bun_mean <- c(10, 40)
 cut_vec$aniongap_mean <- c(10, 17)
@@ -256,7 +281,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 - `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
 - `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
 - Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
-```{r}
+```{r,fig.width=5,fig.height=5,warning = FALSE}
 pred_score <-
   AutoScore_testing(
     test_set,
@@ -269,14 +294,44 @@ pred_score <-
 head(pred_score)
 ```
 
-- Users could use the `pred_score` for further analysis or export it as the CSV to other software.
-```{r csv_generate3, eval=FALSE}
-write.csv(pred_score, file = "D:/pred_score.csv")
-```
-
 - Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 50).
 ```{r}
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
+```
+
+### STEP(vi): Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)
+- Use `conversion_table()` to generate the performance under different risk (i.e., probability of mortality based on logistic regression estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5).
+```{r,message=FALSE, warning=FALSE, error=FALSE}
+conversion_table(pred_score, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
+```
+
+- Use `conversion_table()` to generate the performance under different score thresholds (e.g., 20, 40, 60, 75, 90).
+```{r, message=FALSE, warning = FALSE}
+conversion_table(pred_score, by = "score", values = c(20,40,60,75,90))
+```
+
+- You can also generate the `pred_score_train` based on training data for further analysis (e.g., conversion table based on the training data).
+```{r,fig.show="hide",fig.width=5,fig.height=5,warning = FALSE}
+pred_score_train <-
+  AutoScore_testing(
+    train_set,
+    final_variables,
+    cut_vec,
+    scoring_table,
+    threshold = "best",
+    with_label = TRUE
+  )
+```
+
+- Generate conversion table based on the training data based on predictive risk (i.e., probability of mortality based on logistic regression estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5) using `conversion_table()`
+```{r,message=FALSE, warning=FALSE, error=FALSE}
+conversion_table(pred_score_train, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
+```
+
+- Users could use the `pred_score` or `pred_score_train` for further analysis or export it as the CSV to other software (e.g., generating the calibration curve).
+```{r csv_generate3, eval=FALSE}
+write.csv(pred_score, file = "D:/pred_score.csv")
+write.csv(pred_score_train, file = "D:/pred_score_train.csv")
 ```
 
 
@@ -304,7 +359,16 @@ test_set <- out_split$test_set
 
 
 ### STEP(i): Generate variable ranking list (AutoScore Module 1)
-- `ntree`: umber of trees in the random forest algorithm (Default: 100).
+- `method`: "rf" (default) or "auc".
+
+method = `auc`: "auc" refers to the AUC-based ranking. For "auc", univariate models will be built based on the train set, and the variable ranking is constructed via the AUC performance of corresponding univariate models on the validation set (`validation_set`).  
+- `validation_set`: validation set required only if when `method` is "auc".
+```{r}
+ranking <- AutoScore_rank(train_set, validation_set = validation_set, ntree = 100)
+```
+
+method = `rf`: "rf" refers to random forest-based ranking  
+- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).
 ```{r}
 ranking <- AutoScore_rank(train_set, ntree = 100)
 ```
@@ -366,7 +430,7 @@ final_variables <- names(ranking[1:num_var])
 ```
 ### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
 - Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
-```{r weighting2,  warning = TRUE}
+```{r weighting2,fig.width=5,fig.height=5,warning = TRUE}
 cut_vec <- AutoScore_weighting( 
     train_set,
     validation_set,
@@ -412,7 +476,7 @@ cut_vec$bun_mean <- c(45, 60)
 cut_vec$bun_mean <- c(45, 60)
 ```
 - Then we do similar checks for other variables and update scoring table using new cutoffs if needed.
-```{r scoring2, warning = TRUE}
+```{r scoring2,fig.width=5,fig.height=5, warning = TRUE}
 cut_vec$lactate_mean <- c(1, 2, 3)
 cut_vec$Age <- c(35, 50, 80)
 cut_vec$aniongap_mean <- c(8, 12, 18)
@@ -429,7 +493,7 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 - `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
 - `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
 - Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
-```{r}
+```{r,fig.width=5,fig.height=5}
 pred_score <-
   AutoScore_testing(
     test_set,
@@ -442,15 +506,19 @@ pred_score <-
 head(pred_score)
 ```
 
-- Users could use the `pred_score` for further analysis or export it as the CSV to other software.
-```{r csv_generate, eval=FALSE}
-write.csv(pred_score, file = "D:/pred_score.csv")
-```
-
 - Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 90).
 - Note: It is just a demo using simulated data, and thus, the result might not be clinically meaningful.
 ```{r}
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
+```
+
+
+### STEP(vi): Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)
+- You can also generate conversion table using `conversion_table()`. Please refer to our. But we skipped it here. 
+
+- Users could use the `pred_score` for further analysis or export it as the CSV to other software.
+```{r csv_generate, eval=FALSE}
+write.csv(pred_score, file = "D:/pred_score.csv")
 ```
 
 

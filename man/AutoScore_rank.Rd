@@ -4,10 +4,14 @@
 \alias{AutoScore_rank}
 \title{AutoScore STEP(i): Rank variables with machine learning (AutoScore Module 1)}
 \usage{
-AutoScore_rank(train_set, ntree = 100)
+AutoScore_rank(train_set, validation_set = NULL, method = "rf", ntree = 100)
 }
 \arguments{
 \item{train_set}{A processed \code{data.frame} that contains data to be analyzed, for training.}
+
+\item{validation_set}{A processed \code{data.frame} that contains data to be analyzed, for auc-based ranking.}
+
+\item{method}{method for ranking. Options: 1. `rf` - random forest (default), 2. `auc` - auc-based (required validation set). For "auc", univariate models will be built based on the train set, and the variable ranking is constructed via the AUC performance of corresponding univariate models on the validation set (`validation_set`).}
 
 \item{ntree}{Number of trees in the random forest (Default: 100).}
 }

@@ -16,7 +16,9 @@ AutoScore_parsimony(
   categorize = "quantile",
   quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
   max_cluster = 5,
-  do_trace = FALSE
+  do_trace = FALSE,
+  auc_lim_min = 0.5,
+  auc_lim_max = "adaptive"
 )
 }
 \arguments{
@@ -44,6 +46,10 @@ suitable for small-size data. Default to \code{FALSE}}
 \item{max_cluster}{The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.}
 
 \item{do_trace}{If set to TRUE, all results based on each fold of cross-validation would be printed out and plotted (Default: FALSE). Available if \code{cross_validation = TRUE}.}
+
+\item{auc_lim_min}{Min y_axis limit in the parsimony plot (Default: 0.5).}
+
+\item{auc_lim_max}{Max y_axis limit in the parsimony plot (Default: "adaptive").}
 }
 \value{
 List of AUC value for different number of variables
