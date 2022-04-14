@@ -80,7 +80,6 @@ Score Generator
       - 2021.9.15: Updated to version 0.2.1 with imporved parsimony plot
       - 2022.4.5: Updated to version 0.3.0 with more functions (including conversion tables, improved ROC curve, AUC-based varaible ranking, etc.)
   - **[CRAN Package (version 0.3.0)](<https://cran.r-project.org/web/packages/AutoScore/>)**
-  - **AutoScore R package (version 0.3.0)**
 
 ### Description
 
