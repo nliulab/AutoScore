@@ -1240,13 +1240,24 @@ get_cut_vec <-
       #print("****************************cut_vec*************************")
       #print(cut_vec)
     }
-    ## delete min and max for each cut-off (min and max will be captured in the new dataset)
-    for (i in 1:length(cut_vec)) {
-      if (length(cut_vec[[i]]) <= 2)
-        cut_vec[[i]] <- c("let_binary")
-      else
-        cut_vec[[i]] <- cut_vec[[i]][2:(length(cut_vec[[i]]) - 1)]
+
+    # Bugs
+    if (length(cut_vec)==0) {
+      cut_vec[[1]] <- c("let_binary")
     }
+
+    # Bugs
+    else
+      for (i in 1:length(cut_vec)) {
+        if (length(cut_vec[[i]]) <= 2)
+          cut_vec[[i]] <- c("let_binary")
+        else
+          cut_vec[[i]] <- cut_vec[[i]][2:(length(cut_vec[[i]]) - 1)]
+      }
+
+
+    ## delete min and max for each cut-off (min and max will be captured in the new dataset)
+
     return(cut_vec)
   }
 
