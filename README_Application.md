@@ -1,6 +1,10 @@
 # AutoScore Clinical Applications
 
 A collection of clinical applications using AutoScore and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
+   - [**Emergency Medicine**](#emergency-medicine)
+   - [**Neurology**](#neurology)
+   - [**Out-of-Hospital Cardiac Arrest**](#out-of-hospital-cardiac-arrest)
+   - [**Renal Medicine**](#renal-medicine)
 
 ## Emergency Medicine
 * Xie F, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
