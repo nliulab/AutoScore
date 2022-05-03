@@ -13,7 +13,7 @@ Score Generator
       - [Description](#description)
       - [Functions and pipeline](#functions-and-pipeline)
       - [Citation](#citation)
-      - [List of AutoScore clinical applications (updating regularly)](README_Application.md){:target="\_blank"}
+      - [List of AutoScore clinical applications (updating regularly)](README_Application.md)
       - [Contact](#contact)
   - [**AutoScore Demonstration**](#autoscore-demonstration)
       - [**Install the package and prepare
