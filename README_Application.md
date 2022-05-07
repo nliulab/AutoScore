@@ -14,7 +14,7 @@ A collection of clinical applications using [**AutoScore**](README.md) and its e
 * Petersen KK, et al. [Predicting Amyloid Positivity in Cognitively Unimpaired Older Adults: A Machine Learning Approach Using the A4 Data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr.
 
 ## Out-of-Hospital Cardiac Arrest
-* Liu N, et al. Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning. eClinicalMedicine 2022 Jun; 48: 101422.
+* Liu N, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
 * Wong XY, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
 
 ## Renal Medicine
