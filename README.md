@@ -77,10 +77,11 @@ Score Generator
 
 # **AutoScore Introduction**
 
-  - **GitHub Package (version 0.3.1)**
+  - **GitHub Package (version 0.4.0)**
       - 2021.9.15: Updated to version 0.2.1 with imporved parsimony plot
       - 2022.4.5: Updated to version 0.3.0 with more functions (including conversion tables, improved ROC curve, AUC-based varaible ranking, etc.)
       - 2022.4.27: Updated to version 0.3.1 after fixing some bugs on categorization issue on Module 2
+      - 2020.8.5: Update to 0.4.0 (Beta version)
   - **[CRAN Package (version 0.3.0)](<https://cran.r-project.org/web/packages/AutoScore/>)**
 
 ### Description
