@@ -425,11 +425,7 @@ AutoScore_fine_tuning <-
 
 
 #' @title AutoScore STEP(v): Evaluate the final score with ROC analysis (AutoScore Module 6)
-#' @description Domain knowledge is essential in guiding risk model development.
-#'  For continuous variables, the variable transformation is a data-driven process (based on "quantile", "kmeans" or "decision_tree).
-#'  In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
-#'  by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
-#' update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette..
+#' @description 
 #' @param test_set A processed \code{data.frame} that contains data for testing purpose. This \code{data.frame} should have same format as
 #'        \code{train_set} (same variable names and outcomes)
 #' @param final_variables A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
