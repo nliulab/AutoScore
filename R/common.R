@@ -185,6 +185,7 @@ plot_auc <- function(AUC, variables, num = seq_along(variables),
 #' @export
 split_data <- function(data, ratio, cross_validation = FALSE,
                        strat_by_label = FALSE) {
+  data <- as.data.frame(data)
   ratio <- ratio / sum(ratio)
   if (!strat_by_label) {
     n <- nrow(data)
@@ -396,6 +397,7 @@ check_data_survival <- function(data) {
 #' @return No return value, the result of the checking will be printed out.
 check_predictor <- function(data_predictor) {
   data <- data_predictor
+  data <- as.data.frame(data)
   #2. check each variable
   non_num_fac <- c()
   fac_large <- c()
