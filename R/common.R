@@ -654,13 +654,16 @@ get_cut_vec <-
       #print(cut_vec)
     }
     ## delete min and max for each cut-off (min and max will be captured in the new dataset)
-    for (i in 1:length(cut_vec)) {
-      if (length(cut_vec[[i]]) <= 2)
-        cut_vec[[i]] <- c("let_binary")
-      else
-        cut_vec[[i]] <- cut_vec[[i]][2:(length(cut_vec[[i]]) - 1)]
+    if (length(cut_vec) != 0) { ## in case all the variables are categorical
+      for (i in 1:length(cut_vec)) {
+        if (length(cut_vec[[i]]) <= 2)
+          cut_vec[[i]] <- c("let_binary")
+        else
+          cut_vec[[i]] <- cut_vec[[i]][2:(length(cut_vec[[i]]) - 1)]
+      }
     }
     return(cut_vec)
+
   }
 
 #' @title Internal function: Categorizing continuous variables based on cut_vec (AutoScore Module 2)
