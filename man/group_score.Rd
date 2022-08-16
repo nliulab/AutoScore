@@ -2,8 +2,8 @@
 % Please edit documentation in R/AutoScore_Ordinal.R
 \name{group_score}
 \alias{group_score}
-\title{Group scores based on given score breaks, and use friendly names for first
-and last intervals.}
+\title{Internal function: Group scores based on given score breaks, and use friendly
+names for first and last intervals.}
 \usage{
 group_score(score, max_score, score_breaks)
 }
@@ -19,6 +19,6 @@ attainable scores to determine \code{scores} (see
 \code{\link{plot_predicted_risk}})}
 }
 \description{
-Group scores based on given score breaks, and use friendly names for first
-and last intervals.
+Internal function: Group scores based on given score breaks, and use friendly
+names for first and last intervals.
 }

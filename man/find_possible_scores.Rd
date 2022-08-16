@@ -7,9 +7,9 @@
 find_possible_scores(final_variables, scoring_table)
 }
 \arguments{
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\item{final_variables}{A vector containing the list of selected variables.}
 
-\item{scoring_table}{The final scoring table after fine-tuning, generated from STEP(iv) \code{\link{AutoScore_fine_tuning}}.Please follow the guidebook}
+\item{scoring_table}{The final scoring table after fine-tuning.}
 }
 \value{
 Returns a numeric vector of all scores attainable.

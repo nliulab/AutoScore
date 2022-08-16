@@ -30,7 +30,8 @@ make_design_mat <- function(one_inds) {
   x_mat
 }
 #' Internal function: Compute all scores attainable.
-#' @inheritParams AutoScore_testing
+#' @param final_variables	A vector containing the list of selected variables.
+#' @param scoring_table The final scoring table after fine-tuning.
 #' @return Returns a numeric vector of all scores attainable.
 find_possible_scores <- function(final_variables, scoring_table) {
   x_inds <- list()
@@ -47,14 +48,21 @@ find_possible_scores <- function(final_variables, scoring_table) {
   sort(unique(scores))
 }
 #' Plot predicted risk for binary and ordinal outcomes
-#' @param pred_score Output from \code{AutoScore_testing} (for binary outcomes)
-#'   or \code{AutoScore_testing_Ordinal} (for ordinal outcomes).
+#' @param pred_score Output from \code{\link{AutoScore_testing}} (for binary
+#'   outcomes) or \code{\link{AutoScore_testing_Ordinal}} (for ordinal
+#'   outcomes).
 #' @param link (For ordinal outcome only) The link function used in ordinal
 #'   regression, which must be the same as the value used to build the risk
 #'   score. Default is \code{"logit"} for proportional odds model.
+#' @param max_score Maximum total score (Default: 100).
+#' @param final_variables A vector containing the list of selected variables,
+#'   selected from Step(ii) \code{\link{AutoScore_parsimony}} (for binary
+#'   outcomes) or \code{\link{AutoScore_parsimony_Ordinal}} (for ordinal
+#'   outcomes).
+#' @param scoring_table The final scoring table after fine-tuning, generated
+#'   from STEP(iv) \code{\link{AutoScore_fine_tuning}} (for binary outcomes) or
+#'   \code{\link{AutoScore_fine_tuning_Ordinal}} (for ordinal outcomes).
 #' @param point_size Size of points in the plot. Default is 0.5.
-#' @inheritParams AutoScore_testing
-#' @inheritParams AutoScore_parsimony
 #' @export
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
@@ -124,11 +132,11 @@ plot_predicted_risk <- function(pred_score, link = "logit", max_score = 100,
 
 #' Internal function: Make parsimony plot
 #' @inheritParams AutoScore_parsimony
-#' @param AUC a list of AUC values (or mAUC for ordinal outcomes).
-#' @param variables a list of variable names
-#' @param num a list of indices for AUC values to plot. Default is to plot all.
-#' @param ylab title of y-axis
-#' @param title plot title
+#' @param AUC A vector of AUC values (or mAUC for ordinal outcomes).
+#' @param variables A vector of variable names
+#' @param num A vector of indices for AUC values to plot. Default is to plot all.
+#' @param ylab Title of y-axis
+#' @param title Plot title
 #' @import ggplot2
 plot_auc <- function(AUC, variables, num = seq_along(variables),
                      auc_lim_min, auc_lim_max,

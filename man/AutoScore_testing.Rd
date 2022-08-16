@@ -10,7 +10,8 @@ AutoScore_testing(
   cut_vec,
   scoring_table,
   threshold = "best",
-  with_label = TRUE
+  with_label = TRUE,
+  metrics_ci = TRUE
 )
 }
 \arguments{
@@ -27,16 +28,14 @@ AutoScore_testing(
 
 \item{with_label}{Set to TRUE if there are labels in the test_set and performance will be evaluated accordingly (Default:TRUE).
 Set it to "FALSE" if there are not "label" in the "test_set" and the final predicted scores will be the output without performance evaluation.}
+
+\item{metrics_ci}{whether to calculate confidence interval for the metrics of sensitivity, specificity, etc.}
 }
 \value{
 A data frame with predicted score and the outcome for downstream visualization.
 }
 \description{
-Domain knowledge is essential in guiding risk model development.
- For continuous variables, the variable transformation is a data-driven process (based on "quantile", "kmeans" or "decision_tree).
- In this step, the automatically generated cutoff values for each continuous variable can be fine-tuned
- by combining, rounding, and adjusting according to the standard clinical norm.  Revised \code{cut_vec} will be input  with domain knowledge to
-update scoring table. User can choose any cut-off values/any number of categories. Then final Scoring table will be generated. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette..
+AutoScore STEP(v): Evaluate the final score with ROC analysis (AutoScore Module 6)
 }
 \examples{
 ## Please see the guidebook or vignettes

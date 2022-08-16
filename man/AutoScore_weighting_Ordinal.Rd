@@ -22,9 +22,10 @@ AutoScore_weighting_Ordinal(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii)\code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\item{final_variables}{A vector containing the list of selected variables,
+selected from Step(ii) \code{\link{AutoScore_parsimony_Ordinal}}.}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 
@@ -36,11 +37,12 @@ AutoScore_weighting_Ordinal(
 
 \item{max_cluster}{The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.}
 
-\item{n_boot}{Number of bootstrap cycles to compute 95%% CI for performance
+\item{n_boot}{Number of bootstrap cycles to compute 95\% CI for performance
 metrics.}
 }
 \value{
-Generated \code{cut_vec} for downstream fine-tuning process STEP(iv) \code{\link{AutoScore_fine_tuning}}.
+Generated \code{cut_vec} for downstream fine-tuning process STEP(iv)
+  \code{\link{AutoScore_fine_tuning_Ordinal}}.
 }
 \description{
 AutoScore STEP(iii) for ordinal outcomes: Generate the initial score

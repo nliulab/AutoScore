@@ -4,7 +4,7 @@
 \alias{print_roc_performance}
 \title{AutoScore function: Print receiver operating characteristic (ROC) performance}
 \usage{
-print_roc_performance(label, score, threshold = "best")
+print_roc_performance(label, score, threshold = "best", metrics_ci = FALSE)
 }
 \arguments{
 \item{label}{outcome variable}
@@ -12,6 +12,8 @@ print_roc_performance(label, score, threshold = "best")
 \item{score}{predicted score}
 
 \item{threshold}{Threshold for analyze sensitivity, specificity and other metrics. Default to "best"}
+
+\item{metrics_ci}{whether to calculate confidence interval for the metrics of sensitivity, specificity, etc.}
 }
 \value{
 No return value and the ROC performance will be printed out directly.

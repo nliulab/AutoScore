@@ -2,8 +2,8 @@
 % Please edit documentation in R/AutoScore_Ordinal.R
 \name{compute_auc_val_ord}
 \alias{compute_auc_val_ord}
-\title{Internal function: Compute mean AUC based on validation set for
-  plotting parsimony (AutoScore-Ordinal Module 4)}
+\title{Internal function: Compute mean AUC for ordinal outcomes based on
+  validation set for plotting parsimony}
 \usage{
 compute_auc_val_ord(
   train_set_1,
@@ -23,7 +23,7 @@ compute_auc_val_ord(
 
 \item{variable_list}{List of included variables}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 

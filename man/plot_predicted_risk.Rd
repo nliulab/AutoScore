@@ -14,8 +14,9 @@ plot_predicted_risk(
 )
 }
 \arguments{
-\item{pred_score}{Output from \code{AutoScore_testing} (for binary outcomes)
-or \code{AutoScore_testing_Ordinal} (for ordinal outcomes).}
+\item{pred_score}{Output from \code{\link{AutoScore_testing}} (for binary
+outcomes) or \code{\link{AutoScore_testing_Ordinal}} (for ordinal
+outcomes).}
 
 \item{link}{(For ordinal outcome only) The link function used in ordinal
 regression, which must be the same as the value used to build the risk
@@ -23,9 +24,14 @@ score. Default is \code{"logit"} for proportional odds model.}
 
 \item{max_score}{Maximum total score (Default: 100).}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\item{final_variables}{A vector containing the list of selected variables,
+selected from Step(ii) \code{\link{AutoScore_parsimony}} (for binary
+outcomes) or \code{\link{AutoScore_parsimony_Ordinal}} (for ordinal
+outcomes).}
 
-\item{scoring_table}{The final scoring table after fine-tuning, generated from STEP(iv) \code{\link{AutoScore_fine_tuning}}.Please follow the guidebook}
+\item{scoring_table}{The final scoring table after fine-tuning, generated
+from STEP(iv) \code{\link{AutoScore_fine_tuning}} (for binary outcomes) or
+\code{\link{AutoScore_fine_tuning_Ordinal}} (for ordinal outcomes).}
 
 \item{point_size}{Size of points in the plot. Default is 0.5.}
 }

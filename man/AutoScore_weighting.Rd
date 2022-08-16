@@ -11,7 +11,8 @@ AutoScore_weighting(
   max_score = 100,
   categorize = "quantile",
   max_cluster = 5,
-  quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+  quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  metrics_ci = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ AutoScore_weighting(
 \item{max_cluster}{The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.}
 
 \item{quantiles}{Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.}
+
+\item{metrics_ci}{whether to calculate confidence interval for the metrics of sensitivity, specificity, etc.}
 }
 \value{
 Generated \code{cut_vec} for downstream fine-tuning process STEP(iv) \code{\link{AutoScore_fine_tuning}}.

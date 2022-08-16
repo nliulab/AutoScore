@@ -15,19 +15,19 @@ plot_auc(
 )
 }
 \arguments{
-\item{AUC}{a list of AUC values (or mAUC for ordinal outcomes).}
+\item{AUC}{A vector of AUC values (or mAUC for ordinal outcomes).}
 
-\item{variables}{a list of variable names}
+\item{variables}{A vector of variable names}
 
-\item{num}{a list of indices for AUC values to plot. Default is to plot all.}
+\item{num}{A vector of indices for AUC values to plot. Default is to plot all.}
 
 \item{auc_lim_min}{Min y_axis limit in the parsimony plot (Default: 0.5).}
 
 \item{auc_lim_max}{Max y_axis limit in the parsimony plot (Default: "adaptive").}
 
-\item{ylab}{title of y-axis}
+\item{ylab}{Title of y-axis}
 
-\item{title}{plot title}
+\item{title}{Plot title}
 }
 \description{
 Internal function: Make parsimony plot

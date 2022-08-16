@@ -11,7 +11,7 @@ print_performance_ordinal(label, score, n_boot = 100, report_cindex = FALSE)
 
 \item{score}{predicted score}
 
-\item{n_boot}{Number of bootstrap cycles to compute 95%% CI for performance
+\item{n_boot}{Number of bootstrap cycles to compute 95\% CI for performance
 metrics.}
 
 \item{report_cindex}{Whether to report generalized c-index for model

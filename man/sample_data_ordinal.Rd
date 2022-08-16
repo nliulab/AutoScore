@@ -18,4 +18,11 @@ Simulated data for 20,000 inpatient visits with demographic
   only includes a subset of variables (with masked variable names) for the
   purpose of demonstrating the AutoScore framework for ordinal outcomes.
 }
+\references{
+\itemize{
+ \item{Saffari SE, Ning Y, Feng X, Chakraborty B, Volovici V, Vaughan R, Ong
+       ME, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
+       generating scoring models for ordinal outcomes, arXiv:2202.08407}
+}
+}
 \keyword{datasets}

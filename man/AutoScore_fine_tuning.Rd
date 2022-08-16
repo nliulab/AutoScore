@@ -9,7 +9,8 @@ AutoScore_fine_tuning(
   validation_set,
   final_variables,
   cut_vec,
-  max_score = 100
+  max_score = 100,
+  metrics_ci = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ AutoScore_fine_tuning(
 \item{cut_vec}{Generated from STEP(iii) \code{\link{AutoScore_weighting}}.Please follow the guidebook}
 
 \item{max_score}{Maximum total score (Default: 100).}
+
+\item{metrics_ci}{whether to calculate confidence interval for the metrics of sensitivity, specificity, etc.}
 }
 \value{
 Generated final table of scoring model for downstream testing

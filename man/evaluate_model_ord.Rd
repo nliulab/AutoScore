@@ -11,7 +11,7 @@ evaluate_model_ord(label, score, n_boot, report_cindex = TRUE)
 
 \item{score}{predicted score}
 
-\item{n_boot}{Number of bootstrap cycles to compute 95%% CI for performance
+\item{n_boot}{Number of bootstrap cycles to compute 95\% CI for performance
 metrics.}
 
 \item{report_cindex}{If generalized c-index should be reported alongside

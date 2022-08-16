@@ -28,10 +28,10 @@ AutoScore_parsimony_Ordinal(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{rank}{the raking result generated from AutoScore STEP(i) for ordinal
+\item{rank}{The raking result generated from AutoScore STEP(i) for ordinal
 outcomes (\code{\link{AutoScore_rank_Ordinal}}).}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 
@@ -59,7 +59,7 @@ suitable for small-size data. Default to \code{FALSE}}
 \item{auc_lim_max}{Max y_axis limit in the parsimony plot (Default: "adaptive").}
 }
 \value{
-List of mAUC (ie, the average of AUC of dichotomous classifications)
+List of mAUC (ie, the average AUC of dichotomous classifications)
   value for different number of variables
 }
 \description{

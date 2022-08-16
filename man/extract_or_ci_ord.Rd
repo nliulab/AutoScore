@@ -7,9 +7,10 @@
 extract_or_ci_ord(model, n_digits = 3)
 }
 \arguments{
-\item{model}{A proportional odds model}
+\item{model}{An ordinal regression model fitted using \code{\link[ordinal]{clm}}.}
 
-\item{n_digits}{Number of digits to print for OR (Default:3).}
+\item{n_digits}{Number of digits to print for OR or exponentiated
+coefficients (Default:3).}
 }
 \description{
 Extract OR, CI and p-value from a proportional odds model

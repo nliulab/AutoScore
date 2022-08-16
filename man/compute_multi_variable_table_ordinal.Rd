@@ -9,11 +9,12 @@ compute_multi_variable_table_ordinal(df, link = "logit", n_digits = 3)
 \arguments{
 \item{df}{data frame after checking}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 
-\item{n_digits}{Number of digits to print for OR (Default:3).}
+\item{n_digits}{Number of digits to print for OR or exponentiated
+coefficients (Default:3).}
 }
 \value{
 result of the multivariate analysis

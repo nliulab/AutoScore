@@ -13,12 +13,14 @@ or testing purpose. This \code{data.frame} must have variable \code{label}
 and should have same format as \code{train_set} (same variable names and
 outcomes)}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\item{final_variables}{A vector containing the list of selected variables,
+selected from Step(ii) \code{\link{AutoScore_parsimony_Ordinal}}.}
 
-\item{cut_vec}{Generated from STEP(iii)
-\code{AutoScore_weighting_Ordinal()}.Please follow the guidebook}
+\item{cut_vec}{Generated from STEP(iii) \code{\link{AutoScore_weighting_Ordinal}}.}
 
-\item{scoring_table}{The final scoring table after fine-tuning, generated from STEP(iv) \code{\link{AutoScore_fine_tuning}}.Please follow the guidebook}
+\item{scoring_table}{The final scoring table after fine-tuning, generated
+from STEP(iv) \code{\link{AutoScore_fine_tuning_Ordinal}}.Please follow the
+guidebook}
 }
 \description{
 Internal function: Compute risk scores for ordinal data given variables

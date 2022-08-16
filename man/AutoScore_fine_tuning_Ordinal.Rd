@@ -3,7 +3,7 @@
 \name{AutoScore_fine_tuning_Ordinal}
 \alias{AutoScore_fine_tuning_Ordinal}
 \title{AutoScore STEP(iv) for ordinal outcomes: Fine-tune the score by
-  revising cut_vec with domain knowledge (AutoScore Module 5)}
+  revising \code{cut_vec} with domain knowledge (AutoScore Module 5)}
 \usage{
 AutoScore_fine_tuning_Ordinal(
   train_set,
@@ -21,18 +21,18 @@ AutoScore_fine_tuning_Ordinal(
 
 \item{validation_set}{A processed \code{data.frame} that contains data for validation purpose.}
 
-\item{final_variables}{A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.}
+\item{final_variables}{A vector containing the list of selected variables,
+selected from Step(ii) \code{\link{AutoScore_parsimony_Ordinal}}.}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 
-\item{cut_vec}{Generated from STEP(iii)
-\code{AutoScore_weighting_Ordinal()}.Please follow the guidebook}
+\item{cut_vec}{Generated from STEP(iii) \code{\link{AutoScore_weighting_Ordinal}}.}
 
 \item{max_score}{Maximum total score (Default: 100).}
 
-\item{n_boot}{Number of bootstrap cycles to compute 95%% CI for performance
+\item{n_boot}{Number of bootstrap cycles to compute 95\% CI for performance
 metrics.}
 
 \item{report_cindex}{Whether to report generalized c-index for model

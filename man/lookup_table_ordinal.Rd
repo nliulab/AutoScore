@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Ordinal.R
 \name{lookup_table_ordinal}
 \alias{lookup_table_ordinal}
-\title{AutoScore function: Print lookup table for ordinal outcome}
+\title{AutoScore function: Print lookup table for ordinal outcomes}
 \usage{
 lookup_table_ordinal(
   pred_score,
@@ -13,10 +13,10 @@ lookup_table_ordinal(
 )
 }
 \arguments{
-\item{pred_score}{A vector with outcomes and final scores generated from
-\code{\link{AutoScore_fine_tuning_Ordinal}}}
+\item{pred_score}{A \code{data.frame} with outcomes and final scores
+generated from \code{\link{AutoScore_fine_tuning_Ordinal}}}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 
@@ -34,7 +34,7 @@ attainable scores to determine \code{scores} (see
 No return value and the conversion will be printed out directly.
 }
 \description{
-AutoScore function: Print lookup table for ordinal outcome
+AutoScore function: Print lookup table for ordinal outcomes
 }
 \seealso{
 \code{\link{AutoScore_testing_Ordinal}}

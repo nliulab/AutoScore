@@ -12,7 +12,7 @@ estimate_p_mat(theta, z, link)
 
 \item{z}{numeric vector of linear predictor}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 }

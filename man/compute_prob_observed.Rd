@@ -2,8 +2,8 @@
 % Please edit documentation in R/AutoScore_Ordinal.R
 \name{compute_prob_observed}
 \alias{compute_prob_observed}
-\title{Based on given labels and scores, compute proportion of subjects observed in
-each outcome category in given score intervals.}
+\title{Internal function: Based on given labels and scores, compute proportion of
+subjects observed in each outcome category in given score intervals.}
 \usage{
 compute_prob_observed(
   pred_score,
@@ -13,10 +13,10 @@ compute_prob_observed(
 )
 }
 \arguments{
-\item{pred_score}{A vector with outcomes and final scores generated from
-\code{\link{AutoScore_fine_tuning_Ordinal}}}
+\item{pred_score}{A \code{data.frame} with outcomes and final scores
+generated from \code{\link{AutoScore_fine_tuning_Ordinal}}}
 
-\item{link}{the link function used to model ordinal outcomes. Default is
+\item{link}{The link function used to model ordinal outcomes. Default is
 \code{"logit"} for proportional odds model. Other options are
 \code{"cloglog"} (proportional hazards model) and \code{"probit"}.}
 
@@ -29,6 +29,6 @@ attainable scores to determine \code{scores} (see
 \code{\link{plot_predicted_risk}})}
 }
 \description{
-Based on given labels and scores, compute proportion of subjects observed in
-each outcome category in given score intervals.
+Internal function: Based on given labels and scores, compute proportion of
+subjects observed in each outcome category in given score intervals.
 }
