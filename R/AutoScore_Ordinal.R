@@ -42,6 +42,7 @@ AutoScore_rank_Ordinal <- function(train_set, ntree = 100) {
   importance <- sort(importance, decreasing = T)
   cat("The ranking based on variable importance was shown below for each variable: \n")
   print(importance)
+  plot_importance(importance)
   return(importance)
 }
 

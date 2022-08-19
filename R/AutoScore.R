@@ -44,6 +44,7 @@ AutoScore_rank <- function(train_set, validation_set = NULL, method = "rf", ntre
     importance <- sort(importance, decreasing = T)
     cat("The ranking based on variable importance was shown below for each variable: \n")
     print(importance)
+    plot_importance(importance)
     return(importance)
   }
 
@@ -82,6 +83,7 @@ AutoScore_rank <- function(train_set, validation_set = NULL, method = "rf", ntre
     AUC <- sort(AUC, decreasing = T)
     cat("The auc-based ranking based on variable importance was shown below for each variable: \n")
     print(AUC)
+    plot_importance(AUC)
     return(AUC)
   }
   else {
@@ -698,7 +700,7 @@ print_roc_performance <-
 
 #' @title AutoScore function: Print conversion table based on final performance evaluation
 #' @description Print conversion table based on final performance evaluation
-#' @param pred_score a vector with outcomes and final scores generated from \code{\link{AutoScore_fine_tuning}}
+#' @param pred_score a vector with outcomes and final scores generated from \code{\link{AutoScore_testing}}
 #' @param by specify correct method for categorizing the threshold:  by "risk" or "score".Default to "risk"
 #' @param values A vector of threshold for analyze sensitivity, specificity and other metrics. Default to "c(0.01,0.05,0.1,0.2,0.5)"
 #' @seealso \code{\link{AutoScore_testing}}

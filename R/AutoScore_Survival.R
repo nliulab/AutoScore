@@ -48,6 +48,7 @@ AutoScore_rank_Survival <- function(train_set, ntree = 50) {
   importance_a <- sort(importance$importance, decreasing = T)
   cat("The ranking based on variable importance was shown below for each variable: \n")
   print(importance_a)
+  plot_importance(importance_a)
   return(importance_a)
 }
 
@@ -515,13 +516,13 @@ print_performance_ci_survival  <-
   }
 
 
-#' @title AutoScore function: Print scoring performance (KM curve) for survival outcome
+#' @title AutoScore function: Print scoring performance (KM curve) for survival outcomes
 #' @description Print scoring performance (KM curve) for survival outcome
 #' @param pred_score Generated from STEP(v)\code{AutoScore_testing_Survival()}
 #' @param score_cut Score cut-offs to be used for the analysis
 #' @param time_point The time points to be evaluated using time-dependent AUC(t).
 #' @param risk.table Allowed values include: TRUE or FALSE specifying whether
-#'  to show or not the risk table. Default is FALSE.
+#'  to show or not the risk table. Default is TRUE.
 #' @param title Title displayed in the KM curve
 #' @param legend.title Legend title displayed in the KM curve
 #' @param xlim limit for x
