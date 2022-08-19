@@ -11,7 +11,7 @@ conversion_table(
 )
 }
 \arguments{
-\item{pred_score}{a vector with outcomes and final scores generated from \code{\link{AutoScore_fine_tuning}}}
+\item{pred_score}{a vector with outcomes and final scores generated from \code{\link{AutoScore_testing}}}
 
 \item{by}{specify correct method for categorizing the threshold:  by "risk" or "score".Default to "risk"}
 
