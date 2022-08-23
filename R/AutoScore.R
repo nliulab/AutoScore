@@ -2,7 +2,7 @@
 
 #' @title AutoScore STEP(i): Rank variables with machine learning (AutoScore Module 1)
 #' @param train_set A processed \code{data.frame} that contains data to be analyzed, for training.
-#' @param validation_set A processed \code{data.frame} that contains data to be analyzed, for auc-based ranking.
+#' @param validation_set A processed \code{data.frame} that contains data to be analyzed, only for auc-based ranking.
 #' @param method method for ranking. Options: 1. `rf` - random forest (default), 2. `auc` - auc-based (required validation set). For "auc", univariate models will be built based on the train set, and the variable ranking is constructed via the AUC performance of corresponding univariate models on the validation set (`validation_set`).
 #' @param ntree Number of trees in the random forest (Default: 100).
 #' @details The first step in the AutoScore framework is variable ranking. We use random forest (RF),
