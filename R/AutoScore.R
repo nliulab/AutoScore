@@ -736,8 +736,8 @@ conversion_table<-function(pred_score, by = "risk", values = c(0.01,0.05,0.1,0.2
     for(i in values){
       r<-data.frame(i)
       risk<-min(pred_score[pred_score$pred_score>=i,]$pred_risk)
-      risk<-round(risk,3)
-      r$risk<-paste(risk*100,"%",sep="")
+      #risk<-round(risk,3)
+      r$risk<-paste(round(risk,3)*100,"%",sep="")
       r$`Percentage of patients (%)`<-round(length(pred_score[pred_score$pred_risk>=risk,][,1])/length(pred_score[,1]),digits = 2)*100
       r1<-organize_performance(ci.coords(Modelroc,x=risk ,input="threshold", ret=c("accuracy", "sensitivity","specificity" ,
                                                                                    "ppv", "npv" )))
