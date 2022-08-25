@@ -1,0 +1,83 @@
+```{r, include=FALSE}
+library(knitr)
+opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Descriptive analysis 
+
+Before building AutoScore models ,users can utilize our package and codes below to do descriptive analysis (E.g., univariate analysis, multivariate analysis) for data with binary, survival, or ordinal outcomes
+
+
+## Binary Outcome
+
+- Compute descriptive table (usually Table 1 in medical literature) for the dataset.
+```{r table one, warning = FALSE}
+library(AutoScore)
+library(knitr)
+data("sample_data")
+names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
+compute_descriptive_table(sample_data)
+```
+
+- Perform univariable analysis and generate the result table with odd ratios.
+```{r}
+
+uni_table <- compute_uni_variable_table(sample_data)
+kable(uni_table)
+```
+
+- Perform multivariable analysis and generate the result table with adjusted odd ratios.
+```{r}
+multi_table <- compute_multi_variable_table(sample_data)
+kable(multi_table)
+```
+
+
+## Survival Outcome
+
+- Compute descriptive table (usually Table 1 in medical literature) for the data with survival outcome
+```{r, warning = FALSE}
+data("sample_data_survival")
+compute_descriptive_table(sample_data_survival)
+```
+
+- Perform univariable analysis and generate the result table with hazard ratios.
+```{r}
+uni_table_survival <- compute_uni_variable_table_survival(sample_data_survival)
+kable(uni_table_survival)
+```
+
+- Perform multivariable analysis and generate the result table with adjusted hazard ratios.
+```{r}
+multi_table_survival <- compute_multi_variable_table_survival(sample_data_survival)
+kable(multi_table_survival)
+```
+
+
+## Ordinal Outcome {#ordinal}
+
+- Compute descriptive table (usually Table 1 in medical literature) for the dataset.
+
+```{r}
+data("sample_data_ordinal")
+compute_descriptive_table(sample_data_ordinal)
+```
+
+- Perform univariable analysis and generate the result table. 
+- By default the odds ratio from the commonly used proportional odds models are
+reported for `link = "logit"`. If other link functions are selected (i.e., 
+`"cloglog"` link corresponding to the proportional hazards model, or the 
+`"probit"` link), the exponentiated coefficients are reported.
+
+```{r}
+uni_table_ordinal <- compute_uni_variable_table_ordinal(sample_data_ordinal)
+kable(uni_table_ordinal)
+```
+
+- Perform multivariable analysis and generate the result table, with adjusted odd
+ratios from a proportional odds model by default.
+
+```{r}
+multi_table_ordinal <- compute_multi_variable_table_ordinal(sample_data_ordinal)
+kable(multi_table_ordinal)
+```
