@@ -1,0 +1,29 @@
+/* 
+https://quarto.org/docs/output-formats/page-layout.html 
+https://quarto.org/docs/authoring/article-layout.html
+
+@media(min-width: 1000px) {
+#quarto-content {
+  margin-left: -250px;
+}
+
+.column-body{
+  width: 1000px;
+}
+
+#quarto-margin-sidebar {
+  margin-left: 250px;
+  width: 250px;
+}
+}
+*/
+
+/* to use numbered section in secondary toc (right margin) */
+.sidebar nav[role=doc-toc] .header-section-number {
+  display: inline;
+}
+
+.autoscore-module {
+  font-style: italic;
+  color: grey;
+}
