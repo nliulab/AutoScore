@@ -11,7 +11,7 @@ Authors@R: c(person("Feng", "Xie", role = c("aut","cre"), comment = c(ORCID = "0
                     email= "yuan.han@u.duke.nus.edu"),
              person("Mingxuan", "Liu", role = c("aut"), comment = c(ORCID = "0000-0002-4274-9613"),
                     email= "e0572499@u.nus.edu"),
-            person("Siqi", "Li", role = c("aut"), 
+            person("Siqi", "Li", role = c("aut"), comment = c(ORCID = "0000-0002-1660-105X"),
                     email= "siqili@u.duke.nus.edu"),
              person("Ehsan", "Saffari", role = c("aut"), comment = c(ORCID = "0000-0002-6473-4375"),
                     email = "ehsan.saffari@duke-nus.edu.sg"),
