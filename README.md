@@ -21,7 +21,11 @@ Score Generator
         (recommended):](#install-the-development-version-from-github-or-the-stable-version-from-cran-recommended)
     -   [Load R package](#load-r-package)
 
--   **Check out bookdown pages (<https://nliulab.github.io/AutoScore/>)
+
+                                        
+
+
+-   **Check out bookdown pages (<https://tinyurl.com/AutoScoreBook/>)
     for guidebook and tutorial**
 -   **Check out [**AutoScore Related Published Papers**](https://github.com/nliulab/AutoScore/blob/master/README_Application.md)
 - **GitHub Package (version 0.4.0)**

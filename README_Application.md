@@ -2,31 +2,31 @@
 
 ## Original Paper
 
-Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. *JMIR Medical Informatics* 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
+* Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. *JMIR Medical Informatics* 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
 ## Method Extension
 
 ### Extension to Survival outcomes: 
 
-Xie F, Ning Y, Yuan H, et al. AutoScore-Survival: Developing
+* Xie F, Ning Y, Yuan H, et al. AutoScore-Survival: Developing
 interpretable machine learning-based time-to-event scores with right-censored
 survival data. J Biomed Inform. 2022;125:103959. (<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
 
 ### Extension to ordinal outcomes: 
 
-Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong
+* Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong
 MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
 generating scoring models for ordinal outcomes, arXiv:2202.08407
 (<https://doi.org/10.48550/arxiv.2202.08407>)
 
 ### Extension to unbalanced data: 
 
-Yuan H, Xie F, Ong MEH, Ning Y, Chee ML, Saffari SE, Abdullah HR, Goldstein BA, Chakraborty B, Liu N.AutoScore-Imbalance: An interpretable machine learning tool for development of clinical scores with rare events data, *Journal of Biomedical Informatics*,Volume 129,2022,104072,ISSN 1532-0464
+* Yuan H, Xie F, Ong MEH, Ning Y, Chee ML, Saffari SE, Abdullah HR, Goldstein BA, Chakraborty B, Liu N.AutoScore-Imbalance: An interpretable machine learning tool for development of clinical scores with rare events data, *Journal of Biomedical Informatics*,Volume 129,2022,104072,ISSN 1532-0464
 (<https://doi.org/10.1016/j.jbi.2022.104072>)
 
 ### Integrated AutoScore-ShapleyVIC framework for robust and interpretable variable ranking:
 
-Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. A novel
+* Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. A novel
 interpretable machine learning system to generate clinical risk scores: An
 application for predicting early mortality or unplanned readmission in a
 retrospective cohort study. *PLOS Digit Health* 1(6): e0000062.
