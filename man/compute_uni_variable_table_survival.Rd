@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{compute_uni_variable_table_survival}
 \alias{compute_uni_variable_table_survival}
-\title{AutoScore function: Univariate Analysis for survival outcomes}
+\title{AutoScore function for survival outcomes: Univariate Analysis}
 \usage{
 compute_uni_variable_table_survival(df)
 }

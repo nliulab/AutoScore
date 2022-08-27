@@ -1,7 +1,7 @@
 
 # Pipeline_function --------------------------------------------------------
 
-#' @title AutoScore STEP (1) for ordinal outcomes: Generate variable ranking
+#' @title AutoScore STEP (i) for ordinal outcomes: Generate variable ranking
 #'   list by machine learning (AutoScore Module 1)
 #' @details The first step in the AutoScore framework is variable ranking. We
 #'   use random forest (RF) for multiclass classification to identify the
@@ -33,10 +33,10 @@ AutoScore_rank_Ordinal <- function(train_set, ntree = 100) {
   train_set$label <- ordered(train_set$label) # Ordered factor
   model <- randomForest::randomForest(label ~ ., data = train_set, ntree = ntree,
                                       preProcess = "scale")
-  
+
   # estimate variable importance
   importance <- randomForest::importance(model, scale = F)
-  
+
   # summarize importance
   names(importance) <- rownames(importance)
   importance <- sort(importance, decreasing = T)
@@ -119,15 +119,15 @@ AutoScore_parsimony_Ordinal <- function(train_set, validation_set, rank,
       all <- all[!(all %in% a)]
     }
     index <- c(index, list(all))
-    
+
     # Create a new variable auc_set to store all AUC value during the cross-validation
     auc_set <- data.frame(rep(0, n_max - n_min + 1))
-    
+
     # for each fold, generate train_set and validation_set
     for (j in 1:fold) {
       train_set_tmp <- train_set[-index[[j]], ]
       validation_set_temp <- train_set[index[[j]], ]
-      
+
       # Go through AutoScore-Ordinal Module 2/3/4 in the loop
       mauc <- unlist(lapply(n_min:n_max, function(i) {
         cat("Select", i, "variables:  ")
@@ -147,20 +147,20 @@ AutoScore_parsimony_Ordinal <- function(train_set, validation_set, rank,
       }))
       # plot parsimony plot for each fold
       names(mauc) <- n_min:n_max
-      
+
       # only print and plot when do_trace = TRUE
       if (do_trace) {
         print(paste("list of mAUC values for fold",j))
         print(data.frame(mAUC = mauc))
-        
+
         plot(mauc, main = paste("Parsimony plot (cross validation) for fold",j),
              xlab = "Number of Variables", ylab = "Mean Area Under the Curve",
              col = "#2b8cbe", lwd = 2, type = "o")}
-      
+
       # store AUC result from each fold into "auc_set"
       auc_set <- cbind(auc_set, data.frame(mAUC = mauc))
     }
-    
+
     # finish loop and then output final results averaged by all folds
     auc_set$rep.0..n_max...n_min...1. <- NULL
     auc_set$sum <- rowSums(auc_set) / fold
@@ -242,12 +242,12 @@ AutoScore_weighting_Ordinal <- function(train_set, validation_set, final_variabl
   cat("****Included Variables: \n")
   print(data.frame(variable_name = final_variables))
   train_set_1 <- train_set[, c(final_variables, "label")]
-  
+
   # AutoScore Module 2 : cut numeric and transform categories and generate "cut_vec"
   cut_vec <- get_cut_vec(df = train_set_1, categorize = categorize,
                          quantiles = quantiles, max_cluster = max_cluster)
   train_set_2 <- transform_df_fixed(df = train_set_1, cut_vec = cut_vec)
-  
+
   # AutoScore Module 3 : Score weighting
   score_table <- compute_score_table_ord(train_set_2 = train_set_2,
                                          max_score = max_score,
@@ -255,7 +255,7 @@ AutoScore_weighting_Ordinal <- function(train_set, validation_set, final_variabl
                                          link = link)
   cat("****Initial Scores: \n")
   print_scoring_table(scoring_table = score_table, final_variable = final_variables)
-  
+
   # Intermediate evaluation based on Validation Set
   validation_set_1 <- validation_set[, c(final_variables, "label")]
   validation_set_1$total_score <- compute_final_score_ord(
@@ -301,7 +301,7 @@ AutoScore_fine_tuning_Ordinal <- function(train_set, validation_set, final_varia
                                          link = link)
   cat("***Fine-tuned Scores: \n")
   print_scoring_table(scoring_table = score_table, final_variable = final_variables)
-  
+
   validation_set_1 <- validation_set[, c(final_variables, "label")]
   validation_set_1$total_score <- compute_final_score_ord(
     data = validation_set_1, final_variables = final_variables,
@@ -558,7 +558,7 @@ compute_score_table_ord <- function(train_set_2, max_score, variable_list, link)
     coef_vec[which(is.na(coef_vec))] <- 1
   }
   train_set_2 <- change_reference(df = train_set_2, coef_vec = coef_vec)
-  
+
   # Second-step ordinal regression
   model <- ordinal::clm(as.formula("label ~ ."), link = link, data = train_set_2)
   coef_vec <- model$beta
@@ -566,10 +566,10 @@ compute_score_table_ord <- function(train_set_2, max_score, variable_list, link)
     warning(" WARNING: Ordinal regression output contains NA, Replace NA with 1")
     coef_vec[which(is.na(coef_vec))] <- 1
   }
-  
+
   # rounding for final scoring table "score_table"
   score_table <- add_baseline(train_set_2, round(coef_vec / min(coef_vec)))
-  
+
   if (!is.null(max_score)) {
     # normalization according to "max_score" and regenerate score_table
     total_max <- max_score
@@ -635,13 +635,13 @@ compute_auc_val_ord <- function(train_set_1, validation_set_1, variable_list, li
   if (sum(is.na(train_set_2)) > 0) {
     warning("NA in the train_set_2: ", sum(is.na(train_set_2)))
   }
-  
+
   # AutoScore-Ordinal Module 3 : Variable Weighting
   score_table <- compute_score_table_ord(train_set_2 = train_set_2,
                                          variable_list = variable_list,
                                          link = link,
                                          max_score = max_score)
-  
+
   # Using "assign_score" to generate score based on new dataset and Scoring
   # table "score_table"
   validation_set_3 <- assign_score(df = validation_set_2,
@@ -653,7 +653,7 @@ compute_auc_val_ord <- function(train_set_1, validation_set_1, variable_list, li
     validation_set_3,
     select = setdiff(names(validation_set_3), "label")
   ))
-  
+
   compute_mauc_ord(y = validation_set_3$label, fx = validation_set_3$total_score)
 }
 #' Internal function: Compute risk scores for ordinal data given variables

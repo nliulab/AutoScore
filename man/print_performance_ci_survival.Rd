@@ -2,21 +2,25 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{print_performance_ci_survival}
 \alias{print_performance_ci_survival}
-\title{AutoScore function for survival outcomes: Print predictive performance}
+\title{AutoScore function for survival outcomes: Print predictive performance with confidence intervals}
 \usage{
-print_performance_ci_survival(score, ValidationSet, time_point, cycle = 100)
+print_performance_ci_survival(score, validation_set, time_point, n_boot = 100)
 }
 \arguments{
-\item{score}{predicted score}
+\item{score}{Predicted score}
 
-\item{label}{outcome variable}
+\item{validation_set}{Dataset for generating performance}
+
+\item{time_point}{The time points to be evaluated using time-dependent AUC(t).}
+
+\item{n_boot}{Number of bootstrap cycles to compute 95\% CI for performance
+metrics.}
 }
 \value{
 No return value and the ROC performance will be printed out directly.
 }
 \description{
-Print mean area under the curve (mAUC) and generalised c-index
-  (if requested)
+Print iAUC, c-index and time-dependent AUC as the predictive performance
 }
 \seealso{
 \code{\link{AutoScore_testing_Ordinal}}

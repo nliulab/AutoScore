@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{compute_score_table_survival}
 \alias{compute_score_table_survival}
-\title{Internal function: Compute scoring table for survival outcomes based on training dataset (AutoScore Module 3)}
+\title{Internal function: Compute scoring table for survival outcomes based on training dataset}
 \usage{
 compute_score_table_survival(train_set_2, max_score, variable_list)
 }

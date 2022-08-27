@@ -427,7 +427,7 @@ AutoScore_fine_tuning <-
 
 
 #' @title AutoScore STEP(v): Evaluate the final score with ROC analysis (AutoScore Module 6)
-#' @description 
+#' @description
 #' @param test_set A processed \code{data.frame} that contains data for testing purpose. This \code{data.frame} should have same format as
 #'        \code{train_set} (same variable names and outcomes)
 #' @param final_variables A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
@@ -947,3 +947,12 @@ organize_performance<-function(w1){
 #'  \item{Johnson, A., Pollard, T., Shen, L. et al. MIMIC-III, a freely accessible critical care database. Sci Data 3, 160035 (2016).}
 #' }
 "sample_data_small"
+
+
+#' 20000 simulated ICU admission data with missing values
+#'
+#' @description 20000 simulated samples with missing values, which can be used for demostrating AutoScore workflow dealing with missing values.
+#'  \itemize{
+#'  \item{Johnson, A., Pollard, T., Shen, L. et al. MIMIC-III, a freely accessible critical care database. Sci Data 3, 160035 (2016).}
+#' }
+"sample_data_with_missing"

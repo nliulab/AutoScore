@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{compute_auc_val_survival}
 \alias{compute_auc_val_survival}
-\title{Internal function for survival outcomes: Compute AUC based on validation set for plotting parsimony (AutoScore Module 4)}
+\title{Internal function for survival outcomes: Compute AUC based on validation set for plotting parsimony}
 \usage{
 compute_auc_val_survival(
   train_set_1,

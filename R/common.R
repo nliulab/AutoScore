@@ -47,7 +47,7 @@ find_possible_scores <- function(final_variables, scoring_table) {
   scores <- x_mat %*% scoring_table
   sort(unique(scores))
 }
-#' Plot predicted risk for binary and ordinal outcomes
+#' AutoScore function for binary and ordinal outcomes: Plot predicted risk
 #' @param pred_score Output from \code{\link{AutoScore_testing}} (for binary
 #'   outcomes) or \code{\link{AutoScore_testing_Ordinal}} (for ordinal
 #'   outcomes).
@@ -362,7 +362,7 @@ getmode <- function(vect) {
 }
 
 
-#' @title AutoScore function: Check whether the input dataset fulfill the requirement of the AutoScore
+#' @title AutoScore function for datasets with binary outcomes: Check whether the input dataset fulfill the requirement of the AutoScore
 #' @param data The data to be checked
 #' @examples
 #' data("sample_data")
@@ -381,7 +381,7 @@ check_data <- function(data) {
   check_predictor(data)}
 
 
-#' @title AutoScore function for survival outcomes: Check whether the input
+#' @title AutoScore function for survival data: Check whether the input
 #'   dataset fulfill the requirement of the AutoScore
 #' @inheritParams check_data
 #' @inherit check_data return
@@ -869,23 +869,23 @@ print_scoring_table <- function(scoring_table, final_variable) {
 #' @export
 #' @import ggplot2
 plot_importance <- function(ranking){
-  
+
   df = data.frame(Imp = ranking, Index = factor(names(ranking), levels = rev(names(ranking))))
   p <- ggplot(data = df, mapping = aes_string(y = "Index", x = "Imp")) +
     geom_bar(stat = "identity", fill = "deepskyblue") +
     scale_y_discrete(expand = expansion(mult = 0, add = 1)) +
-    labs(x = "Importance", y = "", title = "Importance Ranking") + 
+    labs(x = "Importance", y = "", title = "Importance Ranking") +
     theme(plot.title = element_text(hjust = 0.5, vjust = 0.3),
-          panel.grid.major = element_blank(), 
+          panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
-          panel.background = element_blank(), 
+          panel.background = element_blank(),
           axis.line = element_line(colour = "black"),
           axis.text = element_text(size = 13.5),
           axis.text.x = element_text(angle = 0, vjust = 0, hjust = 0))
   if(nrow(df) > 25){
     p <- p + theme(axis.text.y = element_text(size = 13.5 - 1.5 * (floor(nrow(df)/21))-1))
   }
-  
+
   print(p)
 }
 

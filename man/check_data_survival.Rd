@@ -2,7 +2,7 @@
 % Please edit documentation in R/common.R
 \name{check_data_survival}
 \alias{check_data_survival}
-\title{AutoScore function for survival outcomes: Check whether the input
+\title{AutoScore function for survival data: Check whether the input
   dataset fulfill the requirement of the AutoScore}
 \usage{
 check_data_survival(data)
@@ -14,7 +14,7 @@ check_data_survival(data)
 No return value, the result of the checking will be printed out.
 }
 \description{
-AutoScore function for survival outcomes: Check whether the input
+AutoScore function for survival data: Check whether the input
   dataset fulfill the requirement of the AutoScore
 }
 \examples{

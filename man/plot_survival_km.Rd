@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{plot_survival_km}
 \alias{plot_survival_km}
-\title{AutoScore function: Print scoring performance (KM curve) for survival outcomes}
+\title{AutoScore function for survival outcomes: Print scoring performance (KM curve)}
 \usage{
 plot_survival_km(
   pred_score,
@@ -33,8 +33,6 @@ to show or not the risk table. Default is TRUE.}
 
 \item{...}{additional parameters to pass to
 \code{\link[survminer]{ggsurvplot}} .}
-
-\item{time_point}{The time points to be evaluated using time-dependent AUC(t).}
 }
 \value{
 No return value and the KM performance will be plotted.

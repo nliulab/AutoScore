@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{conversion_table_survival}
 \alias{conversion_table_survival}
-\title{AutoScore function: Print conversion table for survival outcomes}
+\title{AutoScore function for survival outcomes: Print conversion table}
 \usage{
 conversion_table_survival(
   pred_score,

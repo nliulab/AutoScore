@@ -440,22 +440,23 @@ AutoScore_testing_Survival <-
 #' @title AutoScore function for survival outcomes: Print predictive performance
 #' @description Print mean area under the curve (mAUC) and generalised c-index
 #'   (if requested)
-#' @param label outcome variable
-#' @param score predicted score
+#' @param score Predicted score
+#' @param validation_set Dataset for generating performance
+#' @param time_point The time points to be evaluated using time-dependent AUC(t).
 #' @seealso \code{\link{AutoScore_testing_Ordinal}}
 #' @return No return value and the ROC performance will be printed out directly.
 #' @import survAUC survival
 #' @export
 print_performance_survival <-
-  function(score, ValidationSet, time_point) {
+  function(score, validation_set, time_point) {
     cat("Integrated AUC by all time points: " )
-    iAUC<- eva_performance_iauc(score, ValidationSet)
-    Surv.rsp.new <- Surv(ValidationSet$label_time, ValidationSet$label_status)
+    iAUC<- eva_performance_iauc(score, alidation_set)
+    Surv.rsp.new <- Surv(validation_set$label_time, validation_set$label_status)
     AUC_c<-concordancefit(Surv.rsp.new, -score)
     cat("C_index: ", AUC_c$concordance, "\n")
 
     #3. D-index
-    #AUC_d<-D.index(x=score, surv.time=ValidationSet$time,surv.event=ValidationSet$status)
+    #AUC_d<-D.index(x=score, surv.time=validation_set$time,surv.event=validation_set$status)
     #cat("D_index: ", AUC_d$d.index, "\n")
 
     #7. AUC_uno all
@@ -466,22 +467,22 @@ print_performance_survival <-
 
   }
 
-#' @title AutoScore function for survival outcomes: Print predictive performance
-#' @description Print mean area under the curve (mAUC) and generalised c-index
-#'   (if requested)
-#' @param label outcome variable
-#' @param score predicted score
+#' @title AutoScore function for survival outcomes: Print predictive performance with confidence intervals
+#' @description Print iAUC, c-index and time-dependent AUC as the predictive performance
+#' @inheritParams print_performance_survival
+#' @param n_boot Number of bootstrap cycles to compute 95\% CI for performance
+#'   metrics.
 #' @seealso \code{\link{AutoScore_testing_Ordinal}}
 #' @return No return value and the ROC performance will be printed out directly.
 #' @import survAUC survival
 #' @export
 print_performance_ci_survival  <-
-  function(score, ValidationSet, time_point,cycle=100) {
+  function(score, validation_set, time_point, n_boot = 100) {
     result_all<-data.frame(matrix(nrow=0,ncol=2+length(time_point)))
-    for(i in 1:cycle){
-      len<-length(ValidationSet[,1])
+    for(i in 1:n_boot){
+      len<-length(validation_set[,1])
       index<-sample(1:len,len,replace = TRUE)
-      Val_tmp<-ValidationSet[index,]
+      Val_tmp<-validation_set[index,]
       score_tmp <- score[index]
     result<-c()
     iAUC<- eva_performance_iauc(score_tmp, Val_tmp,print = FALSE)
@@ -490,7 +491,7 @@ print_performance_ci_survival  <-
     AUC_c<-concordancefit(Surv.rsp.new, -score_tmp)
     result<-c(result,AUC_c$concordance)
     #3. D-index
-    #AUC_d<-D.index(x=score, surv.time=ValidationSet$time,surv.event=ValidationSet$status)
+    #AUC_d<-D.index(x=score, surv.time=validation_set$time,surv.event=validation_set$status)
     #cat("D_index: ", AUC_d$d.index, "\n")
 
     #7. AUC_uno all
@@ -516,11 +517,10 @@ print_performance_ci_survival  <-
   }
 
 
-#' @title AutoScore function: Print scoring performance (KM curve) for survival outcomes
+#' @title AutoScore function for survival outcomes: Print scoring performance (KM curve)
 #' @description Print scoring performance (KM curve) for survival outcome
 #' @param pred_score Generated from STEP(v)\code{AutoScore_testing_Survival()}
 #' @param score_cut Score cut-offs to be used for the analysis
-#' @param time_point The time points to be evaluated using time-dependent AUC(t).
 #' @param risk.table Allowed values include: TRUE or FALSE specifying whether
 #'  to show or not the risk table. Default is TRUE.
 #' @param title Title displayed in the KM curve
@@ -551,7 +551,7 @@ plot_survival_km <- function(pred_score, score_cut = c(40,50,60),risk.table=TRUE
 }
 
 
-#' @title AutoScore function: Print conversion table for survival outcomes
+#' @title AutoScore function for survival outcomes: Print conversion table
 #' @description Print conversion table for survival outcomes
 #' @param pred_score a data frame with outcomes and final scores generated from \code{\link{AutoScore_testing_Survival}}
 #' @param score_cut Score cut-offs to be used for generating conversion table
@@ -580,7 +580,7 @@ conversion_table_survival<- function(pred_score, score_cut = c(40,50,60), time_p
   return(interval_table_test)
 }
 
-#' @title AutoScore function: Univariate Analysis for survival outcomes
+#' @title AutoScore function for survival outcomes: Univariate Analysis
 #' @description Generate tables for Univariate analysis for survival outcomes
 #' @param df data frame after checking
 #' @return result of the Univariate analysis for survival outcomes
@@ -619,7 +619,7 @@ compute_uni_variable_table_survival <- function(df) {
 }
 
 
-#' @title AutoScore function: Multivariate Analysis for survival outcomes
+#' @title AutoScore function for survival outcomes: Multivariate Analysis
 #' @description Generate tables for multivariate analysis for survival outcomes
 #' @param df data frame after checking
 #' @return result of the multivariate analysis for survival outcomes
@@ -665,7 +665,7 @@ compute_multi_variable_table_survival <- function(df) {
 ## built-in function for AutoScore below
 ## Those functions are cited by pipeline functions
 
-#' @title Internal function: Compute scoring table for survival outcomes based on training dataset (AutoScore Module 3)
+#' @title Internal function: Compute scoring table for survival outcomes based on training dataset
 #' @description Compute scoring table for survival outcomes based on training dataset
 #' @param train_set_2 Processed training set after variable transformation (AutoScore Module 2)
 #' @param max_score Maximum total score
@@ -710,7 +710,7 @@ compute_score_table_survival <-
   }
 
 
-#' @title Internal function for survival outcomes: Compute AUC based on validation set for plotting parsimony (AutoScore Module 4)
+#' @title Internal function for survival outcomes: Compute AUC based on validation set for plotting parsimony
 #' @description  Compute AUC based on validation set for plotting parsimony (survival outcomes)
 #' @param train_set_1 Processed training set
 #' @param validation_set_1 Processed validation set
@@ -770,16 +770,18 @@ compute_auc_val_survival <-
 
 
 
-#' calculate iAUC for validation set (survival outcome)
+#' Internal function survival outcome: Calculate iAUC for validation set
+#' @inheritParams print_performance_survival
+#' @param print Whether to print out the final iAUC result
 #' @import survival
 #' @import survAUC
-eva_performance_iauc<-function(score,ValidationSet,print=TRUE){
+eva_performance_iauc<-function(score,validation_set,print=TRUE){
   AUC<-c()
   #1. iAUC_uno +
-  Surv.rsp.new <- Surv(ValidationSet$label_time, ValidationSet$label_status)
+  Surv.rsp.new <- Surv(validation_set$label_time, validation_set$label_status)
 
   #iAUC
-  km_fit_test <- survfit(Surv.rsp.new ~ 1, data = ValidationSet)
+  km_fit_test <- survfit(Surv.rsp.new ~ 1, data = validation_set)
   km_time<-summary(km_fit_test)$time
   km_survival<-summary(km_fit_test)$surv
   km_time<-km_time[-length(km_time)]

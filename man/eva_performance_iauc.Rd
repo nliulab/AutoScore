@@ -2,10 +2,17 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{eva_performance_iauc}
 \alias{eva_performance_iauc}
-\title{calculate iAUC for validation set (survival outcome)}
+\title{Internal function survival outcome: Calculate iAUC for validation set}
 \usage{
-eva_performance_iauc(score, ValidationSet, print = TRUE)
+eva_performance_iauc(score, validation_set, print = TRUE)
+}
+\arguments{
+\item{score}{Predicted score}
+
+\item{validation_set}{Dataset for generating performance}
+
+\item{print}{Whether to print out the final iAUC result}
 }
 \description{
-calculate iAUC for validation set (survival outcome)
+Internal function survival outcome: Calculate iAUC for validation set
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/AutoScore_Survival.R
 \name{compute_multi_variable_table_survival}
 \alias{compute_multi_variable_table_survival}
-\title{AutoScore function: Multivariate Analysis for survival outcomes}
+\title{AutoScore function for survival outcomes: Multivariate Analysis}
 \usage{
 compute_multi_variable_table_survival(df)
 }

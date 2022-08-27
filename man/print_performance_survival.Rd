@@ -4,12 +4,14 @@
 \alias{print_performance_survival}
 \title{AutoScore function for survival outcomes: Print predictive performance}
 \usage{
-print_performance_survival(score, ValidationSet, time_point)
+print_performance_survival(score, validation_set, time_point)
 }
 \arguments{
-\item{score}{predicted score}
+\item{score}{Predicted score}
 
-\item{label}{outcome variable}
+\item{validation_set}{Dataset for generating performance}
+
+\item{time_point}{The time points to be evaluated using time-dependent AUC(t).}
 }
 \value{
 No return value and the ROC performance will be printed out directly.

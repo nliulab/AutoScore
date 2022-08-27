@@ -2,7 +2,7 @@
 % Please edit documentation in R/common.R
 \name{plot_predicted_risk}
 \alias{plot_predicted_risk}
-\title{Plot predicted risk for binary and ordinal outcomes}
+\title{AutoScore function for binary and ordinal outcomes: Plot predicted risk}
 \usage{
 plot_predicted_risk(
   pred_score,
@@ -36,5 +36,5 @@ from STEP(iv) \code{\link{AutoScore_fine_tuning}} (for binary outcomes) or
 \item{point_size}{Size of points in the plot. Default is 0.5.}
 }
 \description{
-Plot predicted risk for binary and ordinal outcomes
+AutoScore function for binary and ordinal outcomes: Plot predicted risk
 }

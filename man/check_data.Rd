@@ -2,7 +2,7 @@
 % Please edit documentation in R/common.R
 \name{check_data}
 \alias{check_data}
-\title{AutoScore function: Check whether the input dataset fulfill the requirement of the AutoScore}
+\title{AutoScore function for datasets with binary outcomes: Check whether the input dataset fulfill the requirement of the AutoScore}
 \usage{
 check_data(data)
 }
@@ -13,7 +13,7 @@ check_data(data)
 No return value, the result of the checking will be printed out.
 }
 \description{
-AutoScore function: Check whether the input dataset fulfill the requirement of the AutoScore
+AutoScore function for datasets with binary outcomes: Check whether the input dataset fulfill the requirement of the AutoScore
 }
 \examples{
 data("sample_data")
