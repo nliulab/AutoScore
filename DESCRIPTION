@@ -1,8 +1,8 @@
 Package: AutoScore
 Type: Package
 Title: An Interpretable Machine Learning-Based Automatic Clinical Score Generator
-Version: 0.4.0
-Date: 2022-04-05
+Version: 1.0.0
+Date: 2022-08-27
 Authors@R: c(person("Feng", "Xie", role = c("aut","cre"), comment = c(ORCID = "0000-0002-0215-667X"),
                     email= "xief@u.duke.nus.edu"),
              person("Yilin", "Ning", role = c("aut"), comment = c(ORCID = "0000-0002-6758-4472"),
@@ -10,7 +10,9 @@ Authors@R: c(person("Feng", "Xie", role = c("aut","cre"), comment = c(ORCID = "0
              person("Han", "Yuan", role = c("aut"), comment = c(ORCID = "0000-0002-2674-6068"),
                     email= "yuan.han@u.duke.nus.edu"),
              person("Mingxuan", "Liu", role = c("aut"), comment = c(ORCID = "0000-0002-4274-9613"),
-                    email= "m.liu@duke-nus.edu.sg"),
+                    email= "e0572499@u.nus.edu"),
+            person("Siqi", "Li", role = c("aut"), 
+                    email= "siqili@u.duke.nus.edu"),
              person("Ehsan", "Saffari", role = c("aut"), comment = c(ORCID = "0000-0002-6473-4375"),
                     email = "ehsan.saffari@duke-nus.edu.sg"),
              person("Bibhas", "Chakraborty", role = c("aut"), comment = c(ORCID = "0000-0002-7366-0478"),
