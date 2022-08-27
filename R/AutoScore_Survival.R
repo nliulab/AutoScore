@@ -450,7 +450,7 @@ AutoScore_testing_Survival <-
 print_performance_survival <-
   function(score, validation_set, time_point) {
     cat("Integrated AUC by all time points: " )
-    iAUC<- eva_performance_iauc(score, alidation_set)
+    iAUC<- eva_performance_iauc(score, validation_set)
     Surv.rsp.new <- Surv(validation_set$label_time, validation_set$label_status)
     AUC_c<-concordancefit(Surv.rsp.new, -score)
     cat("C_index: ", AUC_c$concordance, "\n")
