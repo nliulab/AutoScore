@@ -21,7 +21,7 @@ Score Generator
         (recommended):](#install-the-development-version-from-github-or-the-stable-version-from-cran-recommended)
     -   [Load R package](#load-r-package)
 
-
+### Note: This page is under development. The updated version will be ready soon. Thank you.
                                         
 ## Important Information
 
