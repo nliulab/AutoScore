@@ -430,7 +430,8 @@ compute_multi_variable_table_ordinal <- function(df, link = "logit", n_digits = 
   model <- ordinal::clm(as.formula("label ~ ."), data = df,
                         link = link, na.action = na.omit)
   tb <- extract_or_ci_ord(model = model, n_digits = n_digits)
-  if (link != "logit") names(tb)[1] <- "exp(coefficient)"
+  if (link == "logit") names(tb)[1] <- "adjusted_OR"
+  if (link != "logit") names(tb)[1] <- "exp(adjusted_coefficient)"
   tb
 }
 #' @title AutoScore function for ordinal outcomes: Print predictive performance
@@ -472,7 +473,7 @@ print_performance_ordinal <- function(label, score, n_boot = 100, report_cindex 
     }
   }
 }
-#' @title AutoScore function: Print lookup table for ordinal outcomes
+#' @title AutoScore function: Print conversion table for ordinal outcomes to map score to risk
 #' @inheritParams AutoScore_testing_Ordinal
 #' @param pred_score A \code{data.frame} with outcomes and final scores
 #'   generated from \code{\link{AutoScore_fine_tuning_Ordinal}}
@@ -484,14 +485,14 @@ print_performance_ordinal <- function(label, score, n_boot = 100, report_cindex 
 #' @param max_score Maximum attainable value of final scores.
 #' @param ... Additional parameters to pass to \code{\link[knitr]{kable}}.
 #' @seealso \code{\link{AutoScore_testing_Ordinal}}
-#' @return No return value and the conversion will be printed out directly.
+#' @inherit conversion_table return
 #' @export
 #' @importFrom tidyr pivot_wider
 #' @importFrom rlang .data
 #' @importFrom knitr kable
-lookup_table_ordinal <- function(pred_score, link = "logit", max_score = 100,
-                                 score_breaks = seq(from = 5, to = 70, by = 5),
-                                 ...) {
+conversion_table_ordinal <- function(pred_score, link = "logit", max_score = 100,
+                                     score_breaks = seq(from = 5, to = 70, by = 5),
+                                     ...) {
   lookup_long <- compute_prob_predicted(pred_score = pred_score, link = link,
                                         max_score = max_score,
                                         score_breaks = score_breaks)
@@ -753,7 +754,7 @@ estimate_p_mat <- function(theta, z, link) {
 }
 #' Internal function: Group scores based on given score breaks, and use friendly
 #' names for first and last intervals.
-#' @inheritParams lookup_table_ordinal
+#' @inheritParams conversion_table_ordinal
 #' @param score numeric vector of scores.
 #' @importFrom car recode
 group_score <- function(score, max_score, score_breaks) {
@@ -777,7 +778,7 @@ group_score <- function(score, max_score, score_breaks) {
 }
 #' Internal function: Based on given labels and scores, compute average
 #' predicted risks in given score intervals.
-#' @inheritParams lookup_table_ordinal
+#' @inheritParams conversion_table_ordinal
 #' @importFrom magrittr %>%
 #' @importFrom tidyr pivot_wider
 #' @importFrom ordinal clm
@@ -812,7 +813,7 @@ compute_prob_predicted <- function(pred_score, link = "logit", max_score = 100,
 }
 #' Internal function: Based on given labels and scores, compute proportion of
 #' subjects observed in each outcome category in given score intervals.
-#' @inheritParams lookup_table_ordinal
+#' @inheritParams conversion_table_ordinal
 #' @importFrom dplyr mutate group_by summarise rename right_join select n
 #' @importFrom rlang .data
 #' @importFrom magrittr %>%
@@ -854,3 +855,10 @@ compute_prob_observed <- function(pred_score, link = "logit", max_score = 100,
 #'   purpose of demonstrating the AutoScore framework for ordinal outcomes.
 #' @inherit AutoScore_parsimony_Ordinal references
 "sample_data_ordinal"
+
+#' Simulated ED data with ordinal outcome (small sample size)
+#'
+#' @description 5,000 observations randomly sampled from
+#'   \code{\link{sample_data_ordinal}}. It is used for demonstration only in the
+#'   Guidebook.
+"sample_data_ordinal_small"
