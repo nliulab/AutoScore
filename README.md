@@ -25,7 +25,7 @@ Score Generator
                                         
 ## Important Information
 
--   **Check out bookdown pages (<https://tinyurl.com/AutoScoreBook/>)
+-   **Check out bookdown pages (<https://nliulab.github.io/AutoScore/>)
     for guidebook and tutorial**
 -   **Check out [**AutoScore Related Published Papers**](https://github.com/nliulab/AutoScore/blob/master/README_Application.md)**
   - **GitHub Package (version1.0.0 Beta)**
