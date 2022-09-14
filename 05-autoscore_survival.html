@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator - 6&nbsp; AutoScore for survival outcomes (AutoScore-Survival)</title>
+<title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator - 5&nbsp; AutoScore for survival outcomes (AutoScore-Survival)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -130,7 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./011Installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Package Installation and import</span></a>
+  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -175,27 +175,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
+  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
+  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-autoscore_shapleyvic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">AutoScore-ShapleyVIC for binary outcomes</span></a>
+  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
   </div>
 </li>
     </ul>
@@ -207,26 +197,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#development-with-large-sample" id="toc-development-with-large-sample" class="nav-link active" data-scroll-target="#development-with-large-sample"> <span class="header-section-number">6.1</span> development with large sample</a>
+  <li><a href="#development-with-large-sample" id="toc-development-with-large-sample" class="nav-link active" data-scroll-target="#development-with-large-sample"> <span class="header-section-number">5.1</span> development with large sample</a>
   <ul class="collapse">
-  <li><a href="#load-package-and-survival-data" id="toc-load-package-and-survival-data" class="nav-link" data-scroll-target="#load-package-and-survival-data"> <span class="header-section-number">6.1.1</span> load package and survival data</a></li>
-  <li><a href="#prepare-training-validation-and-test-datasets" id="toc-prepare-training-validation-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-validation-and-test-datasets"> <span class="header-section-number">6.1.2</span> Prepare training, validation, and test datasets</a></li>
-  <li><a href="#stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" id="toc-stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" class="nav-link" data-scroll-target="#stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1"> <span class="header-section-number">6.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest (AutoScore Module 1)</a></li>
-  <li><a href="#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" id="toc-stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" class="nav-link" data-scroll-target="#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234"> <span class="header-section-number">6.1.4</span> STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)</a></li>
-  <li><a href="#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" id="toc-stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" class="nav-link" data-scroll-target="#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23"> <span class="header-section-number">6.1.5</span> STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)</a></li>
-  <li><a href="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" id="toc-stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" class="nav-link" data-scroll-target="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23"> <span class="header-section-number">6.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 &amp; Re-run AutoScore Modules 2+3)</a></li>
-  <li><a href="#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" id="toc-stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" class="nav-link" data-scroll-target="#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6"> <span class="header-section-number">6.1.7</span> STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)</a></li>
+  <li><a href="#load-package-and-survival-data" id="toc-load-package-and-survival-data" class="nav-link" data-scroll-target="#load-package-and-survival-data"> <span class="header-section-number">5.1.1</span> load package and survival data</a></li>
+  <li><a href="#prepare-training-validation-and-test-datasets" id="toc-prepare-training-validation-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-validation-and-test-datasets"> <span class="header-section-number">5.1.2</span> Prepare training, validation, and test datasets</a></li>
+  <li><a href="#stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" id="toc-stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" class="nav-link" data-scroll-target="#stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1"> <span class="header-section-number">5.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest (AutoScore Module 1)</a></li>
+  <li><a href="#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" id="toc-stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" class="nav-link" data-scroll-target="#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234"> <span class="header-section-number">5.1.4</span> STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)</a></li>
+  <li><a href="#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" id="toc-stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" class="nav-link" data-scroll-target="#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23"> <span class="header-section-number">5.1.5</span> STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)</a></li>
+  <li><a href="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" id="toc-stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" class="nav-link" data-scroll-target="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23"> <span class="header-section-number">5.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 &amp; Re-run AutoScore Modules 2+3)</a></li>
+  <li><a href="#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" id="toc-stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" class="nav-link" data-scroll-target="#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6"> <span class="header-section-number">5.1.7</span> STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)</a></li>
   </ul></li>
-  <li><a href="#further-evaluation-conversion-table-calibration-etc" id="toc-further-evaluation-conversion-table-calibration-etc" class="nav-link" data-scroll-target="#further-evaluation-conversion-table-calibration-etc"> <span class="header-section-number">6.2</span> Further evaluation (conversion table, calibration etc)</a></li>
-  <li><a href="#development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" id="toc-development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" class="nav-link" data-scroll-target="#development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes"> <span class="header-section-number">6.3</span> development on Small dataset (sample size = 1000) with cross-validation for survival outcomes**</a>
+  <li><a href="#further-evaluation-conversion-table-calibration-etc" id="toc-further-evaluation-conversion-table-calibration-etc" class="nav-link" data-scroll-target="#further-evaluation-conversion-table-calibration-etc"> <span class="header-section-number">5.2</span> Further evaluation (conversion table, calibration etc)</a></li>
+  <li><a href="#development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" id="toc-development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" class="nav-link" data-scroll-target="#development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes"> <span class="header-section-number">5.3</span> development on Small dataset (sample size = 1000) with cross-validation for survival outcomes**</a>
   <ul class="collapse">
-  <li><a href="#get-small-dataset-with-1000-samples" id="toc-get-small-dataset-with-1000-samples" class="nav-link" data-scroll-target="#get-small-dataset-with-1000-samples"> <span class="header-section-number">6.3.1</span> Get small dataset with 1000 samples</a></li>
-  <li><a href="#prepare-training-and-test-datasets" id="toc-prepare-training-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-and-test-datasets"> <span class="header-section-number">6.3.2</span> Prepare training and test datasets</a></li>
+  <li><a href="#get-small-dataset-with-1000-samples" id="toc-get-small-dataset-with-1000-samples" class="nav-link" data-scroll-target="#get-small-dataset-with-1000-samples"> <span class="header-section-number">5.3.1</span> Get small dataset with 1000 samples</a></li>
+  <li><a href="#prepare-training-and-test-datasets" id="toc-prepare-training-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-and-test-datasets"> <span class="header-section-number">5.3.2</span> Prepare training and test datasets</a></li>
   </ul></li>
-  <li><a href="#development-on-dataset-with-missing-values-informative-missing" id="toc-development-on-dataset-with-missing-values-informative-missing" class="nav-link" data-scroll-target="#development-on-dataset-with-missing-values-informative-missing"> <span class="header-section-number">6.4</span> development on dataset with missing values (informative missing)**</a>
+  <li><a href="#development-on-dataset-with-missing-values-informative-missing" id="toc-development-on-dataset-with-missing-values-informative-missing" class="nav-link" data-scroll-target="#development-on-dataset-with-missing-values-informative-missing"> <span class="header-section-number">5.4</span> development on dataset with missing values (informative missing)**</a>
   <ul class="collapse">
-  <li><a href="#load-package-and-data" id="toc-load-package-and-data" class="nav-link" data-scroll-target="#load-package-and-data"> <span class="header-section-number">6.4.1</span> load package and data</a></li>
-  <li><a href="#create-informative-missing" id="toc-create-informative-missing" class="nav-link" data-scroll-target="#create-informative-missing"> <span class="header-section-number">6.4.2</span> Create informative missing</a></li>
+  <li><a href="#load-package-and-data" id="toc-load-package-and-data" class="nav-link" data-scroll-target="#load-package-and-data"> <span class="header-section-number">5.4.1</span> load package and data</a></li>
+  <li><a href="#create-informative-missing" id="toc-create-informative-missing" class="nav-link" data-scroll-target="#create-informative-missing"> <span class="header-section-number">5.4.2</span> Create informative missing</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -236,7 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="top" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></span></h1>
+<h1 class="title"><span id="top" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></span></h1>
 </div>
 
 
@@ -250,11 +240,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="development-with-large-sample" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="development-with-large-sample"><span class="header-section-number">6.1</span> development with large sample</h2>
+<section id="development-with-large-sample" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="development-with-large-sample"><span class="header-section-number">5.1</span> development with large sample</h2>
 <p>(sample size = 20000)**</p>
-<section id="load-package-and-survival-data" class="level3" data-number="6.1.1">
-<h3 data-number="6.1.1" class="anchored" data-anchor-id="load-package-and-survival-data"><span class="header-section-number">6.1.1</span> load package and survival data</h3>
+<section id="load-package-and-survival-data" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="load-package-and-survival-data"><span class="header-section-number">5.1.1</span> load package and survival data</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AutoScore)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival"</span>)</span>
@@ -272,8 +262,8 @@ Your dataset doesn't have any missing values.</code></pre>
 </div>
 <p>In Demo #1, we demonstrate the use of AutoScore on a comparably large dataset where separate training and validation sets are available. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.</p>
 </section>
-<section id="prepare-training-validation-and-test-datasets" class="level3" data-number="6.1.2">
-<h3 data-number="6.1.2" class="anchored" data-anchor-id="prepare-training-validation-and-test-datasets"><span class="header-section-number">6.1.2</span> Prepare training, validation, and test datasets</h3>
+<section id="prepare-training-validation-and-test-datasets" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="prepare-training-validation-and-test-datasets"><span class="header-section-number">5.1.2</span> Prepare training, validation, and test datasets</h3>
 <ul>
 <li>Option 1: Prepare three separate datasets to train, validate, and test models.</li>
 <li>Option 2: Use demo codes below to randomly split your dataset into training, validation, and test datasets (70%, 10%, 20%, respectively).</li>
@@ -286,8 +276,8 @@ Your dataset doesn't have any missing values.</code></pre>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" class="level3" data-number="6.1.3">
-<h3 data-number="6.1.3" class="anchored" data-anchor-id="stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1"><span class="header-section-number">6.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest (AutoScore Module 1)</h3>
+<section id="stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1"><span class="header-section-number">5.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest (AutoScore Module 1)</h3>
 <ul>
 <li><code>ntree</code>: Number of trees required only if when <code>method</code> is “rf” (Default: 100).(More time is needed if you run a larger number of trees. For demostration purpose, I just use <code>ntree = 10</code> in this guidebook)</li>
 </ul>
@@ -295,7 +285,7 @@ Your dataset doesn't have any missing values.</code></pre>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Trees Grown:       1,    Time Remaining (sec):       4 
+Trees Grown:       1,    Time Remaining (sec):       0 
 Trees Grown:       5,    Time Remaining (sec):       0 
 
 
@@ -314,8 +304,8 @@ The ranking based on variable importance was shown below for each variable:
 </div>
 </div>
 </section>
-<section id="stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" class="level3" data-number="6.1.4">
-<h3 data-number="6.1.4" class="anchored" data-anchor-id="stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234"><span class="header-section-number">6.1.4</span> STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)</h3>
+<section id="stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234"><span class="header-section-number">5.1.4</span> STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)</h3>
 <ul>
 <li><code>nmin</code>: Minimum number of selected variables (Default: 1).</li>
 <li><code>nmax</code>: Maximum number of selected variables (Default: 20).</li>
@@ -390,8 +380,8 @@ Select 20 Variable(s):  0.8983681 </code></pre>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>num_var, <span class="dv">9</span>, <span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" class="level3" data-number="6.1.5">
-<h3 data-number="6.1.5" class="anchored" data-anchor-id="stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23"><span class="header-section-number">6.1.5</span> STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)</h3>
+<section id="stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5" class="anchored" data-anchor-id="stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23"><span class="header-section-number">5.1.5</span> STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)</h3>
 <ul>
 <li>Generate <code>cut_vec</code> with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).</li>
 <li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
@@ -471,8 +461,8 @@ The AUC(t) are shown as bwlow:
 </div>
 </div>
 </section>
-<section id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" class="level3" data-number="6.1.6">
-<h3 data-number="6.1.6" class="anchored" data-anchor-id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23"><span class="header-section-number">6.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 &amp; Re-run AutoScore Modules 2+3)</h3>
+<section id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" class="level3" data-number="5.1.6">
+<h3 data-number="5.1.6" class="anchored" data-anchor-id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23"><span class="header-section-number">5.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 &amp; Re-run AutoScore Modules 2+3)</h3>
 <ul>
 <li>Revise <code>cut_vec</code> with domain knowledge to update the scoring table (AutoScore Module 5).</li>
 <li>Re-run AutoScore Modules 2+3 to generate the updated scores.</li>
@@ -570,8 +560,8 @@ The AUC(t) are shown as bwlow:
 </div>
 </div>
 </section>
-<section id="stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" class="level3" data-number="6.1.7">
-<h3 data-number="6.1.7" class="anchored" data-anchor-id="stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6"><span class="header-section-number">6.1.7</span> STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)</h3>
+<section id="stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" class="level3" data-number="5.1.7">
+<h3 data-number="5.1.7" class="anchored" data-anchor-id="stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6"><span class="header-section-number">5.1.7</span> STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)</h3>
 <ul>
 <li><code>threshold</code>: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to <code>"best"</code>, the optimal threshold will be calculated (Default: <code>"best"</code>).</li>
 <li><code>with_label</code>: Set to <code>TRUE</code> if there are labels in the <code>test_set</code> and performance will be evaluated accordingly (Default: <code>TRUE</code>).</li>
@@ -616,8 +606,8 @@ The AUC(t) are shown as bwlow:
 </div>
 </section>
 </section>
-<section id="further-evaluation-conversion-table-calibration-etc" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="further-evaluation-conversion-table-calibration-etc"><span class="header-section-number">6.2</span> Further evaluation (conversion table, calibration etc)</h2>
+<section id="further-evaluation-conversion-table-calibration-etc" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="further-evaluation-conversion-table-calibration-etc"><span class="header-section-number">5.2</span> Further evaluation (conversion table, calibration etc)</h2>
 <p>Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)</p>
 <ul>
 <li>Use <code>plot_survival_km()</code> to generate Kaplan Meier Curve under different score thresholds (decided by users, e.g., 50).</li>
@@ -697,17 +687,17 @@ t=90                   33.07%  72.52%  93.38%  98.86%</code></pre>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score_train, <span class="at">file =</span> <span class="st">"D:/pred_score_train.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes"><span class="header-section-number">6.3</span> development on Small dataset (sample size = 1000) with cross-validation for survival outcomes**</h2>
+<section id="development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes"><span class="header-section-number">5.3</span> development on Small dataset (sample size = 1000) with cross-validation for survival outcomes**</h2>
 <p>In Demo #2, we demonstrate the use of AutoScore on a comparably small dataset where there are no sufficient samples to form a separate training and validation datasets. Thus, the cross validation is employed to generate the parsimony plot.</p>
-<section id="get-small-dataset-with-1000-samples" class="level3" data-number="6.3.1">
-<h3 data-number="6.3.1" class="anchored" data-anchor-id="get-small-dataset-with-1000-samples"><span class="header-section-number">6.3.1</span> Get small dataset with 1000 samples</h3>
+<section id="get-small-dataset-with-1000-samples" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="get-small-dataset-with-1000-samples"><span class="header-section-number">5.3.1</span> Get small dataset with 1000 samples</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival_small"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="prepare-training-and-test-datasets" class="level3" data-number="6.3.2">
-<h3 data-number="6.3.2" class="anchored" data-anchor-id="prepare-training-and-test-datasets"><span class="header-section-number">6.3.2</span> Prepare training and test datasets</h3>
+<section id="prepare-training-and-test-datasets" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="prepare-training-and-test-datasets"><span class="header-section-number">5.3.2</span> Prepare training and test datasets</h3>
 <ul>
 <li>Option 1: Prepare two separate datasets to train and test models.</li>
 <li>Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, <code>train_set</code> is equal to <code>validation_set</code> and the ratio of <code>validation_set</code> should be 0. Then cross-validation will be implemented in the STEP(ii) <code>AutoScore_parsimony()</code>.</li>
@@ -721,11 +711,11 @@ t=90                   33.07%  72.52%  93.38%  98.86%</code></pre>
 </div>
 </section>
 </section>
-<section id="development-on-dataset-with-missing-values-informative-missing" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="development-on-dataset-with-missing-values-informative-missing"><span class="header-section-number">6.4</span> development on dataset with missing values (informative missing)**</h2>
+<section id="development-on-dataset-with-missing-values-informative-missing" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="development-on-dataset-with-missing-values-informative-missing"><span class="header-section-number">5.4</span> development on dataset with missing values (informative missing)**</h2>
 <p>In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named <code>Unknown</code>. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.</p>
-<section id="load-package-and-data" class="level3" data-number="6.4.1">
-<h3 data-number="6.4.1" class="anchored" data-anchor-id="load-package-and-data"><span class="header-section-number">6.4.1</span> load package and data</h3>
+<section id="load-package-and-data" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="load-package-and-data"><span class="header-section-number">5.4.1</span> load package and data</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AutoScore)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival"</span>)</span>
@@ -739,8 +729,8 @@ Your dataset doesn't have any missing values.</code></pre>
 </div>
 </div>
 </section>
-<section id="create-informative-missing" class="level3" data-number="6.4.2">
-<h3 data-number="6.4.2" class="anchored" data-anchor-id="create-informative-missing"><span class="header-section-number">6.4.2</span> Create informative missing</h3>
+<section id="create-informative-missing" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="create-informative-missing"><span class="header-section-number">5.4.2</span> Create informative missing</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>sample_data_survival <span class="ot">&lt;-</span> AutoScore<span class="sc">:::</span><span class="fu">induce_informative_missing</span>(sample_data_survival, <span class="at">vars_to_induce =</span> <span class="fu">names</span>(sample_data_survival)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">prop_missing =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -911,12 +901,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="./04-autoscore.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./06-autoscore_ordinal.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

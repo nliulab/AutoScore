@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator - 4&nbsp; Data processing and checking</title>
+<title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator - 2&nbsp; Data processing and checking</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -88,8 +88,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./04-autoscore.html" rel="next">
-<link href="./02-desc_analysis.html" rel="prev">
+<link href="./02-desc_analysis.html" rel="next">
+<link href="./01-related_papers.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -130,7 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./011Installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Package Installation and import</span></a>
+  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -175,27 +175,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
+  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
+  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-autoscore_shapleyvic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">AutoScore-ShapleyVIC for binary outcomes</span></a>
+  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
   </div>
 </li>
     </ul>
@@ -207,11 +197,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#load-data" id="toc-load-data" class="nav-link active" data-scroll-target="#load-data"> <span class="header-section-number">4.1</span> Load data</a></li>
-  <li><a href="#data-checking-and-preprocessing" id="toc-data-checking-and-preprocessing" class="nav-link" data-scroll-target="#data-checking-and-preprocessing"> <span class="header-section-number">4.2</span> Data checking and preprocessing</a>
+  <li><a href="#load-data" id="toc-load-data" class="nav-link active" data-scroll-target="#load-data"> <span class="header-section-number">2.1</span> Load data</a></li>
+  <li><a href="#data-checking-and-preprocessing" id="toc-data-checking-and-preprocessing" class="nav-link" data-scroll-target="#data-checking-and-preprocessing"> <span class="header-section-number">2.2</span> Data checking and preprocessing</a>
   <ul class="collapse">
-  <li><a href="#check-outcome" id="toc-check-outcome" class="nav-link" data-scroll-target="#check-outcome"> <span class="header-section-number">4.2.1</span> Check outcome</a></li>
-  <li><a href="#check-variables" id="toc-check-variables" class="nav-link" data-scroll-target="#check-variables"> <span class="header-section-number">4.2.2</span> Check variables</a></li>
+  <li><a href="#check-outcome" id="toc-check-outcome" class="nav-link" data-scroll-target="#check-outcome"> <span class="header-section-number">2.2.1</span> Check outcome</a></li>
+  <li><a href="#check-variables" id="toc-check-variables" class="nav-link" data-scroll-target="#check-variables"> <span class="header-section-number">2.2.2</span> Check variables</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -221,7 +211,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="top" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></span></h1>
+<h1 class="title"><span id="top" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></span></h1>
 </div>
 
 
@@ -235,8 +225,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="load-data" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="load-data"><span class="header-section-number">4.1</span> Load data</h2>
+<section id="load-data" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="load-data"><span class="header-section-number">2.1</span> Load data</h2>
 <ul>
 <li>Read data from CSV or Excel files.</li>
 <li>For this demo, use the integrated data samples in the package.</li>
@@ -249,11 +239,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="data-checking-and-preprocessing" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="data-checking-and-preprocessing"><span class="header-section-number">4.2</span> Data checking and preprocessing</h2>
-<section id="check-outcome" class="level3" data-number="4.2.1">
-<h3 data-number="4.2.1" class="anchored" data-anchor-id="check-outcome"><span class="header-section-number">4.2.1</span> Check outcome</h3>
-<p>Ensure that there are dependent variable (outcome). Binary or ordinal outcomes should be named as “label”. Survival outcoms should be named as “label_time” and “label_status”. (Can use the codes below to do it).</p>
+<section id="data-checking-and-preprocessing" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-checking-and-preprocessing"><span class="header-section-number">2.2</span> Data checking and preprocessing</h2>
+<section id="check-outcome" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="check-outcome"><span class="header-section-number">2.2.1</span> Check outcome</h3>
+<p>Ensure that there are dependent variable (outcome). Binary or ordinal outcomes should be named as “label”. Survival outcomes should be named as “label_time” and “label_status”. (Can use the codes below to do it).</p>
 <ul>
 <li>For binary and ordinal outcomes: Change the name of outcome to “label” (make sure no variables using the same name).</li>
 <li>For survival outcomes: Change the name of outcome to “label_time” and “label_status”</li>
@@ -306,8 +296,8 @@ Data type check passed.</code></pre>
 <li>Modify your data, and re-run the appropriate function to check the data again until there are no warning messages.</li>
 </ul>
 </section>
-<section id="check-variables" class="level3" data-number="4.2.2">
-<h3 data-number="4.2.2" class="anchored" data-anchor-id="check-variables"><span class="header-section-number">4.2.2</span> Check variables</h3>
+<section id="check-variables" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="check-variables"><span class="header-section-number">2.2.2</span> Check variables</h3>
 <p>Use <code>check_data()</code>, <code>check_data_survival()</code> or <code>check_data_ordinal()</code> to check whether current data fulfill the following requirements:</p>
 <ul>
 <li>Remove special characters from variable names, e.g., <code>[</code>, <code>]</code>, <code>(</code>, <code>)</code>,<code>,</code>. (Suggest using <code>_</code> to replace them if needed)</li>
@@ -430,13 +420,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./02-desc_analysis.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Descriptive analysis</span></span>
+      <a href="./01-related_papers.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related Published papers</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04-autoscore.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02-desc_analysis.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Descriptive analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

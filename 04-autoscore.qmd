@@ -1,8 +1,36 @@
 # AutoScore for binary outcomes {#top}
 
-## development with large sample
+AutoScore on binary outcomes is the original form of the AutoScore, implemented by five functions: `AutoScore_rank()`, `AutoScore_Ordinal()`, `AutoScore_weighting()`, `AutoScore_fine_tuning()` and `AutoScore_testing()`.
 
-(sample size = 20000)**
+In this chapter, we demonstrate the use of AutoScore to develop sparse
+risk scores for binary outcome, adjust parameters to improve
+interpretability, assess the performance of the final model and map the score to predict risks for new data. 
+To facilitate clinical
+applications, in the following sections we have three demos for AutoScore Implementation
+with large and small dataset, as well as with missing data.
+
+::: callout-important
+- *Scoring models below are based on simulated data to demonstrate AutoScore usage.* 
+- *Variable names are intentionally masked to avoid misinterpretation and misuse.*
+:::
+
+Citation for original AutoScore:
+
+Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. *JMIR Medical Informatics* 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
+
+
+## Demo 1: large sample {#demo1}
+
+In Demo 1, we demonstrate the use of AutoScore on a dataset with 20,000
+observations using split-sample approach (i.e., to randomly divide the full
+dataset into training, validation and test sets) for model development.
+
+::: callout-important
+- *Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top)
+to ensure all data requirements are met.*
+- *Refer to [Chapter 3](02-desc_analysis.qmd#binary) for how to generate simple
+descriptive statistics before building prediction models.*
+:::
 
 ### load package and data
 ```{r}
@@ -11,10 +39,6 @@ data("sample_data")
 names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 check_data(sample_data)
 ```
-
-
-In Demo #1, we demonstrate the use of AutoScore on a comparably large dataset where separate training and validation sets are available. 
-Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
 
 ### Prepare training, validation, and test datasets
 - Option 1: Prepare three separate datasets to train, validate, and test models.
@@ -28,7 +52,10 @@ test_set <- out_split$test_set
 ```
 
 
-### STEP(i): Generate variable ranking list (AutoScore Module 1)
+### STEP(i): Generate variable ranking list 
+
+<p class="autoscore-module">AutoScore Module 1</p>
+
 - `method`: "rf" (default) or "auc".
 
 - method = `rf`: "rf" refers to random forest-based ranking  
@@ -55,7 +82,10 @@ ranking <- ranking_temp
 
 
 
-### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4) {#rf-pars}
+### STEP(ii): Select the best model with parsimony plot  {#rf-pars}
+
+<p class="autoscore-module">AutoScore Modules 2+3+4</p>
+
 - `nmin`: Minimum number of selected variables (Default: 1).
 - `nmax`: Maximum number of selected variables (Default: 20).
 - `categorize`: Methods for categorizing continuous variables. Options include `"quantile"` or `"kmeans"` (Default: `"quantile"`).
@@ -108,7 +138,10 @@ num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3) {#model}
+### STEP(iii): Generate initial scores with the final list of variables {#model}
+
+<p class="autoscore-module">Re-run AutoScore Modules 2+3</p>
+
 - Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
 ```{r weighting,fig.width=5,fig.height=5,warning = FALSE}
 cut_vec <- AutoScore_weighting( 
@@ -122,7 +155,10 @@ cut_vec <- AutoScore_weighting(
 
 ```
 
-### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3) 
+### STEP(iv): Fine-tune the initial score generated in STEP(iii) 
+
+<p class="autoscore-module">AutoScore Module 5 & Re-run AutoScore Modules 2+3</p>
+
 - Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
 - Re-run AutoScore Modules 2+3 to generate the updated scores.
 - Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
@@ -168,7 +204,10 @@ scoring_table <- AutoScore_fine_tuning(train_set,
 
 ```
 
-### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
+### STEP(v): Evaluate final risk scores on test dataset
+
+<p class="autoscore-module">AutoScore Module 6</p>
+
 - `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
 - `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
 - Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
@@ -190,9 +229,9 @@ head(pred_score)
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
 ```
 
-## evaluation (conversion table, calibration etc)
+### Map Score to Risk
 
-Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)
+Further analysis to map score to risk (e.g., conversion table, model calibration, output the score)
 - Use `conversion_table()` to generate the performance under different risk (i.e., probability of mortality based on logistic regression estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5).
 ```{r,message=FALSE, warning=FALSE, error=FALSE}
 conversion_table(pred_score = pred_score, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
@@ -246,9 +285,9 @@ write.csv(pred_score_train, file = "D:/pred_score_train.csv")
 
 
 
-## development on Small dataset (sample size = 1000) with cross-validation**
+## Demo 2: small sample {#demo2}
 
-In Demo #2, we demonstrate the use of AutoScore on a comparably small dataset where there are no sufficient samples to form a separate training and validation datasets. Thus, the cross validation is employed to generate the parsimony plot.
+In Demo 2, we demonstrate the use of AutoScore on a comparably small dataset where there are no sufficient samples to form a separate training and validation dataset. Thus, the cross validation is employed to generate the parsimony plot.
 
 ### Get small dataset with 1000 samples
 ```{r}
@@ -422,8 +461,8 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
 ```
 
 
-### STEP(vi): Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)
-- You can also generate conversion table using `conversion_table()`. Please refer to our. But we skipped it here. 
+### Map Score to Risk 
+- You can also generate conversion table using `conversion_table()`. Please refer to our demo for large sample. We skipped it here.
 
 - Users could use the `pred_score` for further analysis or export it as the CSV to other software.
 ```{r csv_generate, eval=FALSE}
@@ -431,9 +470,9 @@ write.csv(pred_score, file = "D:/pred_score.csv")
 ```
 
 
-## development on dataset with missing values (informative missing)**
+## Demo 3: data with missing values {#demo3}
 
-In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named `Unknown`. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
+In Demo 3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named `Unknown`. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
 
 ### load package and data
 ```{r, warning=FALSE}

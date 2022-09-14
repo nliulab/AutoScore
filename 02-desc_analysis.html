@@ -88,8 +88,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./03-data_processing.html" rel="next">
-<link href="./011Installation.html" rel="prev">
+<link href="./04-autoscore.html" rel="next">
+<link href="./03-data_processing.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -118,6 +118,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
+<link href="site_libs/tabwid-1.0.0/tabwid.css" rel="stylesheet">
+<link href="site_libs/tabwid-1.0.0/scrool.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="custom.css">
@@ -165,7 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./011Installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Package Installation and import</span></a>
+  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -175,27 +177,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
+  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
+  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-autoscore_shapleyvic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">AutoScore-ShapleyVIC for binary outcomes</span></a>
+  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
   </div>
 </li>
     </ul>
@@ -207,8 +199,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#binary-outcome" id="toc-binary-outcome" class="nav-link active" data-scroll-target="#binary-outcome"> <span class="header-section-number">3.1</span> Binary Outcome</a></li>
-  <li><a href="#survival-outcome" id="toc-survival-outcome" class="nav-link" data-scroll-target="#survival-outcome"> <span class="header-section-number">3.2</span> Survival Outcome</a></li>
+  <li><a href="#binary" id="toc-binary" class="nav-link active" data-scroll-target="#binary"> <span class="header-section-number">3.1</span> Binary Outcome</a></li>
+  <li><a href="#survival" id="toc-survival" class="nav-link" data-scroll-target="#survival"> <span class="header-section-number">3.2</span> Survival Outcome</a></li>
   <li><a href="#ordinal" id="toc-ordinal" class="nav-link" data-scroll-target="#ordinal"> <span class="header-section-number">3.3</span> Ordinal Outcome</a></li>
   </ul>
 </nav>
@@ -232,9 +224,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Before building AutoScore models ,users can utilize our package and codes below to do descriptive analysis (E.g., univariate analysis, multivariate analysis) for data with binary, survival, or ordinal outcomes</p>
-<section id="binary-outcome" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="binary-outcome"><span class="header-section-number">3.1</span> Binary Outcome</h2>
+<p>Before building AutoScore models, users can utilize our package and codes below to do descriptive analysis (e.g., univariate analysis, multivariate analysis) for data with binary, survival, or ordinal outcomes.</p>
+<section id="binary" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="binary"><span class="header-section-number">3.1</span> Binary Outcome</h2>
 <ul>
 <li>Compute descriptive table (usually Table 1 in medical literature) for the dataset.</li>
 </ul>
@@ -704,8 +696,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="survival-outcome" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="survival-outcome"><span class="header-section-number">3.2</span> Survival Outcome</h2>
+<section id="survival" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="survival"><span class="header-section-number">3.2</span> Survival Outcome</h2>
 <ul>
 <li>Compute descriptive table (usually Table 1 in medical literature) for the data with survival outcome</li>
 </ul>
@@ -1471,140 +1463,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Perform univariable analysis and generate the result table.</li>
 <li>By default the odds ratio from the commonly used proportional odds models are reported for <code>link = "logit"</code>. If other link functions are selected (i.e., <code>"cloglog"</code> link corresponding to the proportional hazards model, or the <code>"probit"</code> link), the exponentiated coefficients are reported.</li>
 </ul>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Use the same link throughout descriptive analysis and model building steps.</em></p>
+</div>
+</div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>uni_table_ordinal <span class="ot">&lt;-</span> <span class="fu">compute_uni_variable_table_ordinal</span>(sample_data_ordinal)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(uni_table_ordinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>link <span class="ot">&lt;-</span> <span class="st">"logit"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>uni_table_ordinal <span class="ot">&lt;-</span> <span class="fu">compute_uni_variable_table_ordinal</span>(sample_data_ordinal, <span class="at">link =</span> link)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>flextable<span class="sc">::</span><span class="fu">flextable</span>(uni_table_ordinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">OR</th>
-<th style="text-align: left;">p value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Age</td>
-<td style="text-align: left;">1.019 (1.017 - 1.021)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">GenderMALE</td>
-<td style="text-align: left;">0.948 (0.883 - 1.019)</td>
-<td style="text-align: left;">0.147</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Util_AP2</td>
-<td style="text-align: left;">1.040 (0.946 - 1.145)</td>
-<td style="text-align: left;">0.421</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Util_AP3 and P4</td>
-<td style="text-align: left;">0.998 (0.894 - 1.115)</td>
-<td style="text-align: left;">0.974</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Util_B</td>
-<td style="text-align: left;">1.136 (1.121 - 1.153)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Util_C</td>
-<td style="text-align: left;">0.999 (0.994 - 1.003)</td>
-<td style="text-align: left;">0.564</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Util_D</td>
-<td style="text-align: left;">0.929 (0.908 - 0.950)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comorb_A1</td>
-<td style="text-align: left;">4.154 (3.737 - 4.616)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comorb_B1</td>
-<td style="text-align: left;">1.099 (0.989 - 1.218)</td>
-<td style="text-align: left;">0.076</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comorb_C1</td>
-<td style="text-align: left;">1.236 (0.997 - 1.520)</td>
-<td style="text-align: left;">0.049</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comorb_D1</td>
-<td style="text-align: left;">1.017 (0.899 - 1.147)</td>
-<td style="text-align: left;">0.791</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comorb_E1</td>
-<td style="text-align: left;">0.994 (0.739 - 1.315)</td>
-<td style="text-align: left;">0.969</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Lab_A</td>
-<td style="text-align: left;">1.000 (1.000 - 1.001)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Lab_B</td>
-<td style="text-align: left;">1.010 (0.958 - 1.064)</td>
-<td style="text-align: left;">0.717</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Lab_C</td>
-<td style="text-align: left;">0.998 (0.990 - 1.005)</td>
-<td style="text-align: left;">0.534</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Vital_A</td>
-<td style="text-align: left;">1.010 (1.008 - 1.012)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Vital_B</td>
-<td style="text-align: left;">0.999 (0.980 - 1.019)</td>
-<td style="text-align: left;">0.956</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Vital_C</td>
-<td style="text-align: left;">0.996 (0.986 - 1.007)</td>
-<td style="text-align: left;">0.451</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Vital_D</td>
-<td style="text-align: left;">1.001 (0.998 - 1.003)</td>
-<td style="text-align: left;">0.622</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Vital_E</td>
-<td style="text-align: left;">0.994 (0.993 - 0.996)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Vital_F</td>
-<td style="text-align: left;">0.979 (0.969 - 0.989)</td>
-<td style="text-align: left;">&lt;0.001</td>
-</tr>
-</tbody>
-</table>
+
+<div class="tabwid"><style>.cl-c2de5e98{}.cl-c2db27c8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-c2db345c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c2db54a0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c2db54aa{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c2db54ab{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-c2de5e98">
+<thead><tr style="overflow-wrap:break-word;"><td class="cl-c2db54ab"><p class="cl-c2db345c"><span class="cl-c2db27c8">OR</span></p></td><td class="cl-c2db54ab"><p class="cl-c2db345c"><span class="cl-c2db27c8">p value</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.019 (1.017 - 1.021)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.948 (0.883 - 1.019)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.147</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.040 (0.946 - 1.145)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.421</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.998 (0.894 - 1.115)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.974</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.136 (1.121 - 1.153)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.999 (0.994 - 1.003)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.564</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.929 (0.908 - 0.950)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">4.154 (3.737 - 4.616)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.099 (0.989 - 1.218)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.076</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.236 (0.997 - 1.520)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.049</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.017 (0.899 - 1.147)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.791</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.994 (0.739 - 1.315)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.969</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.000 (1.000 - 1.001)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.010 (0.958 - 1.064)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.717</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.998 (0.990 - 1.005)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.534</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.010 (1.008 - 1.012)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.999 (0.980 - 1.019)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.956</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.996 (0.986 - 1.007)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.451</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.001 (0.998 - 1.003)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.622</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.994 (0.993 - 0.996)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54aa"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.979 (0.969 - 0.989)</span></p></td><td class="cl-c2db54aa"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 <ul>
 <li>Perform multivariable analysis and generate the result table, with adjusted odd ratios from a proportional odds model by default.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>multi_table_ordinal <span class="ot">&lt;-</span> <span class="fu">compute_multi_variable_table_ordinal</span>(sample_data_ordinal)</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>multi_table_ordinal <span class="ot">&lt;-</span> <span class="fu">compute_multi_variable_table_ordinal</span>(sample_data_ordinal, <span class="at">link =</span> link)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(multi_table_ordinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
-<th style="text-align: left;">OR</th>
+<th style="text-align: left;">adjusted_OR</th>
 <th style="text-align: left;">p value</th>
 </tr>
 </thead>
@@ -1804,13 +1697,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./011Installation.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Package Installation and import</span></span>
+      <a href="./03-data_processing.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-data_processing.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./04-autoscore.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

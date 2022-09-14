@@ -16,7 +16,7 @@ data("sample_data")
 ## Data checking and preprocessing   
 
 ### Check outcome
-Ensure that there are dependent variable (outcome). Binary or ordinal outcomes should be named as "label". Survival outcoms should be named as "label_time" and "label_status". (Can use the codes below to do it).
+Ensure that there are dependent variable (outcome). Binary or ordinal outcomes should be named as "label". Survival outcomes should be named as "label_time" and "label_status". (Can use the codes below to do it).
 
 - For binary and ordinal outcomes: Change the name of outcome to "label" (make
 sure no variables using the same name).

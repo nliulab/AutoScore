@@ -10,13 +10,11 @@ book:
   chapters:
     - index.qmd
     - 01-related_papers.qmd
-    - 011Installation.qmd
-    - 02-desc_analysis.qmd
     - 03-data_processing.qmd
+    - 02-desc_analysis.qmd
     - 04-autoscore.qmd
     - 05-autoscore_survival.qmd
     - 06-autoscore_ordinal.qmd
-    - 07-autoscore_shapleyvic.qmd
 
 format:
   html:

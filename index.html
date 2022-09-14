@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Xie Feng, Ning Yilin, Yuan Han, Liu Mingxuan, Li Siqi, Liu Nan">
-<meta name="dcterms.date" content="2022-08-25">
+<meta name="dcterms.date" content="2022-08-29">
 
 <title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator</title>
 <style>
@@ -17,6 +17,69 @@ span.underline{text-decoration: underline;}
 div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -103,7 +166,7 @@ ul.task-list{list-style: none;}
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./011Installation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Package Installation and import</span></a>
+  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -113,27 +176,17 @@ ul.task-list{list-style: none;}
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data processing and checking</span></a>
+  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-autoscore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for binary outcomes</span></a>
+  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-autoscore_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for survival outcomes (AutoScore-Survival)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./07-autoscore_shapleyvic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">AutoScore-ShapleyVIC for binary outcomes</span></a>
+  <a href="./06-autoscore_ordinal.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">AutoScore for ordinal outcomes (AutoScore-Ordinal)</span></a>
   </div>
 </li>
     </ul>
@@ -148,6 +201,7 @@ ul.task-list{list-style: none;}
   <li><a href="#autoscore-introduction" id="toc-autoscore-introduction" class="nav-link active" data-scroll-target="#autoscore-introduction">AutoScore Introduction</a>
   <ul class="collapse">
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#autoscore-package-installation" id="toc-autoscore-package-installation" class="nav-link" data-scroll-target="#autoscore-package-installation">AutoScore Package Installation</a></li>
   <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
   <li><a href="#contact" id="toc-contact" class="nav-link" data-scroll-target="#contact">Contact</a></li>
   </ul></li>
@@ -176,7 +230,7 @@ ul.task-list{list-style: none;}
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-08-25</p>
+      <p class="date">2022-08-29</p>
     </div>
   </div>
     
@@ -190,8 +244,8 @@ ul.task-list{list-style: none;}
 <p>AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in the article (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>) and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to survival outcomes (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>) and ordinal outcomes (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>). AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner.</p>
 <section id="usage" class="level2">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
-<p>The five pipeline functions constitute the 5-step AutoScore-based process for generating point-based clinical scores for binary (<a href="./04-autoscore.html#top">Chapter 5</a>), survival (<a href="./05-autoscore_survival.html#top">Chapter 6</a>) and ordinal outcomes (<a href="./06-autoscore_ordinal.html#top">Chapter 7</a>).</p>
-<p>This 5-step process gives users the flexibility of customization (e.g., determining the final list of variables according to the parsimony plot, and fine-tuning the cutoffs in variable transformation). Please follow the step-by-step instructions (in following Demos) to build your own scores.</p>
+<p>The five pipeline functions constitute the 5-step AutoScore-based process for generating point-based clinical scores for binary (<a href="./04-autoscore.html#top">Chapter 4</a>), survival (<a href="./05-autoscore_survival.html#top">Chapter 5</a>) and ordinal outcomes (<a href="./06-autoscore_ordinal.html#top">Chapter 6</a>).</p>
+<p>This 5-step process gives users the flexibility of customization (e.g., determining the final list of variables according to the parsimony plot, and fine-tuning the cutoffs in variable transformation). Please follow the step-by-step instructions (in following chapters) to build your own scores.</p>
 <ul>
 <li>STEP(i): <code>AutoScore_rank()</code>or <code>AutoScore_rank_Survival()</code> or <code>AutoScore_rank_Ordinal()</code> - Rank variables with machine learning (AutoScore Module 1)</li>
 <li>STEP(ii): <code>AutoScore_parsimony()</code> or <code>AutoScore_parsimony_Survival()</code> or <code>AutoScore_parsimony_Ordinal()</code> - Select the best model with parsimony plot (AutoScore Modules 2+3+4)</li>
@@ -199,14 +253,31 @@ ul.task-list{list-style: none;}
 <li>STEP(iv): <code>AutoScore_fine_tuning()</code> or <code>AutoScore_fine_tuning_Survival()</code> or <code>AutoScore_fine_tuning_Ordinal()</code> - Fine-tune the score by revising <code>cut_vec</code> with domain knowledge (AutoScore Module 5)</li>
 <li>STEP(v): <code>AutoScore_testing()</code> or <code>AutoScore_testing_Survival()</code> or <code>AutoScore_testing_Ordinal()</code> - Evaluate the final score with ROC analysis (AutoScore Module 6)</li>
 </ul>
-<p>We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in <a href="./03-data_processing.html#top">Chapter 3</a>, these functions are <code>compute_descriptive_table()</code> for generating the table of descriptive analysis for your dataset, <code>compute_uni_variable_table()</code> or <code>compute_uni_variable_table_survival()</code> or <code>compute_uni_variable_table_ordinal()</code> for creating the table of univariable analysis for your dataset, and <code>compute_multi_variable_table()</code> for generating the table of multivariable analysis for your dataset.</p>
+<p>We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in <a href="./03-data_processing.html#top">Chapter 2</a>, these functions are <code>compute_descriptive_table()</code> for generating the table of descriptive analysis for your dataset, <code>compute_uni_variable_table()</code> or <code>compute_uni_variable_table_survival()</code> or <code>compute_uni_variable_table_ordinal()</code> for creating the table of univariable analysis for your dataset, and <code>compute_multi_variable_table()</code> for generating the table of multivariable analysis for your dataset.</p>
+</section>
+<section id="autoscore-package-installation" class="level2">
+<h2 class="anchored" data-anchor-id="autoscore-package-installation">AutoScore Package Installation</h2>
+<p>Install from GitHub or CRAN：</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From Github</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">install_github</span>(<span class="at">repo =</span> <span class="st">"nliulab/AutoScore"</span>, <span class="at">build_vignettes =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># From CRAN (recommended)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"AutoScore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Load AutoScore package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AutoScore)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="citation" class="level2">
 <h2 class="anchored" data-anchor-id="citation">Citation</h2>
-<p>Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798 (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>)</p>
-<p>Xie F, Ning Y, Yuan H, et al.&nbsp;AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data. J Biomed Inform. 2022;125:103959. (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>)</p>
-<p>Saffari SE, Ning Y, Feng X, Chakraborty B, Volovici V, Vaughan R, Ong ME, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes, arXiv:2202.08407 (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>)</p>
-<p>Yilin Ning, Siqi Li, Marcus Eng Hock Ong, Feng Xie, Bibhas Chakraborty, Daniel Shu Wei Ting, Nan Liu, A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, <em>PLOS Digit Health</em> 1(6): e0000062 (<a href="https://doi.org/10.1371/journal.pdig.0000062" class="uri">https://doi.org/10.1371/journal.pdig.0000062</a>).</p>
+<p>Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. <em>JMIR Medical Informatics</em> 2020;8(10):e21798 (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>)</p>
+<p>Xie F, Ning Y, Yuan H, et al.&nbsp;AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data. <em>J Biomed Inform.</em> 2022;125:103959. (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>)</p>
+<p>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes, arXiv:2202.08407 (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>)</p>
+<p>Ning Y, Li S, Ong MEH, Xie F, Chakraborty B, Ting DSW, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, <em>PLOS Digit Health</em> 1(6): e0000062 (<a href="https://doi.org/10.1371/journal.pdig.0000062" class="uri">https://doi.org/10.1371/journal.pdig.0000062</a>).</p>
 </section>
 <section id="contact" class="level2">
 <h2 class="anchored" data-anchor-id="contact">Contact</h2>

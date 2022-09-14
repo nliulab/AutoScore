@@ -6,11 +6,11 @@ AutoScore is a novel machine learning framework to automate the development of i
 
 The five pipeline functions constitute the 5-step AutoScore-based process for
 generating point-based clinical scores for 
-binary ([Chapter 5](04-autoscore.qmd#top)), 
-survival ([Chapter 6](05-autoscore_survival.qmd#top)) and 
-ordinal outcomes ([Chapter 7](06-autoscore_ordinal.qmd#top)).
+binary ([Chapter 4](04-autoscore.qmd#top)), 
+survival ([Chapter 5](05-autoscore_survival.qmd#top)) and 
+ordinal outcomes ([Chapter 6](06-autoscore_ordinal.qmd#top)).
 
-This 5-step process gives users the flexibility of customization (e.g., determining the final list of variables according to the parsimony plot, and fine-tuning the cutoffs in variable transformation). Please follow the step-by-step instructions (in following Demos) to build your own scores.
+This 5-step process gives users the flexibility of customization (e.g., determining the final list of variables according to the parsimony plot, and fine-tuning the cutoffs in variable transformation). Please follow the step-by-step instructions (in following chapters) to build your own scores.
 
 * STEP(i): `AutoScore_rank()`or `AutoScore_rank_Survival()` or `AutoScore_rank_Ordinal()`  - Rank variables with machine learning (AutoScore Module 1)
 * STEP(ii): `AutoScore_parsimony()` or `AutoScore_parsimony_Survival()` or `AutoScore_parsimony_Ordinal()` - Select the best model with parsimony plot (AutoScore Modules 2+3+4)
@@ -18,22 +18,46 @@ This 5-step process gives users the flexibility of customization (e.g., determin
 * STEP(iv): `AutoScore_fine_tuning()` or `AutoScore_fine_tuning_Survival()` or `AutoScore_fine_tuning_Ordinal()` - Fine-tune the score by revising `cut_vec` with domain knowledge (AutoScore Module 5)
 * STEP(v): `AutoScore_testing()` or `AutoScore_testing_Survival()` or `AutoScore_testing_Ordinal()` - Evaluate the final score with ROC analysis (AutoScore Module 6)
 
-We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in [Chapter 3](03-data_processing.qmd#top), these functions are `compute_descriptive_table()` for generating the table of descriptive analysis for your dataset, `compute_uni_variable_table()` or `compute_uni_variable_table_survival()` or `compute_uni_variable_table_ordinal()` for creating the table of univariable analysis for your dataset, and `compute_multi_variable_table()` for generating the table of multivariable analysis for your dataset. 
+We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in [Chapter 2](03-data_processing.qmd#top), these functions are `compute_descriptive_table()` for generating the table of descriptive analysis for your dataset, `compute_uni_variable_table()` or `compute_uni_variable_table_survival()` or `compute_uni_variable_table_ordinal()` for creating the table of univariable analysis for your dataset, and `compute_multi_variable_table()` for generating the table of multivariable analysis for your dataset. 
+
+
+## AutoScore Package Installation
+
+Install from GitHub or CRAN：
+
+```{r basic, eval=FALSE}
+# From Github
+install.packages("devtools")
+library(devtools)
+install_github(repo = "nliulab/AutoScore", build_vignettes = TRUE)
+
+# From CRAN (recommended)
+install.packages("AutoScore")
+```
+[devtools]: https://github.com/hadley/devtools
+
+Load AutoScore package: 
+
+```{r  library_ch4, results = "hide", warning=FALSE, message=FALSE}
+library(AutoScore)
+```
+
+
 
 ## Citation
 
-Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. JMIR Medical Informatics 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
+Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. *JMIR Medical Informatics* 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
 Xie F, Ning Y, Yuan H, et al. AutoScore-Survival: Developing
 interpretable machine learning-based time-to-event scores with right-censored
-survival data. J Biomed Inform. 2022;125:103959. (<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
+survival data. *J Biomed Inform.* 2022;125:103959. (<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
 
-Saffari SE, Ning Y, Feng X, Chakraborty B, Volovici V, Vaughan R, Ong
-ME, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
+Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong
+MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
 generating scoring models for ordinal outcomes, arXiv:2202.08407
 (<https://doi.org/10.48550/arxiv.2202.08407>)
 
-Yilin Ning, Siqi Li, Marcus Eng Hock Ong, Feng Xie, Bibhas Chakraborty, Daniel Shu Wei Ting, Nan Liu, A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, *PLOS Digit Health* 1(6): e0000062 (<https://doi.org/10.1371/journal.pdig.0000062>). 
+Ning Y, Li S, Ong MEH, Xie F, Chakraborty B, Ting DSW, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, *PLOS Digit Health* 1(6): e0000062 (<https://doi.org/10.1371/journal.pdig.0000062>). 
 
 ## Contact
 

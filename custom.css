@@ -33,6 +33,14 @@ https://quarto.org/docs/authoring/article-layout.html
     font-weight: normal;
 }
 
+.sidebar nav[role=doc-toc] ul>ul>a {
+    font-weight: bold;
+}
+
 .sidebar nav[role=doc-toc] ul>li>a {
     font-weight: bold;
+}
+
+#toc-title {
+  font-weight: bold;
 }
