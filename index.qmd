@@ -18,7 +18,7 @@ This 5-step process gives users the flexibility of customization (e.g., determin
 * STEP(iv): `AutoScore_fine_tuning()` or `AutoScore_fine_tuning_Survival()` or `AutoScore_fine_tuning_Ordinal()` - Fine-tune the score by revising `cut_vec` with domain knowledge (AutoScore Module 5)
 * STEP(v): `AutoScore_testing()` or `AutoScore_testing_Survival()` or `AutoScore_testing_Ordinal()` - Evaluate the final score with ROC analysis (AutoScore Module 6)
 
-We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in [Chapter 2](03-data_processing.qmd#top), these functions are `compute_descriptive_table()` for generating the table of descriptive analysis for your dataset, `compute_uni_variable_table()` or `compute_uni_variable_table_survival()` or `compute_uni_variable_table_ordinal()` for creating the table of univariable analysis for your dataset, and `compute_multi_variable_table()` for generating the table of multivariable analysis for your dataset. 
+We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in [Chapter 3](02-desc_analysis.qmd#top), these functions are `compute_descriptive_table()` for generating the table of descriptive analysis for your dataset, `compute_uni_variable_table()` or `compute_uni_variable_table_survival()` or `compute_uni_variable_table_ordinal()` for creating the table of univariable analysis for your dataset, and `compute_multi_variable_table()` for generating the table of multivariable analysis for your dataset. 
 
 
 ## AutoScore Package Installation

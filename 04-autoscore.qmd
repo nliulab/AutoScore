@@ -112,7 +112,7 @@ AUC <- AutoScore_parsimony(
 
 - Users could use the `AUC` for further analysis or export it as the CSV to other software for plotting.
 ```{r csv_generate2, eval=FALSE}
-write.csv(data.frame(AUC), file = "D:/AUC.csv")
+write.csv(data.frame(AUC), file = "AUC.csv")
 ```
 
 - Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
@@ -278,8 +278,8 @@ plot_predicted_risk(pred_score = pred_score_train, max_score = 100,
 
 - Users could use the `pred_score` or `pred_score_train` for further analysis or export it as the CSV to other software (e.g., generating the calibration curve).
 ```{r csv_generate3, eval=FALSE}
-write.csv(pred_score, file = "D:/pred_score.csv")
-write.csv(pred_score_train, file = "D:/pred_score_train.csv")
+write.csv(pred_score, file = "pred_score.csv")
+write.csv(pred_score_train, file = "pred_score_train.csv")
 ```
 
 
@@ -351,7 +351,7 @@ AUC <- AutoScore_parsimony(
 
 - Users could use the `AUC` for further analysis or export it as the CSV to other software for plotting.
 ```{r csv_generate_auc, eval=FALSE}
-write.csv(data.frame(AUC), file = "D:/AUC.csv")
+write.csv(data.frame(AUC), file = "AUC.csv")
 ```
 
 
@@ -466,7 +466,7 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
 
 - Users could use the `pred_score` for further analysis or export it as the CSV to other software.
 ```{r csv_generate, eval=FALSE}
-write.csv(pred_score, file = "D:/pred_score.csv")
+write.csv(pred_score, file = "pred_score.csv")
 ```
 
 
@@ -474,7 +474,7 @@ write.csv(pred_score, file = "D:/pred_score.csv")
 
 In Demo 3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named `Unknown`. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
 
-### load package and data
+### Load package and data
 ```{r, warning=FALSE}
 library(AutoScore)
 data("sample_data")
@@ -485,6 +485,8 @@ check_data(sample_data)
 ```{r}
 sample_data <- AutoScore:::induce_informative_missing(sample_data, vars_to_induce = names(sample_data)[1:2], prop_missing = c(0.2, 0.6))
 ```
+
+### AutoScore steps
 
 The following steps are similar to Demo #1. 
 
@@ -498,9 +500,10 @@ test_set <- out_split$test_set
 ranking <- AutoScore_rank(train_set, method = "rf", ntree = 100)
 ```
 
-NOTE: 
 
-- High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.
+::: callout-note
+- *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
+:::
 
 ```{r, results = "hide"}
 AUC <- AutoScore_parsimony(

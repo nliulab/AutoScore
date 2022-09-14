@@ -9,7 +9,7 @@ AutoScore-Ordinal refers to the AutoScore framework for developing point-based s
 In this chapter, we demonstrate the use of AutoScore-Ordinal to develop sparse
 risk scores for an ordinal outcome, adjust parameters to improve
 interpretability, assess the performance of the final model and generate a
-lookup table to easily predict risks for new data. To facilitate clinical
+conversion table to easily map score to risk. To facilitate clinical
 applications, in the following sections we demonstrate AutoScore application
 with large and small datasets and with missing information.
 
@@ -32,10 +32,10 @@ observations using split-sample approach (i.e., to randomly divide the full
 dataset into training, validation and test sets) for model development.
 
 ::: callout-important
-- Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top)
-to ensure all data requirements are met.
-- Refer to [Chapter 3](02-desc_analysis.qmd#ordinal) for how to generate simple
-descriptive statistics before building prediction models.
+*- Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top)
+to ensure all data requirements are met.*
+*- Refer to [Chapter 3](02-desc_analysis.qmd#ordinal) for how to generate simple
+descriptive statistics before building prediction models.*
 :::
 
 ### Load package and data
@@ -423,6 +423,16 @@ and `conversion_table_ordinal()` functions to map score to risk.
 In Demo 3, we demonstrate AutoScore-Ordinal for application to data with missing
 values.
 
+### Load package and data
+
+```{r}
+library(AutoScore)
+data("sample_data_ordinal")
+check_data_ordinal(sample_data_ordinal)
+```
+
+### Create informative missing
+
 - For demonstration, we manually induce missing to two variables in the [large
 sample](#demo1) (20% in `Lab_A` and 60% in `Vital_A`.), assuming values close to
 normal range (i.e., median value in the complete data) are more likely to be
@@ -438,10 +448,16 @@ sample_data_ordinal_missing <- AutoScore:::induce_informative_missing(
 )
 ```
 
+### AutoScore steps
+
 - Use the same code in [Demo 1](#demo1) to analyse large sample with missing.
 For illustrative purpose we repeat STEP(i)-(iii) below.
 - As shown below, such missingness pattern has little impact on variable ranking
 and cutoff values.
+
+::: callout-note
+- *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
+:::
 
 ```{r missing_ord, fig.width=7, fig.height=5, cache=TRUE}
 set.seed(4)

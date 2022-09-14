@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.594">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -53,7 +58,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -66,7 +71,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -98,7 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -118,8 +123,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
-<link href="site_libs/tabwid-1.0.0/tabwid.css" rel="stylesheet">
-<link href="site_libs/tabwid-1.0.0/scrool.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="custom.css">
@@ -195,13 +198,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#binary" id="toc-binary" class="nav-link active" data-scroll-target="#binary"> <span class="header-section-number">3.1</span> Binary Outcome</a></li>
-  <li><a href="#survival" id="toc-survival" class="nav-link" data-scroll-target="#survival"> <span class="header-section-number">3.2</span> Survival Outcome</a></li>
-  <li><a href="#ordinal" id="toc-ordinal" class="nav-link" data-scroll-target="#ordinal"> <span class="header-section-number">3.3</span> Ordinal Outcome</a></li>
+  <li><a href="#binary" id="toc-binary" class="nav-link active" data-scroll-target="#binary"><span class="toc-section-number">3.1</span>  Binary Outcome</a></li>
+  <li><a href="#survival" id="toc-survival" class="nav-link" data-scroll-target="#survival"><span class="toc-section-number">3.2</span>  Survival Outcome</a></li>
+  <li><a href="#ordinal" id="toc-ordinal" class="nav-link" data-scroll-target="#ordinal"><span class="toc-section-number">3.3</span>  Ordinal Outcome</a></li>
   </ul>
 </nav>
     </div>
@@ -1479,11 +1482,124 @@ Important
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>link <span class="ot">&lt;-</span> <span class="st">"logit"</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>uni_table_ordinal <span class="ot">&lt;-</span> <span class="fu">compute_uni_variable_table_ordinal</span>(sample_data_ordinal, <span class="at">link =</span> link)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>flextable<span class="sc">::</span><span class="fu">flextable</span>(uni_table_ordinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(uni_table_ordinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<div class="tabwid"><style>.cl-c2de5e98{}.cl-c2db27c8{font-family:'Helvetica';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-c2db345c{margin:0;text-align:left;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-c2db54a0{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c2db54aa{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c2db54ab{width:54pt;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(102, 102, 102, 1.00);border-top: 2pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table class="cl-c2de5e98">
-<thead><tr style="overflow-wrap:break-word;"><td class="cl-c2db54ab"><p class="cl-c2db345c"><span class="cl-c2db27c8">OR</span></p></td><td class="cl-c2db54ab"><p class="cl-c2db345c"><span class="cl-c2db27c8">p value</span></p></td></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.019 (1.017 - 1.021)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.948 (0.883 - 1.019)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.147</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.040 (0.946 - 1.145)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.421</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.998 (0.894 - 1.115)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.974</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.136 (1.121 - 1.153)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.999 (0.994 - 1.003)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.564</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.929 (0.908 - 0.950)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">4.154 (3.737 - 4.616)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.099 (0.989 - 1.218)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.076</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.236 (0.997 - 1.520)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.049</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.017 (0.899 - 1.147)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.791</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.994 (0.739 - 1.315)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.969</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.000 (1.000 - 1.001)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.010 (0.958 - 1.064)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.717</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.998 (0.990 - 1.005)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.534</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.010 (1.008 - 1.012)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.999 (0.980 - 1.019)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.956</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.996 (0.986 - 1.007)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.451</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">1.001 (0.998 - 1.003)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.622</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.994 (0.993 - 0.996)</span></p></td><td class="cl-c2db54a0"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-c2db54aa"><p class="cl-c2db345c"><span class="cl-c2db27c8">0.979 (0.969 - 0.989)</span></p></td><td class="cl-c2db54aa"><p class="cl-c2db345c"><span class="cl-c2db27c8">&lt;0.001</span></p></td></tr></tbody></table></div>
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">OR</th>
+<th style="text-align: left;">p value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;">1.019 (1.017 - 1.021)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GenderMALE</td>
+<td style="text-align: left;">0.948 (0.883 - 1.019)</td>
+<td style="text-align: left;">0.147</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Util_AP2</td>
+<td style="text-align: left;">1.040 (0.946 - 1.145)</td>
+<td style="text-align: left;">0.421</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Util_AP3 and P4</td>
+<td style="text-align: left;">0.998 (0.894 - 1.115)</td>
+<td style="text-align: left;">0.974</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Util_B</td>
+<td style="text-align: left;">1.136 (1.121 - 1.153)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Util_C</td>
+<td style="text-align: left;">0.999 (0.994 - 1.003)</td>
+<td style="text-align: left;">0.564</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Util_D</td>
+<td style="text-align: left;">0.929 (0.908 - 0.950)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comorb_A1</td>
+<td style="text-align: left;">4.154 (3.737 - 4.616)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Comorb_B1</td>
+<td style="text-align: left;">1.099 (0.989 - 1.218)</td>
+<td style="text-align: left;">0.076</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comorb_C1</td>
+<td style="text-align: left;">1.236 (0.997 - 1.520)</td>
+<td style="text-align: left;">0.049</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Comorb_D1</td>
+<td style="text-align: left;">1.017 (0.899 - 1.147)</td>
+<td style="text-align: left;">0.791</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Comorb_E1</td>
+<td style="text-align: left;">0.994 (0.739 - 1.315)</td>
+<td style="text-align: left;">0.969</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lab_A</td>
+<td style="text-align: left;">1.000 (1.000 - 1.001)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lab_B</td>
+<td style="text-align: left;">1.010 (0.958 - 1.064)</td>
+<td style="text-align: left;">0.717</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lab_C</td>
+<td style="text-align: left;">0.998 (0.990 - 1.005)</td>
+<td style="text-align: left;">0.534</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vital_A</td>
+<td style="text-align: left;">1.010 (1.008 - 1.012)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vital_B</td>
+<td style="text-align: left;">0.999 (0.980 - 1.019)</td>
+<td style="text-align: left;">0.956</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vital_C</td>
+<td style="text-align: left;">0.996 (0.986 - 1.007)</td>
+<td style="text-align: left;">0.451</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vital_D</td>
+<td style="text-align: left;">1.001 (0.998 - 1.003)</td>
+<td style="text-align: left;">0.622</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vital_E</td>
+<td style="text-align: left;">0.994 (0.993 - 0.996)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vital_F</td>
+<td style="text-align: left;">0.979 (0.969 - 0.989)</td>
+<td style="text-align: left;">&lt;0.001</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <ul>
@@ -1618,6 +1734,24 @@ Important
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -1667,7 +1801,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

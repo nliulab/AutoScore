@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.594">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -53,7 +58,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -66,7 +71,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -98,7 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -193,30 +198,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#development-with-large-sample" id="toc-development-with-large-sample" class="nav-link active" data-scroll-target="#development-with-large-sample"> <span class="header-section-number">5.1</span> development with large sample</a>
+  <li><a href="#demo1" id="toc-demo1" class="nav-link active" data-scroll-target="#demo1"><span class="toc-section-number">5.1</span>  Demo 1: large sample</a>
   <ul class="collapse">
-  <li><a href="#load-package-and-survival-data" id="toc-load-package-and-survival-data" class="nav-link" data-scroll-target="#load-package-and-survival-data"> <span class="header-section-number">5.1.1</span> load package and survival data</a></li>
-  <li><a href="#prepare-training-validation-and-test-datasets" id="toc-prepare-training-validation-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-validation-and-test-datasets"> <span class="header-section-number">5.1.2</span> Prepare training, validation, and test datasets</a></li>
-  <li><a href="#stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" id="toc-stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" class="nav-link" data-scroll-target="#stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1"> <span class="header-section-number">5.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest (AutoScore Module 1)</a></li>
-  <li><a href="#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" id="toc-stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" class="nav-link" data-scroll-target="#stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234"> <span class="header-section-number">5.1.4</span> STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)</a></li>
-  <li><a href="#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" id="toc-stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" class="nav-link" data-scroll-target="#stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23"> <span class="header-section-number">5.1.5</span> STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)</a></li>
-  <li><a href="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" id="toc-stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" class="nav-link" data-scroll-target="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23"> <span class="header-section-number">5.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 &amp; Re-run AutoScore Modules 2+3)</a></li>
-  <li><a href="#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" id="toc-stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" class="nav-link" data-scroll-target="#stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6"> <span class="header-section-number">5.1.7</span> STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)</a></li>
+  <li><a href="#load-package-and-data" id="toc-load-package-and-data" class="nav-link" data-scroll-target="#load-package-and-data"><span class="toc-section-number">5.1.1</span>  Load package and data</a></li>
+  <li><a href="#prepare-training-validation-and-test-datasets" id="toc-prepare-training-validation-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-validation-and-test-datasets"><span class="toc-section-number">5.1.2</span>  Prepare training, validation, and test datasets</a></li>
+  <li><a href="#stepi-generate-variable-ranking-list-with-random-survival-forest" id="toc-stepi-generate-variable-ranking-list-with-random-survival-forest" class="nav-link" data-scroll-target="#stepi-generate-variable-ranking-list-with-random-survival-forest"><span class="toc-section-number">5.1.3</span>  STEP(i): Generate variable ranking list with Random Survival Forest</a></li>
+  <li><a href="#stepii-select-the-best-model-with-parsimony-plot" id="toc-stepii-select-the-best-model-with-parsimony-plot" class="nav-link" data-scroll-target="#stepii-select-the-best-model-with-parsimony-plot"><span class="toc-section-number">5.1.4</span>  STEP(ii): Select the best model with parsimony plot</a></li>
+  <li><a href="#stepiii-generate-initial-scores-with-the-final-list-of-variables" id="toc-stepiii-generate-initial-scores-with-the-final-list-of-variables" class="nav-link" data-scroll-target="#stepiii-generate-initial-scores-with-the-final-list-of-variables"><span class="toc-section-number">5.1.5</span>  STEP(iii): Generate initial scores with the final list of variables</a></li>
+  <li><a href="#stepiv-fine-tune-the-initial-score-generated-in-stepiii" id="toc-stepiv-fine-tune-the-initial-score-generated-in-stepiii" class="nav-link" data-scroll-target="#stepiv-fine-tune-the-initial-score-generated-in-stepiii"><span class="toc-section-number">5.1.6</span>  STEP(iv): Fine-tune the initial score generated in STEP(iii)</a></li>
+  <li><a href="#stepv-evaluate-final-risk-scores-on-test-dataset" id="toc-stepv-evaluate-final-risk-scores-on-test-dataset" class="nav-link" data-scroll-target="#stepv-evaluate-final-risk-scores-on-test-dataset"><span class="toc-section-number">5.1.7</span>  STEP(v): Evaluate final risk scores on test dataset</a></li>
+  <li><a href="#map-score-to-risk" id="toc-map-score-to-risk" class="nav-link" data-scroll-target="#map-score-to-risk"><span class="toc-section-number">5.1.8</span>  Map Score to Risk</a></li>
   </ul></li>
-  <li><a href="#further-evaluation-conversion-table-calibration-etc" id="toc-further-evaluation-conversion-table-calibration-etc" class="nav-link" data-scroll-target="#further-evaluation-conversion-table-calibration-etc"> <span class="header-section-number">5.2</span> Further evaluation (conversion table, calibration etc)</a></li>
-  <li><a href="#development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" id="toc-development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" class="nav-link" data-scroll-target="#development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes"> <span class="header-section-number">5.3</span> development on Small dataset (sample size = 1000) with cross-validation for survival outcomes**</a>
+  <li><a href="#demo2" id="toc-demo2" class="nav-link" data-scroll-target="#demo2"><span class="toc-section-number">5.2</span>  Demo 2: small sample</a>
   <ul class="collapse">
-  <li><a href="#get-small-dataset-with-1000-samples" id="toc-get-small-dataset-with-1000-samples" class="nav-link" data-scroll-target="#get-small-dataset-with-1000-samples"> <span class="header-section-number">5.3.1</span> Get small dataset with 1000 samples</a></li>
-  <li><a href="#prepare-training-and-test-datasets" id="toc-prepare-training-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-and-test-datasets"> <span class="header-section-number">5.3.2</span> Prepare training and test datasets</a></li>
+  <li><a href="#get-small-dataset-with-1000-samples" id="toc-get-small-dataset-with-1000-samples" class="nav-link" data-scroll-target="#get-small-dataset-with-1000-samples"><span class="toc-section-number">5.2.1</span>  Get small dataset with 1000 samples</a></li>
+  <li><a href="#prepare-training-and-test-datasets" id="toc-prepare-training-and-test-datasets" class="nav-link" data-scroll-target="#prepare-training-and-test-datasets"><span class="toc-section-number">5.2.2</span>  Prepare training and test datasets</a></li>
+  <li><a href="#stepi-generate-variable-ranking-list-with-random-survival-forest-1" id="toc-stepi-generate-variable-ranking-list-with-random-survival-forest-1" class="nav-link" data-scroll-target="#stepi-generate-variable-ranking-list-with-random-survival-forest-1"><span class="toc-section-number">5.2.3</span>  STEP(i): Generate variable ranking list with Random Survival Forest</a></li>
+  <li><a href="#stepii-select-the-best-model-with-parsimony-plot-1" id="toc-stepii-select-the-best-model-with-parsimony-plot-1" class="nav-link" data-scroll-target="#stepii-select-the-best-model-with-parsimony-plot-1"><span class="toc-section-number">5.2.4</span>  STEP(ii): Select the best model with parsimony plot</a></li>
+  <li><a href="#stepiii-generate-initial-scores-with-the-final-list-of-variables-1" id="toc-stepiii-generate-initial-scores-with-the-final-list-of-variables-1" class="nav-link" data-scroll-target="#stepiii-generate-initial-scores-with-the-final-list-of-variables-1"><span class="toc-section-number">5.2.5</span>  STEP(iii): Generate initial scores with the final list of variables</a></li>
+  <li><a href="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-1" id="toc-stepiv-fine-tune-the-initial-score-generated-in-stepiii-1" class="nav-link" data-scroll-target="#stepiv-fine-tune-the-initial-score-generated-in-stepiii-1"><span class="toc-section-number">5.2.6</span>  STEP(iv): Fine-tune the initial score generated in STEP(iii)</a></li>
+  <li><a href="#stepv-evaluate-final-risk-scores-on-test-dataset-1" id="toc-stepv-evaluate-final-risk-scores-on-test-dataset-1" class="nav-link" data-scroll-target="#stepv-evaluate-final-risk-scores-on-test-dataset-1"><span class="toc-section-number">5.2.7</span>  STEP(v): Evaluate final risk scores on test dataset</a></li>
+  <li><a href="#map-score-to-risk-1" id="toc-map-score-to-risk-1" class="nav-link" data-scroll-target="#map-score-to-risk-1"><span class="toc-section-number">5.2.8</span>  Map Score to Risk</a></li>
   </ul></li>
-  <li><a href="#development-on-dataset-with-missing-values-informative-missing" id="toc-development-on-dataset-with-missing-values-informative-missing" class="nav-link" data-scroll-target="#development-on-dataset-with-missing-values-informative-missing"> <span class="header-section-number">5.4</span> development on dataset with missing values (informative missing)**</a>
+  <li><a href="#demo3" id="toc-demo3" class="nav-link" data-scroll-target="#demo3"><span class="toc-section-number">5.3</span>  Demo 3: data with missing values</a>
   <ul class="collapse">
-  <li><a href="#load-package-and-data" id="toc-load-package-and-data" class="nav-link" data-scroll-target="#load-package-and-data"> <span class="header-section-number">5.4.1</span> load package and data</a></li>
-  <li><a href="#create-informative-missing" id="toc-create-informative-missing" class="nav-link" data-scroll-target="#create-informative-missing"> <span class="header-section-number">5.4.2</span> Create informative missing</a></li>
+  <li><a href="#load-package-and-data-1" id="toc-load-package-and-data-1" class="nav-link" data-scroll-target="#load-package-and-data-1"><span class="toc-section-number">5.3.1</span>  Load package and data</a></li>
+  <li><a href="#create-informative-missing" id="toc-create-informative-missing" class="nav-link" data-scroll-target="#create-informative-missing"><span class="toc-section-number">5.3.2</span>  Create informative missing</a></li>
+  <li><a href="#autoscore-steps" id="toc-autoscore-steps" class="nav-link" data-scroll-target="#autoscore-steps"><span class="toc-section-number">5.3.3</span>  AutoScore steps</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -240,11 +252,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="development-with-large-sample" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="development-with-large-sample"><span class="header-section-number">5.1</span> development with large sample</h2>
-<p>(sample size = 20000)**</p>
-<section id="load-package-and-survival-data" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="load-package-and-survival-data"><span class="header-section-number">5.1.1</span> load package and survival data</h3>
+<p>AutoScore-Survival refers to the AutoScore framework for developing point-based scoring models for survival outcomes. Similar to the implementation described in <a href="./04-autoscore.html#top">Chapter 4</a> for binary outcomes, AutoScore-Survival is implemented by five functions: <code>AutoScore_rank_Survival()</code>, <code>AutoScore_parsimony_Survival()</code>, <code>AutoScore_weighting_Survival()</code>, <code>AutoScore_fine_tuning_Survival()</code> and <code>AutoScore_testing_Survival()</code>.</p>
+<p>In this chapter, we demonstrate the use of AutoScore to develop sparse risk scores for survival outcome, adjust parameters to improve interpretability, assess the performance of the final model and map the score to predict risks for new data. To facilitate clinical applications, in the following sections we have three demos for AutoScore Implementation with large and small dataset, as well as with missing data.</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><em>Scoring models below are based on simulated data to demonstrate AutoScore usage.</em></li>
+<li><em>Variable names are intentionally masked to avoid misinterpretation and misuse.</em></li>
+</ul>
+</div>
+</div>
+<p>Citation for AutoScore-Survival:</p>
+<p>Xie F, Ning Y, Yuan H, et al.&nbsp;AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data. <em>J Biomed Inform.</em> 2022;125:103959. (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>)</p>
+<section id="demo1" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="demo1"><span class="header-section-number">5.1</span> Demo 1: large sample</h2>
+<p>In Demo 1, we demonstrate the use of AutoScore-Survival on a dataset with 20,000 observations using split-sample approach (i.e., to randomly divide the full dataset into training, validation and test sets) for model development.</p>
+<div class="callout-important callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><em>Before proceeding, follow the steps in <a href="./03-data_processing.html#top">Chapter 2</a> to ensure all data requirements are met.</em></li>
+<li><em>Refer to <a href="./02-desc_analysis.html#survival">Chapter 3</a> for how to generate simple descriptive statistics before building prediction models.</em></li>
+</ul>
+</div>
+</div>
+<section id="load-package-and-data" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="load-package-and-data"><span class="header-section-number">5.1.1</span> Load package and data</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AutoScore)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival"</span>)</span>
@@ -260,7 +308,6 @@ Your dataset doesn't have any missing values.</code></pre>
 <pre><code>Data type check passed.</code></pre>
 </div>
 </div>
-<p>In Demo #1, we demonstrate the use of AutoScore on a comparably large dataset where separate training and validation sets are available. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.</p>
 </section>
 <section id="prepare-training-validation-and-test-datasets" class="level3" data-number="5.1.2">
 <h3 data-number="5.1.2" class="anchored" data-anchor-id="prepare-training-validation-and-test-datasets"><span class="header-section-number">5.1.2</span> Prepare training, validation, and test datasets</h3>
@@ -276,12 +323,15 @@ Your dataset doesn't have any missing values.</code></pre>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1" class="level3" data-number="5.1.3">
-<h3 data-number="5.1.3" class="anchored" data-anchor-id="stepi-generate-variable-ranking-list-with-random-survival-forest-autoscore-module-1"><span class="header-section-number">5.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest (AutoScore Module 1)</h3>
+<section id="stepi-generate-variable-ranking-list-with-random-survival-forest" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="stepi-generate-variable-ranking-list-with-random-survival-forest"><span class="header-section-number">5.1.3</span> STEP(i): Generate variable ranking list with Random Survival Forest</h3>
+<p class="autoscore-module">
+AutoScore-Survival Modules 1
+</p>
 <ul>
 <li><code>ntree</code>: Number of trees required only if when <code>method</code> is “rf” (Default: 100).(More time is needed if you run a larger number of trees. For demostration purpose, I just use <code>ntree = 10</code> in this guidebook)</li>
 </ul>
-<div class="cell">
+<div class="cell" data-hash="05-autoscore_survival_cache/html/rank_surv_c05d2567caa34036c9de75b1df0e133a">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -300,12 +350,15 @@ The ranking based on variable importance was shown below for each variable:
 0.005093323 0.004567277 0.004141324 </code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="05-autoscore_survival_files/figure-html/rank_surv-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 </section>
-<section id="stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234" class="level3" data-number="5.1.4">
-<h3 data-number="5.1.4" class="anchored" data-anchor-id="stepii-select-the-best-model-with-parsimony-plot-autoscore-modules-234"><span class="header-section-number">5.1.4</span> STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)</h3>
+<section id="stepii-select-the-best-model-with-parsimony-plot" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="stepii-select-the-best-model-with-parsimony-plot"><span class="header-section-number">5.1.4</span> STEP(ii): Select the best model with parsimony plot</h3>
+<p class="autoscore-module">
+AutoScore-Survival Modules 2+3+4
+</p>
 <ul>
 <li><code>nmin</code>: Minimum number of selected variables (Default: 1).</li>
 <li><code>nmax</code>: Maximum number of selected variables (Default: 20).</li>
@@ -316,7 +369,7 @@ The ranking based on variable importance was shown below for each variable:
 <li><code>auc_lim_min</code>: Min y_axis limit in the parsimony plot (Default: 0.5).</li>
 <li><code>auc_lim_max</code>: Max y_axis limit in the parsimony plot (Default: “adaptive”).</li>
 </ul>
-<div class="cell">
+<div class="cell" data-hash="05-autoscore_survival_cache/html/iauc_surv_11d08b9392e70e6b2bf89bc1255552dc">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    train_set,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    validation_set,</span>
@@ -352,14 +405,14 @@ Select 19 Variable(s):  0.8981632
 Select 20 Variable(s):  0.8983681 </code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="05-autoscore_survival_files/figure-html/iauc_surv-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
 <li>Users could use the <code>iAUC</code> for further analysis or export it as the CSV to other software for plotting.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(iAUC), <span class="at">file =</span> <span class="st">"D:/iAUC.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(iAUC), <span class="at">file =</span> <span class="st">"iAUC.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Determine the optimal number of variables (<code>num_var</code>) based on the parsimony plot obtained in STEP(ii).</li>
@@ -380,8 +433,11 @@ Select 20 Variable(s):  0.8983681 </code></pre>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>num_var, <span class="dv">9</span>, <span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23" class="level3" data-number="5.1.5">
-<h3 data-number="5.1.5" class="anchored" data-anchor-id="stepiii-generate-initial-scores-with-the-final-list-of-variables-re-run-autoscore-modules-23"><span class="header-section-number">5.1.5</span> STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)</h3>
+<section id="stepiii-generate-initial-scores-with-the-final-list-of-variables" class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5" class="anchored" data-anchor-id="stepiii-generate-initial-scores-with-the-final-list-of-variables"><span class="header-section-number">5.1.5</span> STEP(iii): Generate initial scores with the final list of variables</h3>
+<p class="autoscore-module">
+Re-run AutoScore-Survival Modules 2+3
+</p>
 <ul>
 <li>Generate <code>cut_vec</code> with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).</li>
 <li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
@@ -461,8 +517,11 @@ The AUC(t) are shown as bwlow:
 </div>
 </div>
 </section>
-<section id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23" class="level3" data-number="5.1.6">
-<h3 data-number="5.1.6" class="anchored" data-anchor-id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-autoscore-module-5-re-run-autoscore-modules-23"><span class="header-section-number">5.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 &amp; Re-run AutoScore Modules 2+3)</h3>
+<section id="stepiv-fine-tune-the-initial-score-generated-in-stepiii" class="level3" data-number="5.1.6">
+<h3 data-number="5.1.6" class="anchored" data-anchor-id="stepiv-fine-tune-the-initial-score-generated-in-stepiii"><span class="header-section-number">5.1.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii)</h3>
+<p class="autoscore-module">
+AutoScore-Survival Module 5 &amp; Re-run AutoScore-Survival Modules 2+3
+</p>
 <ul>
 <li>Revise <code>cut_vec</code> with domain knowledge to update the scoring table (AutoScore Module 5).</li>
 <li>Re-run AutoScore Modules 2+3 to generate the updated scores.</li>
@@ -500,7 +559,7 @@ The AUC(t) are shown as bwlow:
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_H <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_K <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">40</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_B <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">17</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>hVital_A<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">98</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>hVital_A <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">98</span>)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>scoring_table <span class="ot">&lt;-</span> <span class="fu">AutoScore_fine_tuning_Survival</span>(train_set,</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                        validation_set,</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                        final_variables,</span>
@@ -560,8 +619,11 @@ The AUC(t) are shown as bwlow:
 </div>
 </div>
 </section>
-<section id="stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6" class="level3" data-number="5.1.7">
-<h3 data-number="5.1.7" class="anchored" data-anchor-id="stepv-evaluate-final-risk-scores-on-test-dataset-autoscore-module-6"><span class="header-section-number">5.1.7</span> STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)</h3>
+<section id="stepv-evaluate-final-risk-scores-on-test-dataset" class="level3" data-number="5.1.7">
+<h3 data-number="5.1.7" class="anchored" data-anchor-id="stepv-evaluate-final-risk-scores-on-test-dataset"><span class="header-section-number">5.1.7</span> STEP(v): Evaluate final risk scores on test dataset</h3>
+<p class="autoscore-module">
+AutoScore-Survival Module 6
+</p>
 <ul>
 <li><code>threshold</code>: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to <code>"best"</code>, the optimal threshold will be calculated (Default: <code>"best"</code>).</li>
 <li><code>with_label</code>: Set to <code>TRUE</code> if there are labels in the <code>test_set</code> and performance will be evaluated accordingly (Default: <code>TRUE</code>).</li>
@@ -605,17 +667,13 @@ The AUC(t) are shown as bwlow:
 </div>
 </div>
 </section>
-</section>
-<section id="further-evaluation-conversion-table-calibration-etc" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="further-evaluation-conversion-table-calibration-etc"><span class="header-section-number">5.2</span> Further evaluation (conversion table, calibration etc)</h2>
-<p>Further analysis based on the final scoring systems (e.g., conversion table, model calibration, output the score)</p>
-<ul>
-<li>Use <code>plot_survival_km()</code> to generate Kaplan Meier Curve under different score thresholds (decided by users, e.g., 50).</li>
-</ul>
+<section id="map-score-to-risk" class="level3" data-number="5.1.8">
+<h3 data-number="5.1.8" class="anchored" data-anchor-id="map-score-to-risk"><span class="header-section-number">5.1.8</span> Map Score to Risk</h3>
+<p>Further analysis to map score to risk (e.g., conversion table, Kaplan Meier Curve, output the score) - Use <code>plot_survival_km()</code> to generate Kaplan Meier Curve under different score thresholds (decided by users, e.g., 50).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_survival_km</span>(pred_score, <span class="at">score_cut =</span> <span class="fu">c</span>(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="480"></p>
 </div>
 </div>
 <ul>
@@ -624,7 +682,7 @@ The AUC(t) are shown as bwlow:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_survival_km</span>(pred_score, <span class="at">score_cut =</span> <span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">60</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="480"></p>
 </div>
 </div>
 <ul>
@@ -683,21 +741,22 @@ t=90                   33.07%  72.52%  93.38%  98.86%</code></pre>
 <li>Users could use the <code>pred_score</code> or <code>pred_score_train</code> for further analysis or export it as the CSV to other software (e.g., generating other curves).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score, <span class="at">file =</span> <span class="st">"D:/pred_score.csv"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score_train, <span class="at">file =</span> <span class="st">"D:/pred_score_train.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score, <span class="at">file =</span> <span class="st">"pred_score.csv"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score_train, <span class="at">file =</span> <span class="st">"pred_score_train.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="development-on-small-dataset-sample-size-1000-with-cross-validation-for-survival-outcomes"><span class="header-section-number">5.3</span> development on Small dataset (sample size = 1000) with cross-validation for survival outcomes**</h2>
-<p>In Demo #2, we demonstrate the use of AutoScore on a comparably small dataset where there are no sufficient samples to form a separate training and validation datasets. Thus, the cross validation is employed to generate the parsimony plot.</p>
-<section id="get-small-dataset-with-1000-samples" class="level3" data-number="5.3.1">
-<h3 data-number="5.3.1" class="anchored" data-anchor-id="get-small-dataset-with-1000-samples"><span class="header-section-number">5.3.1</span> Get small dataset with 1000 samples</h3>
+</section>
+<section id="demo2" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="demo2"><span class="header-section-number">5.2</span> Demo 2: small sample</h2>
+<p>In Demo 2, we demonstrate the use of AutoScore-Survival on a comparably small dataset where there are no sufficient samples to form a separate training and validation dataset. Thus, the cross validation is employed to generate the parsimony plot.</p>
+<section id="get-small-dataset-with-1000-samples" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="get-small-dataset-with-1000-samples"><span class="header-section-number">5.2.1</span> Get small dataset with 1000 samples</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival_small"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="prepare-training-and-test-datasets" class="level3" data-number="5.3.2">
-<h3 data-number="5.3.2" class="anchored" data-anchor-id="prepare-training-and-test-datasets"><span class="header-section-number">5.3.2</span> Prepare training and test datasets</h3>
+<section id="prepare-training-and-test-datasets" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="prepare-training-and-test-datasets"><span class="header-section-number">5.2.2</span> Prepare training and test datasets</h3>
 <ul>
 <li>Option 1: Prepare two separate datasets to train and test models.</li>
 <li>Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, <code>train_set</code> is equal to <code>validation_set</code> and the ratio of <code>validation_set</code> should be 0. Then cross-validation will be implemented in the STEP(ii) <code>AutoScore_parsimony()</code>.</li>
@@ -710,50 +769,411 @@ t=90                   33.07%  72.52%  93.38%  98.86%</code></pre>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-</section>
-<section id="development-on-dataset-with-missing-values-informative-missing" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="development-on-dataset-with-missing-values-informative-missing"><span class="header-section-number">5.4</span> development on dataset with missing values (informative missing)**</h2>
-<p>In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named <code>Unknown</code>. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.</p>
-<section id="load-package-and-data" class="level3" data-number="5.4.1">
-<h3 data-number="5.4.1" class="anchored" data-anchor-id="load-package-and-data"><span class="header-section-number">5.4.1</span> load package and data</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AutoScore)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival"</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_data_survival</span>(sample_data_survival)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Your dataset doesn't have any missing values.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Data type check passed.</code></pre>
-</div>
-</div>
-</section>
-<section id="create-informative-missing" class="level3" data-number="5.4.2">
-<h3 data-number="5.4.2" class="anchored" data-anchor-id="create-informative-missing"><span class="header-section-number">5.4.2</span> Create informative missing</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>sample_data_survival <span class="ot">&lt;-</span> AutoScore<span class="sc">:::</span><span class="fu">induce_informative_missing</span>(sample_data_survival, <span class="at">vars_to_induce =</span> <span class="fu">names</span>(sample_data_survival)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">prop_missing =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The following steps are similar to Demo #1.</p>
-<p>NOTE:</p>
+<section id="stepi-generate-variable-ranking-list-with-random-survival-forest-1" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="stepi-generate-variable-ranking-list-with-random-survival-forest-1"><span class="header-section-number">5.2.3</span> STEP(i): Generate variable ranking list with Random Survival Forest</h3>
+<p class="autoscore-module">
+AutoScore-Survival Modules 1
+</p>
 <ul>
-<li>High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.</li>
+<li><code>ntree</code>: Number of trees required only if when <code>method</code> is “rf” (Default: 100).(More time is needed if you run a larger number of trees. For demostration purpose, I just use <code>ntree = 10</code> in this guidebook)</li>
+</ul>
+<div class="cell" data-hash="05-autoscore_survival_cache/html/rank_surv_small_07edb960ea4ccfe9b782124a51737794">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Trees Grown:       1,    Time Remaining (sec):       0 
+
+
+The ranking based on variable importance was shown below for each variable: 
+      Vital_E         Lab_H           Age         Lab_K         Lab_B 
+ 1.056965e-01  9.211654e-02  9.174663e-02  6.298467e-02  6.046187e-02 
+      Vital_F       Vital_A         Lab_F         Lab_J       Vital_C 
+ 4.304715e-02  3.741877e-02  2.783056e-02  2.610612e-02  1.774737e-02 
+        Lab_E         Lab_C         Lab_M       Vital_B         Lab_G 
+ 1.674145e-02  1.518732e-02  1.430115e-02  1.422398e-02  9.859650e-03 
+      Vital_D         Lab_I         Lab_A       Vital_G         Lab_L 
+ 7.664181e-03  4.044984e-03  2.562711e-03  0.000000e+00 -2.395057e-05 
+        Lab_D 
+-7.823852e-04 </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="05-autoscore_survival_files/figure-html/rank_surv_small-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+</section>
+<section id="stepii-select-the-best-model-with-parsimony-plot-1" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="stepii-select-the-best-model-with-parsimony-plot-1"><span class="header-section-number">5.2.4</span> STEP(ii): Select the best model with parsimony plot</h3>
+<p class="autoscore-module">
+</p><p>AutoScore-Survival Modules 2+3+4/p&gt;</p>
+<ul>
+<li><code>nmin</code>: Minimum number of selected variables (Default: 1).</li>
+<li><code>nmax</code>: Maximum number of selected variables (Default: 20).</li>
+<li><code>categorize</code>: Methods for categorizing continuous variables. Options include <code>"quantile"</code> or <code>"kmeans"</code> (Default: <code>"quantile"</code>).</li>
+<li><code>quantiles</code>: Predefined quantiles to convert continuous variables to categorical ones. (Default: <code>c(0, 0.05, 0.2, 0.8, 0.95, 1)</code>) Available if <code>categorize = "quantile"</code>.</li>
+<li><code>max_cluster</code>: The max number of cluster (Default: 5). Available if <code>categorize = "kmeans"</code>.</li>
+<li><code>max_score</code>: Maximum total score (Default: 100).</li>
+<li><code>auc_lim_min</code>: Min y_axis limit in the parsimony plot (Default: 0.5).</li>
+<li><code>auc_lim_max</code>: Max y_axis limit in the parsimony plot (Default: “adaptive”).</li>
+</ul>
+<div class="cell" data-hash="05-autoscore_survival_cache/html/iauc_surv_small_845cfa3b8b1cc3aada1e69d28be454cb">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    train_set,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    validation_set,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">rank =</span> ranking,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_min =</span> <span class="dv">1</span>,</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_max =</span> <span class="dv">20</span>,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">categorize =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>,</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Select 1 Variable(s):  0.6411722 
+Select 2 Variable(s):  0.7463138 
+Select 3 Variable(s):  0.8104358 
+Select 4 Variable(s):  0.8434664 
+Select 5 Variable(s):  0.8531211 
+Select 6 Variable(s):  0.8551594 
+Select 7 Variable(s):  0.8637313 
+Select 8 Variable(s):  0.8715351 
+Select 9 Variable(s):  0.8742414 
+Select 10 Variable(s):  0.8797017 
+Select 11 Variable(s):  0.880561 
+Select 12 Variable(s):  0.883042 
+Select 13 Variable(s):  0.8885709 
+Select 14 Variable(s):  0.8906103 
+Select 15 Variable(s):  0.8943912 
+Select 16 Variable(s):  0.8960659 
+Select 17 Variable(s):  0.898307 
+Select 18 Variable(s):  0.90012 
+Select 19 Variable(s):  0.9006009 
+Select 20 Variable(s):  0.899526 </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="05-autoscore_survival_files/figure-html/iauc_surv_small-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<ul>
+<li>Users could use the <code>iAUC</code> for further analysis or export it as the CSV to other software for plotting.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    train_set,</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    validation_set,</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">rank =</span> ranking,</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_score =</span> <span class="dv">100</span>,</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_min =</span> <span class="dv">1</span>,</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_max =</span> <span class="dv">20</span>,</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">categorize =</span> <span class="st">"quantile"</span>,</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>,</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(iAUC), <span class="at">file =</span> <span class="st">"iAUC.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Determine the optimal number of variables (<code>num_var</code>) based on the parsimony plot obtained in STEP(ii).</li>
+<li>The final list of variables is the first <code>num_var</code> variables in the ranked list <code>ranking</code> obtained in STEP(i).</li>
+<li>Optional: User can adjust the finally included variables <code>final_variables</code> based on the clinical preferences and knowledge.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: Top 6 variables are selected</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: Top 9 variables are selected</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: Top 6 variables, the 9th and 10th variable are selected</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>num_var, <span class="dv">9</span>, <span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="stepiii-generate-initial-scores-with-the-final-list-of-variables-1" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="stepiii-generate-initial-scores-with-the-final-list-of-variables-1"><span class="header-section-number">5.2.5</span> STEP(iii): Generate initial scores with the final list of variables</h3>
+<p class="autoscore-module">
+Re-run AutoScore-Survival Modules 2+3
+</p>
+<ul>
+<li>Generate <code>cut_vec</code> with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).</li>
+<li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>( </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    train_set,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    validation_set,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    final_variables,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">categorize =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">14</span>,<span class="dv">30</span>,<span class="dv">60</span>,<span class="dv">90</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>****Included Variables: 
+  variable_name
+1       Vital_E
+2         Lab_H
+3           Age
+4         Lab_K
+5         Lab_B
+6       Vital_F
+****Initial Scores: 
+
+
+========  ===========  =====
+variable  interval     point
+========  ===========  =====
+Vital_E   &lt;12            0  
+          [12,15)        5  
+          [15,22)       15  
+          [22,25)       21  
+          &gt;=25          22  
+                            
+Lab_H     &lt;0.1           0  
+          [0.1,1.2)      4  
+          [1.2,3.1)     11  
+          [3.1,4.1)     20  
+          &gt;=4.1         24  
+                            
+Age       &lt;37            0  
+          [37,49)        2  
+          [49,76)        8  
+          [76,89)       16  
+          &gt;=89          22  
+                            
+Lab_K     &lt;8             0  
+          [8,42)         7  
+          [42,59)       12  
+          &gt;=59          14  
+                            
+Lab_B     &lt;9             0  
+          [9,11.5)       3  
+          [11.5,16.9)    4  
+          [16.9,19.8)   10  
+          &gt;=19.8        14  
+                            
+Vital_F   &lt;35.9          3  
+          [35.9,36.3)    2  
+          [36.3,37.3)    2  
+          [37.3,37.7)    0  
+          &gt;=37.7         0  
+========  ===========  =====
+Integrated AUC by all time points: 0.8551594
+C_index:  0.7644388 
+The AUC(t) are shown as bwlow:
+  time_point     AUC_t
+1          1 0.9971388
+2          3 0.9770774
+3          7 0.9770774
+4         14 0.9856115
+5         30 0.9005364
+6         60 0.8520291
+7         90 0.8462442
+***The cutoffs of each variable generated by the AutoScore are saved in cut_vec. You can decide whether to revise or fine-tune them </code></pre>
+</div>
+</div>
+</section>
+<section id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-1" class="level3" data-number="5.2.6">
+<h3 data-number="5.2.6" class="anchored" data-anchor-id="stepiv-fine-tune-the-initial-score-generated-in-stepiii-1"><span class="header-section-number">5.2.6</span> STEP(iv): Fine-tune the initial score generated in STEP(iii)</h3>
+<p class="autoscore-module">
+AutoScore-Survival Module 5 &amp; Re-run AutoScore-Survival Modules 2+3
+</p>
+<ul>
+<li>Revise <code>cut_vec</code> with domain knowledge to update the scoring table (AutoScore Module 5).</li>
+<li>Re-run AutoScore Modules 2+3 to generate the updated scores.</li>
+<li>Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.</li>
+<li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For example, we have current cutoffs of continuous variable: Age </span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ==============  ===========  =====</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="do">## variable        interval     point</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="do">## ==============  ===========  =====</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Age             &lt;35            0  </span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [35,49)        7  </span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [49,76)       17  </span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [76,89)       23  </span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="do">##                 &gt;=89          27  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Current cutoffs:<code>c(35, 49, 76, 89)</code>. We can fine tune the cutoffs as follows:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: rounding up to a nice number</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: changing cutoffs according to clinical knowledge or preference </span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: combining categories</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Then we do similar checks for other variables and update scoring table using new cutoffs if needed.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_H <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_K <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">40</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_B <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">17</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>hVital_A <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">98</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>scoring_table <span class="ot">&lt;-</span> <span class="fu">AutoScore_fine_tuning_Survival</span>(train_set,</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>                        validation_set,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>                        final_variables,</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>                        cut_vec,</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">14</span>,<span class="dv">30</span>,<span class="dv">60</span>,<span class="dv">90</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>***Fine-tuned Scores: 
+
+
+========  ===========  =====
+variable  interval     point
+========  ===========  =====
+Vital_E   &lt;12            0  
+          [12,15)        3  
+          [15,22)       15  
+          [22,25)       21  
+          &gt;=25          23  
+                            
+Lab_H     &lt;0.2           0  
+          [0.2,1)        3  
+          [1,3)         11  
+          [3,4)         20  
+          &gt;=4           26  
+                            
+Age       &lt;50            0  
+          [50,75)        9  
+          [75,90)       15  
+          &gt;=90          23  
+                            
+Lab_K     &lt;10            0  
+          [10,40)        9  
+          &gt;=40          15  
+                            
+Lab_B     &lt;10            0  
+          [10,17)        3  
+          &gt;=17           9  
+                            
+Vital_F   &lt;35.9          4  
+          [35.9,36.3)    1  
+          [36.3,37.3)    2  
+          [37.3,37.7)    0  
+          &gt;=37.7         0  
+========  ===========  =====
+***Performance (based on validation set, after fine-tuning):
+Integrated AUC by all time points: 0.8535286
+C_index:  0.7634054 
+The AUC(t) are shown as bwlow:
+  time_point     AUC_t
+1          1 1.0000000
+2          3 0.9674069
+3          7 0.9674069
+4         14 0.9772662
+5         30 0.8922335
+6         60 0.8466340
+7         90 0.8518403</code></pre>
+</div>
+</div>
+</section>
+<section id="stepv-evaluate-final-risk-scores-on-test-dataset-1" class="level3" data-number="5.2.7">
+<h3 data-number="5.2.7" class="anchored" data-anchor-id="stepv-evaluate-final-risk-scores-on-test-dataset-1"><span class="header-section-number">5.2.7</span> STEP(v): Evaluate final risk scores on test dataset</h3>
+<p class="autoscore-module">
+AutoScore-Survival Module 6
+</p>
+<ul>
+<li><code>threshold</code>: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to <code>"best"</code>, the optimal threshold will be calculated (Default: <code>"best"</code>).</li>
+<li><code>with_label</code>: Set to <code>TRUE</code> if there are labels in the <code>test_set</code> and performance will be evaluated accordingly (Default: <code>TRUE</code>).</li>
+<li>Set the <code>with_label</code> to <code>FALSE</code> if there are not <code>label</code> in the <code>test_set</code> and the final predicted scores will be the output without performance evaluation.</li>
+<li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>pred_score <span class="ot">&lt;-</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">AutoScore_testing_Survival</span>(</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    test_set,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    final_variables,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    cut_vec,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    scoring_table,</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">threshold =</span> <span class="st">"best"</span>,</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">with_label =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">14</span>,<span class="dv">30</span>,<span class="dv">60</span>,<span class="dv">90</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>***Performance using AutoScore (based on unseen test Set):
+Integrated AUC by all time points: 0.872 (0.842-0.896)
+C_index:  0.779 (0.746-0.804) 
+The AUC(t) are shown as bwlow:
+  time_point               AUC_t
+1          1 0.003 (0.002-0.005)
+2          3 0.003 (0.002-0.005)
+3          7     0.651 (0.002-1)
+4         14     0.864 (0.002-1)
+5         30 0.944 (0.892-0.976)
+6         60 0.855 (0.811-0.893)
+7         90 0.851 (0.799-0.894)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  pred_score label_time label_status
+1         67         52         TRUE
+2         26         91        FALSE
+3         49         75         TRUE
+4         70         59         TRUE
+5         30         91        FALSE
+6         47         91        FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="map-score-to-risk-1" class="level3" data-number="5.2.8">
+<h3 data-number="5.2.8" class="anchored" data-anchor-id="map-score-to-risk-1"><span class="header-section-number">5.2.8</span> Map Score to Risk</h3>
+<ul>
+<li><p>You can also generate conversion table using <code>conversion_table_survival()</code>,and Kaplan Meier Curve using <code>plot_survival_km()</code>. Please refer to our demo for large sample. We skipped it here.</p></li>
+<li><p>Users could use the <code>pred_score</code> for further analysis or export it as the CSV to other software.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score, <span class="at">file =</span> <span class="st">"pred_score.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="demo3" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="demo3"><span class="header-section-number">5.3</span> Demo 3: data with missing values</h2>
+<p>In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named <code>Unknown</code>. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.</p>
+<section id="load-package-and-data-1" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="load-package-and-data-1"><span class="header-section-number">5.3.1</span> Load package and data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AutoScore)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival"</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_data_survival</span>(sample_data_survival)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="create-informative-missing" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="create-informative-missing"><span class="header-section-number">5.3.2</span> Create informative missing</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>sample_data_survival <span class="ot">&lt;-</span> AutoScore<span class="sc">:::</span><span class="fu">induce_informative_missing</span>(sample_data_survival, <span class="at">vars_to_induce =</span> <span class="fu">names</span>(sample_data_survival)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">prop_missing =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="autoscore-steps" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="autoscore-steps"><span class="header-section-number">5.3.3</span> AutoScore steps</h3>
+<p>The following steps are similar to Demo #1.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><em>High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.</em></li>
+</ul>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    train_set,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    validation_set,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">rank =</span> ranking,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_min =</span> <span class="dv">1</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_max =</span> <span class="dv">20</span>,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">categorize =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
@@ -769,48 +1189,48 @@ variable  interval   point
 ========  =========  =====
 Lab_H     &lt;0.2         0  
           [0.2,1)      3  
-          [1,3)       10  
-          [3,4)       16  
+          [1,3)        9  
+          [3,4)       15  
           &gt;=4         21  
                           
 Vital_E   &lt;12          0  
           [12,15)      5  
           [15,22)     11  
-          [22,25)     16  
+          [22,25)     17  
           &gt;=25        21  
+                          
+Age       &lt;50          0  
+          [50,75)      9  
+          [75,90)     17  
+          &gt;=90        23  
                           
 Lab_K     &lt;10          0  
           [10,40)      6  
           &gt;=40        11  
                           
-Age       &lt;50          0  
-          [50,75)     10  
-          [75,90)     16  
-          &gt;=90        22  
-                          
 Vital_A   &lt;59          0  
           [59,70)      2  
-          [70,100)     6  
-          [100,112)   13  
-          &gt;=113       16  
+          [70,100)     8  
+          [100,112)   12  
+          &gt;=113       15  
           Unknown      8  
                           
 Lab_B     &lt;10          0  
           [10,17)      5  
-          &gt;=17        10  
+          &gt;=17         9  
 ========  =========  =====
 ***Performance (based on validation set, after fine-tuning):
-Integrated AUC by all time points: 0.8720738
-C_index:  0.7811834 
+Integrated AUC by all time points: 0.8729738
+C_index:  0.7819564 
 The AUC(t) are shown as bwlow:
   time_point     AUC_t
 1          1 0.0002500
 2          3 1.0000000
-3          7 0.9914830
-4         14 0.9821608
-5         30 0.9427153
-6         60 0.8660457
-7         90 0.8599140</code></pre>
+3          7 0.9946142
+4         14 0.9869347
+5         30 0.9420590
+6         60 0.8662557
+7         90 0.8617189</code></pre>
 </div>
 </div>
 
@@ -821,6 +1241,24 @@ The AUC(t) are shown as bwlow:
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -870,7 +1308,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

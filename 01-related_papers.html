@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.594">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 </style>
 
 
@@ -35,7 +40,7 @@ ul.task-list{list-style: none;}
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -130,24 +135,24 @@ ul.task-list{list-style: none;}
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#original-paper" id="toc-original-paper" class="nav-link active" data-scroll-target="#original-paper"> <span class="header-section-number">1.1</span> Original Paper</a></li>
-  <li><a href="#method-extension" id="toc-method-extension" class="nav-link" data-scroll-target="#method-extension"> <span class="header-section-number">1.2</span> Method Extension</a>
+  <li><a href="#original-paper" id="toc-original-paper" class="nav-link active" data-scroll-target="#original-paper"><span class="toc-section-number">1.1</span>  Original Paper</a></li>
+  <li><a href="#method-extension" id="toc-method-extension" class="nav-link" data-scroll-target="#method-extension"><span class="toc-section-number">1.2</span>  Method Extension</a>
   <ul class="collapse">
-  <li><a href="#extension-to-survival-outcomes" id="toc-extension-to-survival-outcomes" class="nav-link" data-scroll-target="#extension-to-survival-outcomes"> <span class="header-section-number">1.2.1</span> Extension to Survival outcomes:</a></li>
-  <li><a href="#extension-to-ordinal-outcomes" id="toc-extension-to-ordinal-outcomes" class="nav-link" data-scroll-target="#extension-to-ordinal-outcomes"> <span class="header-section-number">1.2.2</span> Extension to ordinal outcomes:</a></li>
-  <li><a href="#extension-to-unbalanced-data" id="toc-extension-to-unbalanced-data" class="nav-link" data-scroll-target="#extension-to-unbalanced-data"> <span class="header-section-number">1.2.3</span> Extension to unbalanced data:</a></li>
-  <li><a href="#integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" id="toc-integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" class="nav-link" data-scroll-target="#integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking"> <span class="header-section-number">1.2.4</span> Integrated AutoScore-ShapleyVIC framework for robust and interpretable variable ranking:</a></li>
+  <li><a href="#extension-to-survival-outcomes" id="toc-extension-to-survival-outcomes" class="nav-link" data-scroll-target="#extension-to-survival-outcomes"><span class="toc-section-number">1.2.1</span>  Extension to Survival outcomes:</a></li>
+  <li><a href="#extension-to-ordinal-outcomes" id="toc-extension-to-ordinal-outcomes" class="nav-link" data-scroll-target="#extension-to-ordinal-outcomes"><span class="toc-section-number">1.2.2</span>  Extension to ordinal outcomes:</a></li>
+  <li><a href="#extension-to-unbalanced-data" id="toc-extension-to-unbalanced-data" class="nav-link" data-scroll-target="#extension-to-unbalanced-data"><span class="toc-section-number">1.2.3</span>  Extension to unbalanced data:</a></li>
+  <li><a href="#integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" id="toc-integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" class="nav-link" data-scroll-target="#integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking"><span class="toc-section-number">1.2.4</span>  Integrated AutoScore-ShapleyVIC framework for robust and interpretable variable ranking:</a></li>
   </ul></li>
-  <li><a href="#autoscore-clinical-applications" id="toc-autoscore-clinical-applications" class="nav-link" data-scroll-target="#autoscore-clinical-applications"> <span class="header-section-number">1.3</span> AutoScore Clinical Applications</a>
+  <li><a href="#autoscore-clinical-applications" id="toc-autoscore-clinical-applications" class="nav-link" data-scroll-target="#autoscore-clinical-applications"><span class="toc-section-number">1.3</span>  AutoScore Clinical Applications</a>
   <ul class="collapse">
-  <li><a href="#emergency-medicine" id="toc-emergency-medicine" class="nav-link" data-scroll-target="#emergency-medicine"> <span class="header-section-number">1.3.1</span> Emergency Medicine</a></li>
-  <li><a href="#neurology" id="toc-neurology" class="nav-link" data-scroll-target="#neurology"> <span class="header-section-number">1.3.2</span> Neurology</a></li>
-  <li><a href="#out-of-hospital-cardiac-arrest" id="toc-out-of-hospital-cardiac-arrest" class="nav-link" data-scroll-target="#out-of-hospital-cardiac-arrest"> <span class="header-section-number">1.3.3</span> Out-of-Hospital Cardiac Arrest</a></li>
-  <li><a href="#renal-medicine" id="toc-renal-medicine" class="nav-link" data-scroll-target="#renal-medicine"> <span class="header-section-number">1.3.4</span> Renal Medicine</a></li>
+  <li><a href="#emergency-medicine" id="toc-emergency-medicine" class="nav-link" data-scroll-target="#emergency-medicine"><span class="toc-section-number">1.3.1</span>  Emergency Medicine</a></li>
+  <li><a href="#neurology" id="toc-neurology" class="nav-link" data-scroll-target="#neurology"><span class="toc-section-number">1.3.2</span>  Neurology</a></li>
+  <li><a href="#out-of-hospital-cardiac-arrest" id="toc-out-of-hospital-cardiac-arrest" class="nav-link" data-scroll-target="#out-of-hospital-cardiac-arrest"><span class="toc-section-number">1.3.3</span>  Out-of-Hospital Cardiac Arrest</a></li>
+  <li><a href="#renal-medicine" id="toc-renal-medicine" class="nav-link" data-scroll-target="#renal-medicine"><span class="toc-section-number">1.3.4</span>  Renal Medicine</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -237,6 +242,24 @@ ul.task-list{list-style: none;}
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -286,7 +309,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
