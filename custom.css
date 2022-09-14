@@ -23,11 +23,13 @@ https://quarto.org/docs/authoring/article-layout.html
   display: inline;
 }
 
+/* special font style for AutoScore modules */
 .autoscore-module {
   font-style: italic;
   color: grey;
 }
 
+/* bold 1st and 2nd toc items within each chapter */
 .sidebar nav[role=doc-toc] ul>li>ul>li>a {
     padding-left: 2em;
     font-weight: normal;
