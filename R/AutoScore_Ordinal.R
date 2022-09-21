@@ -400,14 +400,16 @@ check_data_ordinal <- function(data) {
 #' @return result of univariate analysis
 #' @examples
 #' data("sample_data_ordinal")
-#' uni_table<-compute_uni_variable_table_ordinal(sample_data_ordinal)
+#' # Using just a few variables to demonstrate usage:
+#' uni_table<-compute_uni_variable_table_ordinal(sample_data_ordinal[, 1:6])
 #' @importFrom ordinal clm
 #' @export
 compute_uni_variable_table_ordinal <- function(df, link = "logit", n_digits = 3) {
   link <- check_link(link = link)
   x_names <- setdiff(names(df), "label")
   tb <- do.call("rbind", lapply(x_names, function(x_name) {
-    model <- ordinal::clm(as.formula("label ~ ."), data = df[, c("label", x_name)],
+    model <- ordinal::clm(as.formula("label ~ ."), 
+                          data = df[, c("label", x_name)],
                           link = link, na.action = na.omit)
     extract_or_ci_ord(model = model, n_digits = n_digits)
   }))
@@ -422,7 +424,8 @@ compute_uni_variable_table_ordinal <- function(df, link = "logit", n_digits = 3)
 #' @return result of the multivariate analysis
 #' @examples
 #' data("sample_data_ordinal")
-#' multi_table<-compute_multi_variable_table_ordinal(sample_data_ordinal)
+#' # Using just a few variables to demonstrate usage:
+#' multi_table<-compute_multi_variable_table_ordinal(sample_data_ordinal[, 1:6])
 #' @importFrom ordinal clm
 #' @export
 compute_multi_variable_table_ordinal <- function(df, link = "logit", n_digits = 3) {

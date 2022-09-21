@@ -427,7 +427,6 @@ AutoScore_fine_tuning <-
 
 
 #' @title AutoScore STEP(v): Evaluate the final score with ROC analysis (AutoScore Module 6)
-#' @description
 #' @param test_set A processed \code{data.frame} that contains data for testing purpose. This \code{data.frame} should have same format as
 #'        \code{train_set} (same variable names and outcomes)
 #' @param final_variables A vector containing the list of selected variables, selected from Step(ii) \code{\link{AutoScore_parsimony}}. Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.

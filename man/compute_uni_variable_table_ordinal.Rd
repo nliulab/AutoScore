@@ -25,5 +25,6 @@ Perform univariable analysis and generate the result table with
 }
 \examples{
 data("sample_data_ordinal")
-uni_table<-compute_uni_variable_table_ordinal(sample_data_ordinal)
+# Using just a few variables to demonstrate usage:
+uni_table<-compute_uni_variable_table_ordinal(sample_data_ordinal[, 1:6])
 }

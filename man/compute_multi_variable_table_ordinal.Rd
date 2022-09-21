@@ -24,5 +24,6 @@ Generate tables for multivariate analysis
 }
 \examples{
 data("sample_data_ordinal")
-multi_table<-compute_multi_variable_table_ordinal(sample_data_ordinal)
+# Using just a few variables to demonstrate usage:
+multi_table<-compute_multi_variable_table_ordinal(sample_data_ordinal[, 1:6])
 }

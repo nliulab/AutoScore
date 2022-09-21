@@ -437,6 +437,25 @@ AutoScore_testing_Survival <-
 
 # Direct_function ---------------------------------------------------------
 
+#' @title AutoScore function for survival data: Check whether the input
+#'   dataset fulfill the requirement of the AutoScore
+#' @inheritParams check_data
+#' @inherit check_data return
+#' @examples
+#' data("sample_data_survival")
+#' check_data_survival(sample_data_survival)
+#' @export
+check_data_survival <- function(data) {
+  #1. check label and binary
+  if (is.null(data$label_time)|is.null(data$label_status))
+    stop(
+      "ERROR: for this dataset: These is no dependent variable 'label_time' or 'label_status' to indicate the outcome. Please add one first\n"
+    )
+  if (length(levels(factor(data$label_status))) != 2)
+    warning("Please keep outcome status variable binary\n")
+  check_predictor(data)}
+
+
 #' @title AutoScore function for survival outcomes: Print predictive performance
 #' @description Print mean area under the curve (mAUC) and generalised c-index
 #'   (if requested)
@@ -450,7 +469,7 @@ AutoScore_testing_Survival <-
 print_performance_survival <-
   function(score, validation_set, time_point) {
     cat("Integrated AUC by all time points: " )
-    iAUC<- eva_performance_iauc(score, validation_set)
+    iAUC <- eva_performance_iauc(score, validation_set)
     Surv.rsp.new <- Surv(validation_set$label_time, validation_set$label_status)
     AUC_c<-concordancefit(Surv.rsp.new, -score)
     cat("C_index: ", AUC_c$concordance, "\n")

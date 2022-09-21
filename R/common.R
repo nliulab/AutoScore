@@ -380,26 +380,6 @@ check_data <- function(data) {
     warning("Please keep outcome label variable binary\n")
   check_predictor(data)}
 
-
-#' @title AutoScore function for survival data: Check whether the input
-#'   dataset fulfill the requirement of the AutoScore
-#' @inheritParams check_data
-#' @inherit check_data return
-#' @examples
-#' data("sample_data_survival")
-#' check_data_survival(sample_data_survival)
-#' @export
-check_data_survival <- function(data) {
-  #1. check label and binary
-  if (is.null(data$label_time)|is.null(data$label_status))
-    stop(
-      "ERROR: for this dataset: These is no dependent variable 'label_time' or 'label_status' to indicate the outcome. Please add one first\n"
-    )
-  if (length(levels(factor(data$status))) != 2)
-    warning("Please keep outcome status variable binary\n")
-  check_predictor(data)}
-
-
 #' Internal function: Check predictors
 #' @param data_predictor Predictors to be checked
 #' @return No return value, the result of the checking will be printed out.
