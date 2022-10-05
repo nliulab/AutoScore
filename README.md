@@ -29,8 +29,8 @@ Score Generator
     for guidebook and tutorial**
 -   **Check out [**AutoScore Related Papers**](https://github.com/nliulab/AutoScore/blob/master/README_Paper.md)**
   - **GitHub Package (version1.0.0 Beta)**
-      - 2021.9.15: Updated to version 0.2.1 with imporved parsimony plot
-      - 2022.4.5: Updated to version 0.3.0 with more functions (including conversion tables, improved ROC curve, AUC-based varaible ranking, etc.)
+      - 2021.9.15: Updated to version 0.2.1 with improved parsimony plot
+      - 2022.4.5: Updated to version 0.3.0 with more functions (including conversion tables, improved ROC curve, AUC-based variable ranking, etc.)
       - 2022.4.27: Updated to version 0.3.1 after fixing some bugs on categorization issue on Module 2
       - 2022.8.5: Updated to 0.4.0 
       - 2022.8.27: updated to 1.0.0 (Beta)
