@@ -447,7 +447,7 @@ AutoScore_testing_Survival <-
 #' @export
 check_data_survival <- function(data) {
   #1. check label and binary
-  if (is.null(data$label_time)|is.null(data$label_status))
+  if (!c("label_time", "label_status") %in% names(data))
     stop(
       "ERROR: for this dataset: These is no dependent variable 'label_time' or 'label_status' to indicate the outcome. Please add one first\n"
     )

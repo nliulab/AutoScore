@@ -372,7 +372,7 @@ getmode <- function(vect) {
 #' @export
 check_data <- function(data) {
   #1. check label and binary
-  if (is.null(data$label))
+  if (!"label" %in% names(data))
     stop(
       "ERROR: for this dataset: These is no dependent variable 'label' to indicate the outcome. Please add one first\n"
     )
@@ -385,98 +385,127 @@ check_data <- function(data) {
 #' @return No return value, the result of the checking will be printed out.
 check_predictor <- function(data_predictor) {
   data <- data_predictor
-  data <- as.data.frame(data)
-  #2. check each variable
-  non_num_fac <- c()
-  fac_large <- c()
-  special_case <- c()
-
-  for (i in names(data)) {
-    if ((class(data[[i]]) != "factor") &&
-        (class(data[[i]]) != "numeric")&&
-        (class(data[[i]]) != "integer")&&
-        (class(data[[i]]) != "logical"))
-      non_num_fac <- c(non_num_fac, i)
-    if ((length(levels(data[[i]])) > 10) &&
-        (is.factor(data[[i]])))
-      fac_large <- c(fac_large, i)
-
-    if (grepl(",", i))
-      warning(simpleWarning(paste0(
-        "WARNING: the dataset has variable names '",
-        i,
-        "' with character ','. Please change it. Consider using '_' to replace\n"
-      )))
-
-    if (grepl(")", i))
-      warning(simpleWarning(paste0(
-        "WARNING: the dataset has variable names '",
-        i,
-        "' with character ')'. Please change it. Consider using '_' to replace\n"
-      )))
-
-    if (grepl("]", i))
-      warning(simpleWarning(paste0(
-        "WARNING: the dataset has variable names '",
-        i,
-        "' with character ']'. Please change it. Consider using '_' to replace\n"
-      )))
-
-    if (is.factor(data[[i]])) {
-      if (sum(grepl(",", levels(data[[i]]))) > 0)
-        warning(simpleWarning(paste0(
-          "WARNING: the dataset has categorical variable '",
-          i,
-          "', where their levels contain ','. Please use 'levels(*your_variable*)' to change the name of the levels before using the AutoScore. Consider replacing ',' with '_'. Thanks! \n "
+  data <- as.data.frame(data, check.names = FALSE)
+  symbol_vec <- c(",", "\\[", "]", "\\(", ")")
+  any_error <- FALSE
+  
+  # Check for error ----
+  # 1. Checking variable names
+  name_has_symbol <- lapply(names(data), function(x_name) {
+    unlist(lapply(symbol_vec, function(s) grepl(pattern = s, x = x_name)))
+  })
+  if (any(unlist(name_has_symbol))) {
+    any_error <- TRUE
+    message(simpleMessage(
+      "WARNING: Special character detected in variable names -----\n"
+    ))
+    for (i in seq_along(names(data))) {
+      has_symb <- name_has_symbol[[i]]
+      if (any(has_symb)) {
+        message(simpleMessage(sprintf(
+          " * Variable name '%s' has symbols '%s'.\n", names(data)[i], paste(symbol_vec[which(has_symb)], collapse = "','")
         )))
+      }
     }
-
-
+    message(simpleMessage("SUGGESTED ACTION: For each variable name above, consider relpacing special characters by '_'.\n"))
+  }
+  # Check for duplicated/nested name
+  name_dup <- lapply(names(data), function(i) {
+    # If any variable name has opening bracket but no closing bracket, cannot
+    # search for it. Manually handle these
+    if (grepl(pattern = "\\(", x = i) && !grepl(pattern = ")", x = i)) {
+      i <- paste(unlist(strsplit(x = i, split = "\\(")), collapse = "\\(")
+    }
+    if (grepl(pattern = "\\[", x = i) && !grepl(pattern = "]", x = i)) {
+      i <- paste(unlist(strsplit(x = i, split = "\\[")), collapse = "\\[")
+    }
     if (sum(grepl(i, names(data))) > 1) {
       a <- names(data)[grepl(i, names(data))]
-      a <- a[a != i]
-      warning(simpleWarning(paste0(
-        "WARNING: the dataset has variable name '",
-        i,
-        "', which is entirely included by other variable names:\n",
-        paste(paste0("'", a, "'"), collapse = "  "),
-        "\nPlease use 'names(*your_df*)' to change the name of variable '",
-        i,
-        "' before using the AutoScore. Consider adding '_1', '_2',..., '_x, or other similar stuff at end of that name, such as '",
-        paste0(i, "_1") ,
-        "', to make them totally different and not contain each other. Thanks!\n "
-      )))
-
+      a[a != i]
     }
-
-
+  })
+  n_name_dup <- unlist(lapply(name_dup, length))
+  if (sum(n_name_dup) > 0) {
+    i_dup <- which(n_name_dup > 0)
+    message(simpleMessage(sprintf(
+      "\nWARNING: Duplicated/nested variable names detected: -----\n"
+    )))
+    for (i in i_dup) {
+      message(simpleMessage(sprintf(
+        " * Variable name '%s' duplicated/nested in variables: '%s'.\n", 
+        names(data)[i], paste(name_dup[[i]], collapse = "','")
+      )))
+    }
+    message(simpleMessage("SUGGESTED ACTION: For each variable above, please rename them using 'names(*your_data*)' before using the AutoScore. Consider appending '_1', '_2', etc, to variable names.\n"))
   }
-
-  if (!is.null(non_num_fac))
-    warning(simpleWarning(paste(
-      "\nWARNING: the dataset has variable of character and user should transform them to factor or numeric before using AutoScore:(consider using 'df$xxx  <- as.factor(df$xxx))' or 'df$xxx  <- as.numeric(df$xxx))'\n",
-      non_num_fac
+  # 2. Check levels for factors 
+  i_factors <- which(unlist(lapply(data, is.factor)))
+  if (length(i_factors) > 0) {
+    data_f <- data[, i_factors]
+    if (length(i_factors) == 1) {
+      data_f <- data.frame(data_f)
+      names(data_f) <- names(data)[i_factors]
+    }
+    nlevels_gt_10 <- unlist(lapply(data_f, nlevels)) > 10
+    if (any(nlevels_gt_10)) {
+      any_error <- TRUE
+      message(simpleMessage(sprintf(
+        "\nWARNING: Too many categories (>10) in variables: '%s' -----\n",
+        paste(names(i_factors[which(nlevels_gt_10)]), collapse = "','")
+      )))
+    }
+    level_has_symbol <- unlist(lapply(data_f, function(x) {
+      any(grepl(pattern = ",", x = levels(x)))
+    }))
+    if (any(level_has_symbol)) {
+      any_error <- TRUE
+      message(simpleMessage(sprintf(
+        "\nWARNING: Special character ',' detected in categorical variables: '%s'. -----\nSUGGESTED ACTION: For each variable above, use 'levels(*your_variable*)' to change the name of the levels before using the AutoScore. Consider replacing ',' with '_'.\n",
+        paste(names(data[i_factors[which(level_has_symbol)]]))
+      )))
+    }
+  }
+  # 3. Check if any variable is character instead of factor
+  i_character <- which(unlist(lapply(data, function(x_i) {
+    (!is.factor(x_i) && !is.numeric(x_i) && !is.integer(x_i) && 
+       !is.logical(x_i)) 
+  })))
+  if (length(i_character) > 0) {
+    any_error <- TRUE
+    message(simpleMessage(sprintf(
+      "\nWARNING: Variables coded as character instead of factor: '%s' -----\nSUGGESTED ACTION: Convert each variable above to factor (using 'data$xxx  <- as.factor(data$xxx))') or numeric (using 'data$xxx  <- as.numeric(data$xxx))') as appropriate before using AutoScore.\n",
+      paste(names(i_character), collapse = "','")
     )))
-  if (!is.null(fac_large))
-    warning(simpleWarning(paste(
-      "\nWARNING: The number of categories for some variables is too many :larger than: ",
-      fac_large
-    )))
-
-  #3. check missing values
+  }
+  # If no error, print message
+  if (!any_error) {
+    message(simpleMessage("Data type check passed. \n"))
+  } else {
+    message(simpleMessage("\n!!IMPORTANT: Please check data again for other potential issues after handling all issues reported above.\n"))
+  }
+  
+  # Check for missing ----
   missing_rate <- colSums(is.na(data))
-  if (sum(missing_rate) > 0) {
-    warning(simpleWarning(
-      "\n WARNING: Your dataset contains NA. AutoScore may also automatically handle missing values by treating them as a new category named 'Unknown'.
-      if you believe the missingness in your dataset is informative and prevalent enough that you prefer to preserve them as NA rather than removing or doing imputation.
-      Please evaluate the missingness in your dataset. The variables with missing values are shown below:"
-    ))
-    print(missing_rate[missing_rate != 0])
-  } else message("\nYour dataset doesn't have any missing values.\n")
-
-
-  if (is.null(non_num_fac) & is.null(fac_large)) message("Data type check passed.")
-  #cat("Please fixed the problem of your dataset before AutoScore if you see any Warnings below.\n")
+  if (sum(missing_rate) == 0) {
+    message(simpleMessage("No NA in data \n"))
+  } else {
+    n_missing <- missing_rate[which(missing_rate > 0)]
+    tb_missing <- data.frame(
+      `Variable name` = names(n_missing), 
+      `No. missing` = n_missing, 
+      `%missing` = round(n_missing / nrow(data) * 100, 2),
+      check.names = FALSE
+    )
+    message(simpleMessage("\nWARNING: NA detected in data: -----\n."))
+    print(tb_missing)
+    message(simpleMessage("SUGGESTED ACTION:\n * Consider imputation and supply AutoScore with complete data.\n"))
+    message(simpleMessage(paste0(
+      " * Alternatively, AutoScore can handle missing values as a separate 'Unknown' category, IF:\n", 
+      "    - you believe the missingness in your dataset is informative, AND\n",
+      "    - missing is prevalent enough that you prefer to preserve them as NA rather than removing or doing imputation, AND\n",
+      "    - missing is not too prevalent, which may make results unstable.\n"
+    )))
+  }
 }
 
 #' Internal function: induce informative missing in a single variable
