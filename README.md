@@ -25,9 +25,9 @@ Score Generator
                                         
 ## Important Information
 
--   **Check out bookdown pages (<https://tinyurl.com/AutoScoreBook/>)
+-   **Check out bookdown pages (<https://nliulab.github.io/AutoScore/>)
     for guidebook and tutorial**
--   **Check out [**AutoScore Related Published Papers**](https://github.com/nliulab/AutoScore/blob/master/README_Application.md)**
+-   **Check out [**AutoScore Related Papers**](https://github.com/nliulab/AutoScore/blob/master/README_Paper.md)**
   - **GitHub Package (version1.0.0 Beta)**
       - 2021.9.15: Updated to version 0.2.1 with imporved parsimony plot
       - 2022.4.5: Updated to version 0.3.0 with more functions (including conversion tables, improved ROC curve, AUC-based varaible ranking, etc.)
