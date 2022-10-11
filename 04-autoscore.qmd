@@ -1,13 +1,15 @@
 # AutoScore for binary outcomes {#top}
 
-AutoScore on binary outcomes is the original form of the AutoScore, implemented by five functions: `AutoScore_rank()`, `AutoScore_Ordinal()`, `AutoScore_weighting()`, `AutoScore_fine_tuning()` and `AutoScore_testing()`.
+AutoScore on binary outcomes is the original form of the AutoScore, implemented
+by five functions: `AutoScore_rank()`, `AutoScore_Ordinal()`,
+`AutoScore_weighting()`, `AutoScore_fine_tuning()` and `AutoScore_testing()`.
 
-In this chapter, we demonstrate the use of AutoScore to develop sparse
-risk scores for binary outcome, adjust parameters to improve
-interpretability, assess the performance of the final model and map the score to predict risks for new data. 
-To facilitate clinical
-applications, in the following sections we have three demos for AutoScore Implementation
-with large and small dataset, as well as with missing data.
+In this chapter, we demonstrate the use of AutoScore to develop sparse risk
+scores for binary outcome, adjust parameters to improve interpretability, assess
+the performance of the final model and map the score to predict risks for new
+data. To facilitate clinical applications, in the following sections we have
+three demos for AutoScore Implementation with large and small dataset, as well
+as with missing data.
 
 ::: callout-important
 - *Scoring models below are based on simulated data to demonstrate AutoScore usage.* 
@@ -16,23 +18,24 @@ with large and small dataset, as well as with missing data.
 
 Citation for original AutoScore:
 
-Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. *JMIR Medical Informatics* 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
+- Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A machine
+learning-based automatic clinical score generator and its application to
+mortality prediction using electronic health records. *JMIR Medical Informatics*
+2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
-
-## Demo 1: large sample {#demo1}
+## Demo 1: large sample 
 
 In Demo 1, we demonstrate the use of AutoScore on a dataset with 20,000
 observations using split-sample approach (i.e., to randomly divide the full
 dataset into training, validation and test sets) for model development.
 
 ::: callout-important
-- *Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top)
-to ensure all data requirements are met.*
-- *Refer to [Chapter 3](02-desc_analysis.qmd#binary) for how to generate simple
-descriptive statistics before building prediction models.*
+- *Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top) to ensure all data requirements are met.*
+- *Refer to [Chapter 3](02-desc_analysis.qmd#binary) for how to generate simple descriptive statistics before building prediction models.*
 :::
 
-### load package and data
+<p class='p-h3'>Load package and data</p>
+
 ```{r}
 library(AutoScore)
 data("sample_data")
@@ -40,9 +43,11 @@ names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 check_data(sample_data)
 ```
 
-### Prepare training, validation, and test datasets
+<p class='p-h3'>Prepare training, validation, and test datasets</p>
+
 - Option 1: Prepare three separate datasets to train, validate, and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training, validation, and test datasets (70%, 10%, 20%, respectively).
+
 ```{r}
 set.seed(4)
 out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2))
@@ -51,73 +56,83 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-
-### STEP(i): Generate variable ranking list 
+### STEP(i): Generate variable ranking list {#demo1}
 
 <p class="autoscore-module">AutoScore Module 1</p>
 
-- `method`: "rf" (default) or "auc".
+- `method`: `"rf"` (default) or `"auc"`.
 
-- method = `rf`: "rf" refers to random forest-based ranking  
-- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).
-```{r}
+::: {.panel-tabset}
+
+#### rf
+
+- method = `rf`: random forest-based ranking.  
+- `ntree`: Number of trees required only when `method = "rf"` (Default: 100).
+```{r rank_bin_rf, cache=TRUE}
 ranking <- AutoScore_rank(train_set = train_set, method = "rf", ntree = 100)
 ```
-
 
 ```{r,echo=FALSE}
 ranking_temp <- ranking
 ```
 
+#### auc
 
-- method = `auc`: "auc" refers to the AUC-based ranking. For "auc", univariate models will be built based on the train set, and the variable ranking is constructed via the AUC performance of corresponding univariate models on the validation set (`validation_set`).  
-- `validation_set`: validation set required only if when `method` is "auc".
-```{r}
-ranking <- AutoScore_rank(train_set = train_set, method = "auc", validation_set = validation_set)
+- method = `auc`: AUC-based ranking. Univariable models will be built based on the train set, and variables are ranked based on the AUC performance of corresponding univariable models on the validation set (`validation_set`).  
+- `validation_set`: validation set required only when `method = "auc"`.
+
+```{r rank_bin_auc, cache=TRUE}
+ranking <- AutoScore_rank(train_set = train_set, method = "auc", 
+                          validation_set = validation_set)
 ```
 
 ```{r,echo=FALSE}
 ranking <- ranking_temp
 ```
 
+:::
 
-
-### STEP(ii): Select the best model with parsimony plot  {#rf-pars}
+### STEP(ii): Select variables with parsimony plot 
 
 <p class="autoscore-module">AutoScore Modules 2+3+4</p>
 
-- `nmin`: Minimum number of selected variables (Default: 1).
-- `nmax`: Maximum number of selected variables (Default: 20).
-- `categorize`: Methods for categorizing continuous variables. Options include `"quantile"` or `"kmeans"` (Default: `"quantile"`).
-- `quantiles`: Predefined quantiles to convert continuous variables to categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if `categorize = "quantile"`.
-- `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
+- `n_min`: Minimum number of selected variables (Default: 1).
+- `n_max`: Maximum number of selected variables (Default: 20).
+- `categorize`: Methods for categorizing continuous variables. Options include
+`"quantile"` or `"kmeans"` (Default: `"quantile"`).
+- `quantiles`: Predefined quantiles to convert continuous variables to
+categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if
+`categorize = "quantile"`.
+- `max_cluster`: The maximum number of cluster (Default: 5). Available if
+`categorize = "kmeans"`.
 - `max_score`: Maximum total score (Default: 100).
-- `auc_lim_min`: Min y_axis limit in the parsimony plot (Default: 0.5). 
-- `auc_lim_max`: Max y_axis limit in the parsimony plot (Default: "adaptive"). 
-```{r, }
-AUC <- AutoScore_parsimony(
-    train_set = train_set,
-    validation_set = validation_set,
-    rank = ranking,
-    max_score = 100,
-    n_min = 1,
-    n_max = 20,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    auc_lim_min = 0.5,
-    auc_lim_max = "adaptive"
-  )
+- `auc_lim_min`: Minimum y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Maximum y_axis limit in the parsimony plot (Default:
+"adaptive").
 
+```{r}
+AUC <- AutoScore_parsimony(
+  train_set = train_set, validation_set = validation_set,
+  rank = ranking, max_score = 100, n_min = 1, n_max = 20,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  auc_lim_min = 0.5, auc_lim_max = "adaptive"
+)
 ```
 
-- Users could use the `AUC` for further analysis or export it as the CSV to other software for plotting.
-```{r csv_generate2, eval=FALSE}
+::: callout-note
+- *Users could use `AUC` for further analysis or export it to CSV to other software for plotting.*
+```{r, eval=FALSE}
 write.csv(data.frame(AUC), file = "AUC.csv")
 ```
+:::
 
-- Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
-- The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
-- Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge.
+- Determine the optimal number of variables (`num_var`) based on the parsimony
+plot obtained in STEP(ii).
+- The final list of variables is the first `num_var` variables in the ranked
+list `ranking` obtained in STEP(i).
+- Optional: User can adjust the finally included variables `final_variables`
+based on the clinical preferences and knowledge.
+
 ```{r}
 # Example 1: Top 6 variables are selected
 num_var <- 6
@@ -132,36 +147,35 @@ num_var <- 6
 final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
-
-```{r finalvariab2, results = "hide", warning=TRUE, message=FALSE,eval=TRUE,include=FALSE}
+```{r, include=FALSE}
 num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with the final list of variables {#model}
+### STEP(iii): Generate initial scores with final variables {#model}
 
 <p class="autoscore-module">Re-run AutoScore Modules 2+3</p>
 
-- Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
-```{r weighting,fig.width=5,fig.height=5,warning = FALSE}
-cut_vec <- AutoScore_weighting( 
-    train_set = train_set,
-    validation_set = validation_set,
-    final_variables = final_variables,
-    max_score = 100,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
-  )
+- Generate `cut_vec` with current cutoffs of continuous variables, which can be
+fine-tuned in STEP(iv).
 
+```{r, fig.width=5,fig.height=5,warning = FALSE}
+cut_vec <- AutoScore_weighting( 
+  train_set = train_set, validation_set = validation_set,
+  final_variables = final_variables, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+)
 ```
 
-### STEP(iv): Fine-tune the initial score generated in STEP(iii) 
+### STEP(iv): Fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore Module 5 & Re-run AutoScore Modules 2+3</p>
 
-- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
+- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore
+Module 5).
 - Re-run AutoScore Modules 2+3 to generate the updated scores.
-- Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
+- Users can choose any cutoff values and/or any number of categories, but are
+suggested to choose numbers close to the automatically determined values.
 
 ```{r}
 ## For example, we have current cutoffs of continuous variable: Age 
@@ -175,9 +189,9 @@ cut_vec <- AutoScore_weighting(
 ##                 >=89          27  
 ```
 
-- Current cutoffs:`c(35, 49, 76, 89)`. We can fine tune the cutoffs as follows:
-```{r}
+- Current cutoffs: `c(35, 49, 76, 89)`. We can fine tune the cutoffs as follows:
 
+```{r}
 # Example 1: rounding up to a nice number
 cut_vec$Age <- c(35, 50, 75, 90)
 
@@ -186,63 +200,79 @@ cut_vec$Age <- c(25, 50, 75, 90)
 
 # Example 3: combining categories
 cut_vec$Age <- c(50, 75, 90)
-
 ```
-- Then we do similar checks for other variables and update scoring table using new cutoffs if needed.
-```{r scoring,fig.width=5,fig.height=5, warning = FALSE}
+
+- Then we do similar checks for other variables and update scoring table using
+new cutoffs if needed.
+
+```{r,fig.width=5,fig.height=5, warning = FALSE}
 cut_vec$Lab_H <- c(0.2, 1, 3, 4)
 cut_vec$Lab_K <- c(10, 40)
 cut_vec$Lab_B <- c(10, 17)
-cut_vec$hVital_A<- c(70, 98)
+cut_vec$hVital_A <- c(70, 98)
 
-
-scoring_table <- AutoScore_fine_tuning(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100)
-
+scoring_table <- AutoScore_fine_tuning(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, cut_vec = cut_vec, max_score = 100
+)
 ```
 
 ### STEP(v): Evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore Module 6</p>
 
-- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
-- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
-- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity,
+specificity, etc. If set to `"best"`, the optimal threshold will be calculated
+(Default: `"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and
+performance will be evaluated accordingly (Default: `TRUE`).
+- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and
+the final predicted scores will be the output without performance evaluation.
+
 ```{r,fig.width=5,fig.height=5,warning = FALSE}
-pred_score <-
-  AutoScore_testing(
-    test_set = test_set,
-    final_variables = final_variables,
-    cut_vec = cut_vec,
-    scoring_table = scoring_table,
-    threshold = "best",
-    with_label = TRUE
-  )
+pred_score <- AutoScore_testing(
+  test_set = test_set, final_variables = final_variables, cut_vec = cut_vec,
+  scoring_table = scoring_table, threshold = "best", with_label = TRUE
+)
 head(pred_score)
 ```
 
-- Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 50).
+- Use `print_roc_performance()` to generate the performance under different
+score thresholds (e.g., 50).
+
 ```{r}
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
 ```
 
-### Map Score to Risk
+### Map score to risk {#score-to-risk}
 
-Further analysis to map score to risk (e.g., conversion table, model calibration, output the score)
+Further analysis to map score to risk (e.g., conversion table, model calibration, output the score).
+
+- Conversion table can be generated for pre-specified risk or score cut-offs.
+
+::: {.panel-tabset}
+
+#### By risk
+
 - Use `conversion_table()` to generate the performance under different risk (i.e., probability of mortality based on logistic regression estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5).
-```{r,message=FALSE, warning=FALSE, error=FALSE}
-conversion_table(pred_score = pred_score, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
+
+```{r, message=FALSE, warning=FALSE, error=FALSE}
+conversion_table(pred_score = pred_score, 
+                 by = "risk", values = c(0.01, 0.05, 0.1, 0.2, 0.5))
 ```
+
+#### By score
 
 - Use `conversion_table()` to generate the performance under different score thresholds (e.g., 20, 40, 60, 75).
+
 ```{r, message=FALSE, warning = FALSE}
-conversion_table(pred_score = pred_score, by = "score", values = c(20,40,60,75))
+conversion_table(pred_score = pred_score, 
+                 by = "score", values = c(20,40,60,75))
 ```
 
--   the conversion table can also be visualized using an interactive figure.
+:::
+
+- Predicted risk can also be visualized using an interactive figure.
 
 ```{r}
 plot_predicted_risk(pred_score = pred_score, max_score = 100, 
@@ -250,114 +280,127 @@ plot_predicted_risk(pred_score = pred_score, max_score = 100,
                     scoring_table = scoring_table, point_size = 1)
 ```
 
+:::callout-note
+- *Users could use `pred_score` for further analysis or export it to CSV to other software (e.g., generating the calibration curve).*
 
-- You can also generate the `pred_score_train` based on training data for further analysis (e.g., conversion table based on the training data).
-```{r,fig.show="hide",fig.width=5,fig.height=5,warning = FALSE}
-pred_score_train <-
-  AutoScore_testing(
-    test_set = train_set,
-    final_variables = final_variables,
-    cut_vec = cut_vec,
-    scoring_table = scoring_table,
-    threshold = "best",
-    with_label = TRUE
-  )
-```
-
-- Generate conversion table based on the training data based on predictive risk (i.e., probability of mortality based on logistic regression estimation) cut-off (e.g., 0.01, 0.05, 0.1, 0.2, 0.5) using `conversion_table()`
-```{r,message=FALSE, warning=FALSE, error=FALSE}
-conversion_table(pred_score = pred_score_train, by ="risk", values = c(0.01,0.05,0.1,0.2,0.5))
-```
-
--   the conversion table can also be visualized using an interactive figure.
-```{r}
-plot_predicted_risk(pred_score = pred_score_train, max_score = 100, 
-                    final_variables = final_variables, 
-                    scoring_table = scoring_table, point_size = 1)
-```
-
-- Users could use the `pred_score` or `pred_score_train` for further analysis or export it as the CSV to other software (e.g., generating the calibration curve).
-```{r csv_generate3, eval=FALSE}
+```{r, eval=FALSE}
 write.csv(pred_score, file = "pred_score.csv")
-write.csv(pred_score_train, file = "pred_score_train.csv")
 ```
-
-
-
+:::
 
 ## Demo 2: small sample {#demo2}
 
-In Demo 2, we demonstrate the use of AutoScore on a comparably small dataset where there are no sufficient samples to form a separate training and validation dataset. Thus, the cross validation is employed to generate the parsimony plot.
+In Demo 2, we demonstrate the use of AutoScore on a smaller dataset where there
+are no sufficient samples to form a separate training and validation dataset.
+Thus, the cross validation is employed to generate the parsimony plot.
 
-### Get small dataset with 1000 samples
+<p class='p-h3'>Load small dataset with 1000 samples</p>
+
 ```{r}
 data("sample_data_small")
 ```
 
-### Prepare training and test datasets
+<p class='p-h3'>Prepare training and test datasets</p>
+
 - Option 1: Prepare two separate datasets to train and test models.
-- Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, `train_set` is equal to `validation_set` and the ratio of `validation_set` should be 0. Then cross-validation will be implemented in the STEP(ii) `AutoScore_parsimony()`.
+- Option 2: Use demo codes below to randomly split your dataset into training
+and test datasets (70% and 30%, respectively). For cross-validation, `train_set`
+is equal to `validation_set` and the ratio of `validation_set` should be 0. Then
+cross-validation will be implemented in the STEP(ii) `AutoScore_parsimony()`.
+
 ```{r}
 set.seed(4)
-out_split <- split_data(data = sample_data_small, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
+out_split <- split_data(data = sample_data_small, ratio = c(0.7, 0, 0.3), 
+                        cross_validation = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
+### STEP(i): Generate variable ranking list
 
-### STEP(i): Generate variable ranking list (AutoScore Module 1)
-- `method`: "rf" (default) or "auc".
+<p class="autoscore-module">AutoScore Module 1</p>
 
-method = `auc`: "auc" refers to the AUC-based ranking. For "auc", univariate models will be built based on the train set, and the variable ranking is constructed via the AUC performance of corresponding univariate models on the validation set (`validation_set`).  
-- `validation_set`: validation set required only if when `method` is "auc".
-```{r}
-ranking <- AutoScore_rank(train_set, validation_set = validation_set, ntree = 100)
+- `method`: `"rf"` (default) or `"auc"`.
+
+::: {.panel-tabset}
+
+#### rf
+
+- method = `rf`: random forest-based ranking.  
+- `ntree`: Number of trees required only when `method = "rf"` (Default: 100).
+```{r rank_bin_rf_small, cache=TRUE}
+ranking <- AutoScore_rank(train_set = train_set, method = "rf", ntree = 100)
 ```
 
-method = `rf`: "rf" refers to random forest-based ranking  
-- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).
-```{r}
-ranking <- AutoScore_rank(train_set, ntree = 100)
+```{r,echo=FALSE}
+ranking_temp <- ranking
 ```
 
-### STEP(ii): Select the best model with parsimony plot (AutoScore Modules 2+3+4)
-- `nmin`: Minimum number of selected variables (Default: 1).
-- `nmax`: Maximum number of selected variables (Default: 20).
-- `categorize`: Methods for categorize continuous variables. Options include `"quantile"` or `"kmeans"` (Default: `"quantile"`).
-- `quantiles`: Predefined quantiles to convert continuous variables to categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if `categorize = "quantile"`.
-- `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
-- `max_score` Maximum total score (Default: 100).
-- `cross_validation` : `TRUE` if cross-validation is needed, especially for small datasets.
-- `fold` The number of folds used in cross validation (Default: 10). Available if `cross_validation = TRUE`.
-- `do_trace` If set to `TRUE`, all results based on each fold of cross-validation would be printed out and plotted (Default: `FALSE`). Available if `cross_validation = TRUE`.
-```{r parsi, warning = FALSE}
+#### auc
+
+- method = `auc`: AUC-based ranking. Univariable models will be built based on the train set, and variables are ranked based on the AUC performance of corresponding univariable models on the validation set (`validation_set`).  
+- `validation_set`: validation set required only when `method = "auc"`.
+
+```{r rank_bin_auc_small, cache=TRUE}
+ranking <- AutoScore_rank(train_set = train_set, method = "auc", 
+                          validation_set = validation_set)
+```
+
+```{r,echo=FALSE}
+ranking <- ranking_temp
+```
+
+:::
+
+### STEP(ii): Select variables with parsimony plot
+
+<p class="autoscore-module">AutoScore Modules 2+3+4</p>
+
+- `n_min`: Minimum number of selected variables (Default: 1).
+- `n_max`: Maximum number of selected variables (Default: 20).
+- `categorize`: Methods for categorizing continuous variables. Options include
+`"quantile"` or `"kmeans"` (Default: `"quantile"`).
+- `quantiles`: Predefined quantiles to convert continuous variables to
+categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if
+`categorize = "quantile"`.
+- `max_cluster`: The maximum number of cluster (Default: 5). Available if
+`categorize = "kmeans"`.
+- `max_score`: Maximum total score (Default: 100).
+- `auc_lim_min`: Minimum y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Maximum y_axis limit in the parsimony plot (Default: "adaptive").
+- `cross_validation`: `TRUE` if cross-validation is needed, especially for
+small datasets.
+- `fold`: The number of folds used in cross validation (Default: 10). Available
+if `cross_validation = TRUE`.
+- `do_trace`: If set to `TRUE`, all results based on each fold of
+cross-validation would be printed out and plotted (Default: `FALSE`). Available
+if `cross_validation = TRUE`.
+
+```{r, warning = FALSE}
 AUC <- AutoScore_parsimony(
-    train_set,
-    validation_set,
-    rank = ranking,
-    max_score = 100,
-    n_min = 1,
-    n_max = 20,
-    cross_validation = TRUE,
-    categorize = "quantile",
-    fold = 10,
-    quantiles = c(0, 0.25, 0.5, 0.75, 1), #c(0, 0.05, 0.2, 0.8, 0.95, 1)
-    do_trace = FALSE
-  )
-
+  train_set = train_set, validation_set = validation_set, 
+  rank = ranking, max_score = 100, n_min = 1, n_max = 20,
+  categorize = "quantile", quantiles = c(0, 0.25, 0.5, 0.75, 1), 
+  auc_lim_min = 0.5, auc_lim_max = "adaptive",
+  cross_validation = TRUE, fold = 10, do_trace = FALSE
+)
 ```
 
-
-- Users could use the `AUC` for further analysis or export it as the CSV to other software for plotting.
-```{r csv_generate_auc, eval=FALSE}
+::: callout-note
+- *Users could use `AUC` for further analysis or export it to CSV to other software for plotting.*
+```{r, eval=FALSE}
 write.csv(data.frame(AUC), file = "AUC.csv")
 ```
+:::
 
+- Determine the optimal number of variables (`num_var`) based on the parsimony
+plot obtained in STEP(ii).
+- The final list of variables is the first `num_var` variables in the ranked
+list `ranking` obtained in STEP(i).
+- Optional: User can adjust the finally included variables `final_variables`
+based on the clinical preferences and knowledge.
 
-- Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
-- The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
-- Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge).
 ```{r}
 # Example 1: Top 6 variables are selected
 num_var <- 6
@@ -372,28 +415,36 @@ num_var <- 6
 final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
-```{r finalvariab, results = "hide", warning=FALSE, message=FALSE,eval=TRUE,include=FALSE}
+```{r, include=FALSE}
 num_var <- 5
 final_variables <- names(ranking[1:num_var])
 ```
-### STEP(iii): Generate initial scores with the final list of variables (Re-run AutoScore Modules 2+3)
-- Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
-```{r weighting2,fig.width=5,fig.height=5,warning = TRUE}
-cut_vec <- AutoScore_weighting( 
-    train_set,
-    validation_set,
-    final_variables,
-    max_score = 100,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
-  )
 
+### STEP(iii): Generate initial scores with final variables 
+
+<p class="autoscore-module">Re-run AutoScore Modules 2+3</p>
+
+- Generate `cut_vec` with current cutoffs of continuous variables, which can be
+fine-tuned in STEP(iv).
+
+```{r,fig.width=5,fig.height=5,warning = TRUE}
+cut_vec <- AutoScore_weighting( 
+  train_set = train_set, validation_set = validation_set,
+  final_variables = final_variables, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.25, 0.5, 0.75, 1)
+)
 ```
 
-### STEP(iv): Fine-tune the initial score generated in STEP(iii) (AutoScore Module 5 & Re-run AutoScore Modules 2+3) 
-- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
+### STEP(iv): Fine-tune initial score from STEP(iii) 
+
+<p class="autoscore-module">AutoScore Module 5 & Re-run AutoScore Modules 2+3</p>
+
+- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore
+Module 5).
 - Re-run AutoScore Modules 2+3 to generate the updated scores.
-- Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
+- Users can choose any cutoff values and/or any number of categories, but are
+suggested to choose numbers close to the automatically determined values.
+
 ```{r}
 ## For example, we have current cutoffs of continuous variable:
 ## ==============  ===========  =====
@@ -407,8 +458,8 @@ cut_vec <- AutoScore_weighting(
 
 - Current cutoffs: `c(9, 43.2, 59)`. We can fine tune the cutoffs as follows:
 - Note: It is just a demo using simulated data, and thus, the result might not be clinically meaningful.
-```{r}
 
+```{r}
 # Example 1: rounding up to a nice number
 cut_vec$Lab_K <- c(9, 45, 60)
 
@@ -417,150 +468,106 @@ cut_vec$Lab_K <- c(15, 45, 60)
 
 # Example 3: combining categories
 cut_vec$Lab_K <- c(45, 60)
-
 ```
 
-```{r, results = "hide", warning=FALSE, message=FALSE,eval=TRUE,include=FALSE}
-cut_vec$Lab_K <- c(45, 60)
-```
-- Then we do similar checks for other variables and update scoring table using new cutoffs if needed.
-```{r scoring2,fig.width=5,fig.height=5, warning = TRUE}
+- Then we do similar checks for other variables and update scoring table using
+new cutoffs if needed.
+
+```{r,fig.width=5,fig.height=5, warning = TRUE}
 cut_vec$Lab_H <- c(1, 2, 3)
 cut_vec$Age <- c(35, 50, 80)
 cut_vec$Lab_B <- c(8, 12, 18)
 cut_vec$Vital_E <- c(15, 22)
-scoring_table <- AutoScore_fine_tuning(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100)
 
+scoring_table <- AutoScore_fine_tuning(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, cut_vec = cut_vec, max_score = 100
+)
 ```
 
-### STEP(v): Evaluate final risk scores on test dataset (AutoScore Module 6)
-- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
-- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
-- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
+### STEP(v): Evaluate final risk scores on test dataset
+
+<p class="autoscore-module">AutoScore Module 6</p>
+
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity,
+specificity, etc. If set to `"best"`, the optimal threshold will be calculated
+(Default: `"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and
+performance will be evaluated accordingly (Default: `TRUE`).
+- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and
+the final predicted scores will be the output without performance evaluation.
+
 ```{r,fig.width=5,fig.height=5}
-pred_score <-
-  AutoScore_testing(
-    test_set,
-    final_variables,
-    cut_vec,
-    scoring_table,
-    threshold = "best",
-    with_label = TRUE
-  )
+pred_score <- AutoScore_testing(
+  test_set = test_set, final_variables = final_variables, cut_vec = cut_vec,
+  scoring_table = scoring_table, threshold = "best", with_label = TRUE
+)
 head(pred_score)
 ```
 
 - Use `print_roc_performance()` to generate the performance under different score thresholds (e.g., 90).
-- Note: It is just a demo using simulated data, and thus, the result might not be clinically meaningful.
+
 ```{r}
 print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
 ```
 
+### Map score to risk 
 
-### Map Score to Risk 
-- You can also generate conversion table using `conversion_table()`. Please refer to our demo for large sample. We skipped it here.
-
-- Users could use the `pred_score` for further analysis or export it as the CSV to other software.
-```{r csv_generate, eval=FALSE}
-write.csv(pred_score, file = "pred_score.csv")
-```
-
+- Users can also generate conversion table using `conversion_table()`. Please 
+refer to [our demo for large sample](#score-to-risk) for detail.
 
 ## Demo 3: data with missing values {#demo3}
 
-In Demo 3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named `Unknown`. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
-
-### Load package and data
-```{r, warning=FALSE}
-library(AutoScore)
-data("sample_data")
-names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
-check_data(sample_data)
-```
-### Create informative missing
-```{r}
-sample_data <- AutoScore:::induce_informative_missing(sample_data, vars_to_induce = names(sample_data)[1:2], prop_missing = c(0.2, 0.6))
-```
-
-### AutoScore steps
-
-The following steps are similar to Demo #1. 
+In Demo 3, we demonstrate the use of AutoScore on a simulated dataset with
+missing values in two variables (i.e., 
+`r paste(names(sample_data)[1:2], sep = " and ")`). 
 
 ```{r, include=FALSE}
+data("sample_data")
+names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
+sample_data_missing <- AutoScore:::induce_informative_missing(
+  sample_data, vars_to_induce = names(sample_data)[1:2], 
+  prop_missing = c(0.2, 0.6)
+)
+```
+
+```{r}
+check_data(sample_data_missing)
+```
+
+AutoScore can automatically treat the missingness as a new category named
+`Unknown`. The following steps are the **same** as those in [Demo 1](#demo1).
+
+::: callout-important
+- *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
+:::
+
+```{r}
 set.seed(4)
-out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2))
+out_split <- split_data(data = sample_data_missing, ratio = c(0.7, 0.1, 0.2))
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 
 ranking <- AutoScore_rank(train_set, method = "rf", ntree = 100)
+AUC <- AutoScore_parsimony(
+  train_set = train_set, validation_set = validation_set, 
+  rank = ranking, max_score = 100, n_min = 1, n_max = 20,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  auc_lim_min = 0.5, auc_lim_max = "adaptive"
+)
 ```
-
 
 ::: callout-note
-- *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
+- *The `Unknown` category indicating the missingness will be displayed in the final scoring table.*
 :::
 
-```{r, results = "hide"}
-AUC <- AutoScore_parsimony(
-    train_set,
-    validation_set,
-    rank = ranking,
-    max_score = 100,
-    n_min = 1,
-    n_max = 20,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    auc_lim_min = 0.5,
-    auc_lim_max = "adaptive"
-  )
-
-```
-
-```{r, results = "hide", warning=TRUE, message=FALSE,eval=TRUE,include=FALSE}
+```{r, fig.width=5, fig.height=5}
 num_var <- 6
 final_variables <- names(ranking[1:num_var])
-
 cut_vec <- AutoScore_weighting( 
-    train_set,
-    validation_set,
-    final_variables,
-    max_score = 100,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
-  )
-
-cut_vec$Age <- c(50, 75, 90)
-cut_vec$Lab_H <- c(0.2, 1, 3, 4)
-cut_vec$Lab_K <- c(10, 40)
-cut_vec$Lab_B <- c(10, 17)
-cut_vec$hVital_A<- c(70, 98)
-```
-
-- The `Unknown` category indicating the missingness will be displayed in the final scoring table.
-```{r echo=FALSE,fig.width=5,fig.height=5}
-scoring_table <- AutoScore_fine_tuning(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100)
-```
-
-
-```{r,fig.width=5,fig.height=5,warning = FALSE, include=FALSE}
-pred_score <-
-  AutoScore_testing(
-    test_set,
-    final_variables,
-    cut_vec,
-    scoring_table,
-    threshold = "best",
-    with_label = TRUE
-  )
-head(pred_score)
-print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 50)
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+)
 ```

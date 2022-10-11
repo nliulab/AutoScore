@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator - 1&nbsp; Related Published papers</title>
+<title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator - 1&nbsp; Related papers</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -72,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related Published papers</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related papers</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -102,7 +102,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-related_papers.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related Published papers</span></a>
+  <a href="./01-related_papers.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related papers</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -139,13 +139,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#original-paper" id="toc-original-paper" class="nav-link active" data-scroll-target="#original-paper"><span class="toc-section-number">1.1</span>  Original Paper</a></li>
-  <li><a href="#method-extension" id="toc-method-extension" class="nav-link" data-scroll-target="#method-extension"><span class="toc-section-number">1.2</span>  Method Extension</a>
+  <li><a href="#autoscore-original-paper" id="toc-autoscore-original-paper" class="nav-link active" data-scroll-target="#autoscore-original-paper"><span class="toc-section-number">1.1</span>  AutoScore Original Paper</a></li>
+  <li><a href="#autoscore-method-extension" id="toc-autoscore-method-extension" class="nav-link" data-scroll-target="#autoscore-method-extension"><span class="toc-section-number">1.2</span>  AutoScore Method Extension</a>
   <ul class="collapse">
-  <li><a href="#extension-to-survival-outcomes" id="toc-extension-to-survival-outcomes" class="nav-link" data-scroll-target="#extension-to-survival-outcomes"><span class="toc-section-number">1.2.1</span>  Extension to Survival outcomes:</a></li>
-  <li><a href="#extension-to-ordinal-outcomes" id="toc-extension-to-ordinal-outcomes" class="nav-link" data-scroll-target="#extension-to-ordinal-outcomes"><span class="toc-section-number">1.2.2</span>  Extension to ordinal outcomes:</a></li>
-  <li><a href="#extension-to-unbalanced-data" id="toc-extension-to-unbalanced-data" class="nav-link" data-scroll-target="#extension-to-unbalanced-data"><span class="toc-section-number">1.2.3</span>  Extension to unbalanced data:</a></li>
-  <li><a href="#integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" id="toc-integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" class="nav-link" data-scroll-target="#integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking"><span class="toc-section-number">1.2.4</span>  Integrated AutoScore-ShapleyVIC framework for robust and interpretable variable ranking:</a></li>
+  <li><a href="#extension-to-survival-outcomes" id="toc-extension-to-survival-outcomes" class="nav-link" data-scroll-target="#extension-to-survival-outcomes"><span class="toc-section-number">1.2.1</span>  Extension to Survival outcomes</a></li>
+  <li><a href="#extension-to-ordinal-outcomes" id="toc-extension-to-ordinal-outcomes" class="nav-link" data-scroll-target="#extension-to-ordinal-outcomes"><span class="toc-section-number">1.2.2</span>  Extension to ordinal outcomes</a></li>
+  <li><a href="#extension-to-unbalanced-data" id="toc-extension-to-unbalanced-data" class="nav-link" data-scroll-target="#extension-to-unbalanced-data"><span class="toc-section-number">1.2.3</span>  Extension to unbalanced data</a></li>
+  <li><a href="#autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" id="toc-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" class="nav-link" data-scroll-target="#autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking"><span class="toc-section-number">1.2.4</span>  AutoScore-ShapleyVIC framework for robust and interpretable variable ranking</a></li>
   </ul></li>
   <li><a href="#autoscore-clinical-applications" id="toc-autoscore-clinical-applications" class="nav-link" data-scroll-target="#autoscore-clinical-applications"><span class="toc-section-number">1.3</span>  AutoScore Clinical Applications</a>
   <ul class="collapse">
@@ -162,7 +162,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related Published papers</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related papers</span></h1>
 </div>
 
 
@@ -176,33 +176,43 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Please check updated list here (<a href="https://github.com/nliulab/AutoScore/blob/master/README_Application.md" class="uri">https://github.com/nliulab/AutoScore/blob/master/README_Application.md</a>)</p>
-<section id="original-paper" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="original-paper"><span class="header-section-number">1.1</span> Original Paper</h2>
-<p>Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. <em>JMIR Medical Informatics</em> 2020;8(10):e21798 (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>)</p>
+<p>Please check updated list <a href="https://github.com/nliulab/AutoScore/blob/master/README_Paper.md">here</a>.</p>
+<section id="autoscore-original-paper" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="autoscore-original-paper"><span class="header-section-number">1.1</span> AutoScore Original Paper</h2>
+<ul>
+<li>Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. <em>JMIR Medical Informatics</em> 2020;8(10):e21798 (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>)</li>
+</ul>
 </section>
-<section id="method-extension" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="method-extension"><span class="header-section-number">1.2</span> Method Extension</h2>
+<section id="autoscore-method-extension" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="autoscore-method-extension"><span class="header-section-number">1.2</span> AutoScore Method Extension</h2>
 <section id="extension-to-survival-outcomes" class="level3" data-number="1.2.1">
-<h3 data-number="1.2.1" class="anchored" data-anchor-id="extension-to-survival-outcomes"><span class="header-section-number">1.2.1</span> Extension to Survival outcomes:</h3>
-<p>Xie F, Ning Y, Yuan H, et al.&nbsp;AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data. J Biomed Inform. 2022;125:103959. (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>)</p>
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="extension-to-survival-outcomes"><span class="header-section-number">1.2.1</span> Extension to Survival outcomes</h3>
+<ul>
+<li>Xie F, Ning Y, Yuan H, Goldstein BA, Ong ME, Liu N, Chakraborty B. AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data. <em>Journal of Biomedical Informatics</em> 2022;125:103959. (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>)</li>
+</ul>
 </section>
 <section id="extension-to-ordinal-outcomes" class="level3" data-number="1.2.2">
-<h3 data-number="1.2.2" class="anchored" data-anchor-id="extension-to-ordinal-outcomes"><span class="header-section-number">1.2.2</span> Extension to ordinal outcomes:</h3>
-<p>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes, arXiv:2202.08407 (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>)</p>
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="extension-to-ordinal-outcomes"><span class="header-section-number">1.2.2</span> Extension to ordinal outcomes</h3>
+<ul>
+<li>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes. <em>arXiv</em> arXiv:2202.08407 (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>)</li>
+</ul>
 </section>
 <section id="extension-to-unbalanced-data" class="level3" data-number="1.2.3">
-<h3 data-number="1.2.3" class="anchored" data-anchor-id="extension-to-unbalanced-data"><span class="header-section-number">1.2.3</span> Extension to unbalanced data:</h3>
-<p>Yuan H, Xie F, Ong MEH, Ning Y, Chee ML, Saffari SE, Abdullah HR, Goldstein BA, Chakraborty B, Liu N.AutoScore-Imbalance: An interpretable machine learning tool for development of clinical scores with rare events data, <em>Journal of Biomedical Informatics</em>,Volume 129,2022,104072,ISSN 1532-0464 (<a href="https://doi.org/10.1016/j.jbi.2022.104072" class="uri">https://doi.org/10.1016/j.jbi.2022.104072</a>)</p>
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="extension-to-unbalanced-data"><span class="header-section-number">1.2.3</span> Extension to unbalanced data</h3>
+<ul>
+<li>Yuan H, Xie F, Ong MEH, Ning Y, Chee ML, Saffari SE, Abdullah HR, Goldstein BA, Chakraborty B, Liu N.AutoScore-Imbalance: An interpretable machine learning tool for development of clinical scores with rare events data, <em>Journal of Biomedical Informatics</em> 2022;129:104072. (<a href="https://doi.org/10.1016/j.jbi.2022.104072" class="uri">https://doi.org/10.1016/j.jbi.2022.104072</a>)</li>
+</ul>
 </section>
-<section id="integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" class="level3" data-number="1.2.4">
-<h3 data-number="1.2.4" class="anchored" data-anchor-id="integrated-autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking"><span class="header-section-number">1.2.4</span> Integrated AutoScore-ShapleyVIC framework for robust and interpretable variable ranking:</h3>
-<p>Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study. <em>PLOS Digit Health</em> 1(6): e0000062. (<a href="https://doi.org/10.1371/journal.pdig.0000062" class="uri">https://doi.org/10.1371/journal.pdig.0000062</a>)</p>
+<section id="autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="autoscore-shapleyvic-framework-for-robust-and-interpretable-variable-ranking"><span class="header-section-number">1.2.4</span> AutoScore-ShapleyVIC framework for robust and interpretable variable ranking</h3>
+<ul>
+<li>Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study. <em>PLOS Digital Health</em> 1(6): e0000062. (<a href="https://doi.org/10.1371/journal.pdig.0000062" class="uri">https://doi.org/10.1371/journal.pdig.0000062</a>)</li>
+</ul>
 </section>
 </section>
 <section id="autoscore-clinical-applications" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="autoscore-clinical-applications"><span class="header-section-number">1.3</span> AutoScore Clinical Applications</h2>
-<p>A collection of clinical applications using <a href="https://github.com/nliulab/AutoScore"><strong>AutoScore</strong></a> and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.</p>
+<p>A collection of clinical applications using <a href="https://github.com/nliulab/AutoScore"><strong>AutoScore</strong></a> and its extensions can be found in this section. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.</p>
 <ul>
 <li><a href="#emergency-medicine"><strong>Emergency Medicine</strong></a></li>
 <li><a href="#neurology"><strong>Neurology</strong></a></li>

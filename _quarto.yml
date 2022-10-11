@@ -4,7 +4,7 @@ project:
 
 book:
   title: "AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator"
-  author: "Xie Feng, Ning Yilin, Yuan Han, Liu Mingxuan, Li Siqi, Liu Nan"
+  author: "Xie Feng, Ning Yilin, Yuan Han, Liu Mingxuan, Ehsan Saffari, Li Siqi, Bibhas Chakraborty, Liu Nan"
   date: today
   date-format: iso
   chapters:
