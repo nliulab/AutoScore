@@ -496,7 +496,7 @@ check_predictor <- function(data_predictor) {
       `%missing` = round(n_missing / nrow(data) * 100, 2),
       check.names = FALSE
     )
-    message(simpleMessage("\nWARNING: NA detected in data: -----\n."))
+    message(simpleMessage("\nWARNING: NA detected in data: -----\n"))
     print(tb_missing)
     message(simpleMessage("SUGGESTED ACTION:\n * Consider imputation and supply AutoScore with complete data.\n"))
     message(simpleMessage(paste0(
