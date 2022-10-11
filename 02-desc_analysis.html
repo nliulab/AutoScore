@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-related_papers.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related Published papers</span></a>
+  <a href="./01-related_papers.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Related papers</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -227,7 +227,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Before building AutoScore models, users can utilize our package and codes below to do descriptive analysis (e.g., univariate analysis, multivariate analysis) for data with binary, survival, or ordinal outcomes.</p>
+<p>Before building AutoScore models, users can use our package and codes to conduct do descriptive analysis (e.g., univariable analysis, multivariable analysis) for data with binary, survival, or ordinal outcomes.</p>
 <section id="binary" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="binary"><span class="header-section-number">3.1</span> Binary Outcome</h2>
 <ul>
@@ -449,7 +449,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <ul>
-<li>Perform univariable analysis and generate the result table with odd ratios.</li>
+<li>Perform univariable analysis and generate the result table with (unadjusted) odd ratios.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>uni_table <span class="ot">&lt;-</span> <span class="fu">compute_uni_variable_table</span>(sample_data)</span>
@@ -925,7 +925,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <ul>
-<li>Perform univariable analysis and generate the result table with hazard ratios.</li>
+<li>Perform univariable analysis and generate the result table with (unadjusted) hazard ratios.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>uni_table_survival <span class="ot">&lt;-</span> <span class="fu">compute_uni_variable_table_survival</span>(sample_data_survival)</span>
@@ -1464,7 +1464,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <ul>
 <li>Perform univariable analysis and generate the result table.</li>
-<li>By default the odds ratio from the commonly used proportional odds models are reported for <code>link = "logit"</code>. If other link functions are selected (i.e., <code>"cloglog"</code> link corresponding to the proportional hazards model, or the <code>"probit"</code> link), the exponentiated coefficients are reported.</li>
+<li>By default the (unadjusted) odds ratio from the commonly used proportional odds models are reported for <code>link = "logit"</code>. If other link functions are selected (i.e., <code>"cloglog"</code> link corresponding to the proportional hazards model, or the <code>"probit"</code> link), the exponentiated coefficients are reported.</li>
 </ul>
 <div class="callout-important callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -1476,7 +1476,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><em>Use the same link throughout descriptive analysis and model building steps.</em></p>
+<p><em>Use the same <code>link</code> parameter throughout descriptive analysis and model building steps.</em></p>
 </div>
 </div>
 <div class="cell">

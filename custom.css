@@ -46,3 +46,8 @@ https://quarto.org/docs/authoring/article-layout.html
 #toc-title {
   font-weight: bold;
 }
+
+/* have unnumbered h3 header in numbered chapters */
+.p-h3 {
+  font-size: calc(1.275rem + 0.3vw);
+}

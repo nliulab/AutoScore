@@ -2,15 +2,21 @@
 
 AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in the article (<http://dx.doi.org/10.2196/21798>) and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to survival outcomes (<http://dx.doi.org/10.1016/j.jbi.2021.103959>) and ordinal outcomes (<https://doi.org/10.48550/arxiv.2202.08407>). AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner.
 
+<div class="figure" style="text-align: center">
+<img src="Figure1.png" width="70%"/>
+</div>
+
 ## Usage 
 
-The five pipeline functions constitute the 5-step AutoScore-based process for
-generating point-based clinical scores for 
-binary ([Chapter 4](04-autoscore.qmd#top)), 
-survival ([Chapter 5](05-autoscore_survival.qmd#top)) and 
-ordinal outcomes ([Chapter 6](06-autoscore_ordinal.qmd#top)).
+The five pipeline functions constitute the 5-step process for generating
+point-based clinical scores for binary ([Chapter 4](04-autoscore.qmd#top)),
+survival ([Chapter 5](05-autoscore_survival.qmd#top)) and ordinal 
+([Chapter 6](06-autoscore_ordinal.qmd#top)) outcomes.
 
-This 5-step process gives users the flexibility of customization (e.g., determining the final list of variables according to the parsimony plot, and fine-tuning the cutoffs in variable transformation). Please follow the step-by-step instructions (in following chapters) to build your own scores.
+This 5-step process gives users the flexibility of customization (e.g.,
+determining the final list of variables according to the parsimony plot, and
+fine-tuning the cutoffs in variable transformation). Please follow the
+step-by-step instructions (in following chapters) to build your own scores.
 
 * STEP(i): `AutoScore_rank()`or `AutoScore_rank_Survival()` or `AutoScore_rank_Ordinal()`  - Rank variables with machine learning (AutoScore Module 1)
 * STEP(ii): `AutoScore_parsimony()` or `AutoScore_parsimony_Survival()` or `AutoScore_parsimony_Ordinal()` - Select the best model with parsimony plot (AutoScore Modules 2+3+4)
@@ -18,7 +24,15 @@ This 5-step process gives users the flexibility of customization (e.g., determin
 * STEP(iv): `AutoScore_fine_tuning()` or `AutoScore_fine_tuning_Survival()` or `AutoScore_fine_tuning_Ordinal()` - Fine-tune the score by revising `cut_vec` with domain knowledge (AutoScore Module 5)
 * STEP(v): `AutoScore_testing()` or `AutoScore_testing_Survival()` or `AutoScore_testing_Ordinal()` - Evaluate the final score with ROC analysis (AutoScore Module 6)
 
-We also include several optional functions in the package, which could help with data analysis and result reporting. As demonstrated in [Chapter 3](02-desc_analysis.qmd#top), these functions are `compute_descriptive_table()` for generating the table of descriptive analysis for your dataset, `compute_uni_variable_table()` or `compute_uni_variable_table_survival()` or `compute_uni_variable_table_ordinal()` for creating the table of univariable analysis for your dataset, and `compute_multi_variable_table()` for generating the table of multivariable analysis for your dataset. 
+We also include several functions in the package, which could help with data
+analysis and result reporting. As demonstrated in 
+[Chapter 3](02-desc_analysis.qmd#top), these functions are
+`compute_descriptive_table()` for generating the table of descriptive analysis
+for your dataset, `compute_uni_variable_table()` or
+`compute_uni_variable_table_survival()` or
+`compute_uni_variable_table_ordinal()` for creating the table of univariable
+analysis for your dataset, and `compute_multi_variable_table()` for generating
+the table of multivariable analysis for your dataset.
 
 
 ## AutoScore Package Installation
@@ -42,22 +56,29 @@ Load AutoScore package:
 library(AutoScore)
 ```
 
-
-
 ## Citation
 
-Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records. *JMIR Medical Informatics* 2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
+### Core Paper
 
-Xie F, Ning Y, Yuan H, et al. AutoScore-Survival: Developing
-interpretable machine learning-based time-to-event scores with right-censored
-survival data. *J Biomed Inform.* 2022;125:103959. (<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
+- Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A machine
+learning-based automatic clinical score generator and its application to
+mortality prediction using electronic health records. *JMIR Medical Informatics*
+2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
 
-Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong
+### Method Extensions
+
+- Xie F, Ning Y, Yuan H, Goldstein BA, Ong ME, Liu N, Chakraborty B.
+AutoScore-Survival: Developing interpretable machine learning-based
+time-to-event scores with right-censored survival data. 
+*Journal of Biomedical Informatics* 2022;125:103959. 
+(<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
+
+- Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong
 MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
-generating scoring models for ordinal outcomes, arXiv:2202.08407
+generating scoring models for ordinal outcomes. *arXiv* arXiv:2202.08407
 (<https://doi.org/10.48550/arxiv.2202.08407>)
 
-Ning Y, Li S, Ong MEH, Xie F, Chakraborty B, Ting DSW, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, *PLOS Digit Health* 1(6): e0000062 (<https://doi.org/10.1371/journal.pdig.0000062>). 
+- Ning Y, Li S, Ong MEH, Xie F, Chakraborty B, Ting DSW, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, *PLOS Digital Health* 1(6): e0000062 (<https://doi.org/10.1371/journal.pdig.0000062>). 
 
 ## Contact
 

@@ -2,17 +2,22 @@
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE,
-                      fig.width = 5, fig.height = 6)
+                      fig.width = 7, fig.height = 5)
 ```
 
-AutoScore-Survival refers to the AutoScore framework for developing point-based scoring models for survival outcomes. Similar to the implementation described in [Chapter 4](04-autoscore.qmd#top) for binary outcomes, AutoScore-Survival is implemented by five functions: `AutoScore_rank_Survival()`, `AutoScore_parsimony_Survival()`, `AutoScore_weighting_Survival()`, `AutoScore_fine_tuning_Survival()` and `AutoScore_testing_Survival()`.
+AutoScore-Survival refers to the AutoScore framework for developing point-based
+scoring models for survival outcomes. Similar to the implementation described in
+[Chapter 4](04-autoscore.qmd#top) for binary outcomes, AutoScore-Survival is
+implemented by five functions: `AutoScore_rank_Survival()`,
+`AutoScore_parsimony_Survival()`, `AutoScore_weighting_Survival()`,
+`AutoScore_fine_tuning_Survival()` and `AutoScore_testing_Survival()`.
 
-In this chapter, we demonstrate the use of AutoScore to develop sparse
-risk scores for survival outcome, adjust parameters to improve
-interpretability, assess the performance of the final model and map the score to predict risks for new data. 
-To facilitate clinical
-applications, in the following sections we have three demos for AutoScore Implementation
-with large and small dataset, as well as with missing data.
+In this chapter, we demonstrate the use of AutoScore-Survival to develop sparse
+risk scores for a survival outcome, adjust parameters to improve
+interpretability, assess the performance of the final model and map the score to
+predict risks for new data. To facilitate clinical applications, in the
+following sections we demonstrate AutoScore application in 3 demos with large
+and small datasets and with missing information.
 
 ::: callout-important
 - *Scoring models below are based on simulated data to demonstrate AutoScore usage.* 
@@ -21,10 +26,11 @@ with large and small dataset, as well as with missing data.
 
 Citation for AutoScore-Survival:
 
-Xie F, Ning Y, Yuan H, et al. AutoScore-Survival: Developing
-interpretable machine learning-based time-to-event scores with right-censored
-survival data. *J Biomed Inform.* 2022;125:103959. (<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
-
+- Xie F, Ning Y, Yuan H, Goldstein BA, Ong ME, Liu N, Chakraborty B.
+AutoScore-Survival: Developing interpretable machine learning-based
+time-to-event scores with right-censored survival data. 
+*Journal of Biomedical Informatics* 2022;125:103959. 
+(<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
 
 ## Demo 1: large sample {#demo1}
 
@@ -39,17 +45,19 @@ to ensure all data requirements are met.*
 descriptive statistics before building prediction models.*
 :::
 
-### Load package and data
+<p class='p-h3'>Load package and data</p>
+
 ```{r, warning=TRUE, message=TRUE}
 library(AutoScore)
 data("sample_data_survival")
 check_data_survival(sample_data_survival)
 ```
 
+<p class='p-h3'>Prepare training, validation, and test datasets</p>
 
-### Prepare training, validation, and test datasets
 - Option 1: Prepare three separate datasets to train, validate, and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training, validation, and test datasets (70%, 10%, 20%, respectively).
+
 ```{r}
 set.seed(4)
 out_split <- split_data(data = sample_data_survival, ratio = c(0.7, 0.1, 0.2))
@@ -58,52 +66,59 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-
-### STEP(i): Generate variable ranking list with Random Survival Forest 
+### STEP(i): Generate variable ranking list
 
 <p class="autoscore-module">AutoScore-Survival Modules 1</p>
 
-- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).(More time is needed if you run a larger number of trees. For demostration purpose, I just use `ntree = 10` in this guidebook)
-```{r rank_surv, fig.width=6, fig.height=7, cache=TRUE}
-ranking <- AutoScore_rank_Survival(train_set, ntree = 5)
+- Variables are ranked using random survival forest.
+- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).
+- Run time increases with larger `ntree` value. Code below uses `ntree = 5` for demonstration.
+
+```{r rank_surv, cache=TRUE}
+ranking <- AutoScore_rank_Survival(train_set = train_set, ntree = 5)
 ```
 
-### STEP(ii): Select the best model with parsimony plot 
+### STEP(ii): Select variables with parsimony plot 
 
 <p class="autoscore-module">AutoScore-Survival Modules 2+3+4</p>
 
-- `nmin`: Minimum number of selected variables (Default: 1).
-- `nmax`: Maximum number of selected variables (Default: 20).
-- `categorize`: Methods for categorizing continuous variables. Options include `"quantile"` or `"kmeans"` (Default: `"quantile"`).
-- `quantiles`: Predefined quantiles to convert continuous variables to categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if `categorize = "quantile"`.
-- `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
+- `n_min`: Minimum number of selected variables (Default: 1).
+- `n_max`: Maximum number of selected variables (Default: 20).
+- `categorize`: Methods for categorizing continuous variables. Options include
+`"quantile"` or `"kmeans"` (Default: `"quantile"`).
+- `quantiles`: Predefined quantiles to convert continuous variables to
+categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if
+`categorize = "quantile"`.
+- `max_cluster`: The maximum number of cluster (Default: 5). Available if
+`categorize = "kmeans"`.
 - `max_score`: Maximum total score (Default: 100).
-- `auc_lim_min`: Min y_axis limit in the parsimony plot (Default: 0.5). 
-- `auc_lim_max`: Max y_axis limit in the parsimony plot (Default: "adaptive"). 
-```{r iauc_surv, fig.width=7, fig.height=5, cache=TRUE}
-iAUC <- AutoScore_parsimony_Survival(
-    train_set,
-    validation_set,
-    rank = ranking,
-    max_score = 100,
-    n_min = 1,
-    n_max = 20,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    auc_lim_min = 0.5,
-    auc_lim_max = "adaptive"
-  )
+- `auc_lim_min`: Minimum y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Maximum y_axis limit in the parsimony plot (Default:
+"adaptive").
 
+```{r iauc_surv, cache=TRUE}
+iAUC <- AutoScore_parsimony_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  rank = ranking, max_score = 100, n_min = 1, n_max = 20,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  auc_lim_min = 0.5, auc_lim_max = "adaptive"
+)
 ```
 
-- Users could use the `iAUC` for further analysis or export it as the CSV to other software for plotting.
+::: callout-note
+- *Users could use `iAUC` for further analysis or export it to CSV to other software for plotting.*
 ```{r, eval=FALSE}
 write.csv(data.frame(iAUC), file = "iAUC.csv")
 ```
+:::
 
-- Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
-- The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
-- Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge.
+- Determine the optimal number of variables (`num_var`) based on the parsimony
+plot obtained in STEP(ii).
+- The final list of variables is the first `num_var` variables in the ranked
+list `ranking` obtained in STEP(i).
+- Optional: User can adjust the finally included variables `final_variables`
+based on the clinical preferences and knowledge.
+
 ```{r}
 # Example 1: Top 6 variables are selected
 num_var <- 6
@@ -118,37 +133,34 @@ num_var <- 6
 final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
-
 ```{r,include=FALSE}
 num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with the final list of variables
+### STEP(iii): Generate initial scores with final variables
 
 <p class="autoscore-module">Re-run AutoScore-Survival Modules 2+3</p>
 
-- Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
+- Generate `cut_vec` with current cutoffs of continuous variables, which can be
+fine-tuned in STEP(iv).
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
-```{r}
-cut_vec <- AutoScore_weighting_Survival( 
-    train_set,
-    validation_set,
-    final_variables,
-    max_score = 100,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    time_point = c(1,3,7,14,30,60,90)
-  )
 
+```{r}
+cut_vec <- AutoScore_weighting_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  time_point = c(1, 3, 7, 14, 30, 60, 90)
+)
 ```
 
-### STEP(iv): Fine-tune the initial score generated in STEP(iii)
+### STEP(iv): Fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore-Survival Module 5 & Re-run AutoScore-Survival Modules 2+3</p>
 
-- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
-- Re-run AutoScore Modules 2+3 to generate the updated scores.
+- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore-Survival Module 5).
+- Re-run AutoScore-Survival Modules 2+3 to generate the updated scores.
 - Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
 
@@ -158,15 +170,15 @@ cut_vec <- AutoScore_weighting_Survival(
 ## variable        interval     point
 ## ==============  ===========  =====
 ## Age             <35            0  
-##                 [35,49)        7  
-##                 [49,76)       17  
-##                 [76,89)       23  
-##                 >=89          27  
+##                 [35,49)        5 
+##                 [49,76)       13  
+##                 [76,89)       21  
+##                 >=89          24  
 ```
 
 - Current cutoffs:`c(35, 49, 76, 89)`. We can fine tune the cutoffs as follows:
-```{r}
 
+```{r}
 # Example 1: rounding up to a nice number
 cut_vec$Age <- c(35, 50, 75, 90)
 
@@ -175,118 +187,118 @@ cut_vec$Age <- c(25, 50, 75, 90)
 
 # Example 3: combining categories
 cut_vec$Age <- c(50, 75, 90)
-
 ```
-- Then we do similar checks for other variables and update scoring table using new cutoffs if needed.
+
+- Then we do similar checks for other variables and update scoring table using
+new cutoffs if needed.
+
 ```{r}
 cut_vec$Lab_H <- c(0.2, 1, 3, 4)
 cut_vec$Lab_K <- c(10, 40)
 cut_vec$Lab_B <- c(10, 17)
-cut_vec$hVital_A <- c(70, 98)
-scoring_table <- AutoScore_fine_tuning_Survival(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100,
-                        time_point = c(1,3,7,14,30,60,90))
+cut_vec$Vital_A <- c(70, 98)
+scoring_table <- AutoScore_fine_tuning_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, cut_vec = cut_vec, max_score = 100,
+  time_point = c(1, 3, 7, 14, 30, 60, 90)
+)
 ```
 
 ### STEP(v): Evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore-Survival Module 6</p>
 
-- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
-- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
-- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity,
+specificity, etc. If set to `"best"`, the optimal threshold will be calculated
+(Default: `"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and
+performance will be evaluated accordingly (Default: `TRUE`).
+- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and
+the final predicted scores will be the output without performance evaluation.
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
+
 ```{r}
-pred_score <-
-  AutoScore_testing_Survival(
-    test_set,
-    final_variables,
-    cut_vec,
-    scoring_table,
-    threshold = "best",
-    with_label = TRUE,
-    time_point = c(1,3,7,14,30,60,90)
-  )
+pred_score <- AutoScore_testing_Survival(
+  test_set = test_set, final_variables = final_variables, cut_vec = cut_vec, 
+  scoring_table = scoring_table, threshold = "best", with_label = TRUE,
+  time_point = c(1, 3, 7, 14, 30, 60, 90)
+)
 head(pred_score)
 ```
 
+### Map score to risk {#score-to-risk}
 
-### Map Score to Risk
+Further analysis to map score to risk (e.g., conversion table, Kaplan Meier Curve, output the score).
 
-Further analysis to map score to risk (e.g., conversion table, Kaplan Meier Curve, output the score)
-- Use `plot_survival_km()` to generate Kaplan Meier Curve under different score thresholds (decided by users, e.g., 50).
+- Use `plot_survival_km()` to generate Kaplan-Meier curve under different score thresholds (decided by users, e.g., 50).
+
 ```{r, fig.height=6}
-plot_survival_km(pred_score, score_cut = c(50))
+plot_survival_km(pred_score = pred_score, score_cut = c(50))
 ```
 
-- User can also use several score thresholds to cut the score for generate Kaplan Meier Curve.
+- User can also use several score thresholds to cut the score for generate Kaplan-Meier curve.
+
 ```{r, fig.height=6}
-plot_survival_km(pred_score, score_cut = c(40,50,60))
+plot_survival_km(pred_score, score_cut = c(40, 50, 60))
 ```
 
-- Use `conversion_table_survival()` to generate the performance under different `score_cut` score cut-off (decided by users, e.g.,40,50,60).
+- Use `conversion_table_survival()` to generate the performance under different `score_cut` score cut-offs.
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
+
 ```{r}
-table <- conversion_table_survival(pred_score, score_cut =c(40,50,60), time_point = c(7,14,30,60,90))
-
+table <- conversion_table_survival(
+  pred_score = pred_score, score_cut = c(40,50,60), 
+  time_point = c(7, 14, 30, 60, 90)
+)
 ```
 
-- You can also generate the `pred_score_train` based on training data for further analysis (e.g., KM curve or conversion table based on the training data).
-```{r,fig.show="hide"}
-pred_score_train <-
-  AutoScore_testing_Survival(
-    train_set,
-    final_variables,
-    cut_vec,
-    scoring_table,
-    threshold = "best",
-    with_label = TRUE,
-    time_point = c(1,3,7,14,30,60,90)
-  )
-```
+:::callout-note
+- *Users could use `pred_score` for further analysis or export it to CSV to other software  (e.g., generating the calibration curve).*
 
-- Generate conversion table based on the training data different `score_cut` score cut-off (decided by users, e.g.,40,50,60).
-```{r}
-conversion_table_survival(pred_score_train, score_cut =c(40,50,60), time_point = c(7,14,30,60,90))
-```
-
-- Users could use the `pred_score` or `pred_score_train` for further analysis or export it as the CSV to other software (e.g., generating other curves).
 ```{r, eval=FALSE}
 write.csv(pred_score, file = "pred_score.csv")
-write.csv(pred_score_train, file = "pred_score_train.csv")
 ```
-
+:::
 
 ## Demo 2: small sample {#demo2}
 
-In Demo 2, we demonstrate the use of AutoScore-Survival on a comparably small dataset where there are no sufficient samples to form a separate training and validation dataset. Thus, the cross validation is employed to generate the parsimony plot.
+In Demo 2, we demonstrate the use of AutoScore-Survival on a smaller dataset
+where there are no sufficient samples to form a separate training and validation
+dataset. Thus, the cross validation is employed to generate the parsimony plot.
 
-### Get small dataset with 1000 samples
+<p class='p-h3'>Load small dataset with 1000 samples</p>
+
 ```{r}
 data("sample_data_survival_small")
 ```
 
-### Prepare training and test datasets
+<p class='p-h3'>Prepare training and test datasets</p>
+
 - Option 1: Prepare two separate datasets to train and test models.
-- Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, `train_set` is equal to `validation_set` and the ratio of `validation_set` should be 0. Then cross-validation will be implemented in the STEP(ii) `AutoScore_parsimony()`.
+- Option 2: Use demo codes below to randomly split your dataset into training
+and test datasets (70% and 30%, respectively). For cross-validation, `train_set`
+is equal to `validation_set` and the ratio of `validation_set` should be 0. Then
+cross-validation will be implemented in the STEP(ii) `AutoScore_parsimony_Survival()`.
+
 ```{r}
 set.seed(4)
-out_split <- split_data(data = sample_data_survival_small, ratio = c(0.7, 0, 0.3), cross_validation = TRUE)
+out_split <- split_data(data = sample_data_survival_small, ratio = c(0.7, 0, 0.3), 
+                        cross_validation = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-### STEP(i): Generate variable ranking list with Random Survival Forest 
+### STEP(i): Generate variable ranking list
 
 <p class="autoscore-module">AutoScore-Survival Modules 1</p>
 
-- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).(More time is needed if you run a larger number of trees. For demostration purpose, I just use `ntree = 10` in this guidebook)
-```{r rank_surv_small, fig.width=6, fig.height=7, cache=TRUE}
-ranking <- AutoScore_rank_Survival(train_set, ntree = 5)
+- Variables are ranked using random survival forest.
+- `ntree`: Number of trees required only if when `method` is "rf" (Default: 100).
+- Run time increases with larger `ntree` value. Code below uses `ntree = 5` for demonstration.
+
+```{r rank_surv_small, cache=TRUE}
+ranking <- AutoScore_rank_Survival(train_set = train_set, ntree = 5)
 ```
 
 ### STEP(ii): Select the best model with parsimony plot 
@@ -295,36 +307,48 @@ ranking <- AutoScore_rank_Survival(train_set, ntree = 5)
 
 - `nmin`: Minimum number of selected variables (Default: 1).
 - `nmax`: Maximum number of selected variables (Default: 20).
-- `categorize`: Methods for categorizing continuous variables. Options include `"quantile"` or `"kmeans"` (Default: `"quantile"`).
-- `quantiles`: Predefined quantiles to convert continuous variables to categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if `categorize = "quantile"`.
-- `max_cluster`: The max number of cluster (Default: 5). Available if `categorize = "kmeans"`.
+- `categorize`: Methods for categorizing continuous variables. Options include
+`"quantile"` or `"kmeans"` (Default: `"quantile"`).
+- `quantiles`: Predefined quantiles to convert continuous variables to
+categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if
+`categorize = "quantile"`.
+- `max_cluster`: The maximum number of cluster (Default: 5). Available if
+`categorize = "kmeans"`.
 - `max_score`: Maximum total score (Default: 100).
-- `auc_lim_min`: Min y_axis limit in the parsimony plot (Default: 0.5). 
-- `auc_lim_max`: Max y_axis limit in the parsimony plot (Default: "adaptive"). 
-```{r iauc_surv_small, fig.width=7, fig.height=5, cache=TRUE}
-iAUC <- AutoScore_parsimony_Survival(
-    train_set,
-    validation_set,
-    rank = ranking,
-    max_score = 100,
-    n_min = 1,
-    n_max = 20,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    auc_lim_min = 0.5,
-    auc_lim_max = "adaptive"
-  )
+- `auc_lim_min`: Minimum y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Maximum y_axis limit in the parsimony plot (Default: "adaptive"). 
+- `cross_validation`: `TRUE` if cross-validation is needed, especially for
+small datasets.
+- `fold`: The number of folds used in cross validation (Default: 10). Available
+if `cross_validation = TRUE`.
+- `do_trace`: If set to `TRUE`, all results based on each fold of
+cross-validation would be printed out and plotted (Default: `FALSE`). Available
+if `cross_validation = TRUE`.
 
+```{r iauc_surv_small, cache=TRUE}
+iAUC <- AutoScore_parsimony_Survival(
+  train_set = train_set, validation_set = validation_set, rank = ranking,
+  max_score = 100, n_min = 1, n_max = 20,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  auc_lim_min = 0.5, auc_lim_max = "adaptive",
+  cross_validation = TRUE, fold = 10, do_trace = FALSE
+)
 ```
 
-- Users could use the `iAUC` for further analysis or export it as the CSV to other software for plotting.
+::: callout-note
+- *Users could use `iAUC` for further analysis or export it to CSV to other software for plotting.*
 ```{r, eval=FALSE}
 write.csv(data.frame(iAUC), file = "iAUC.csv")
 ```
+:::
 
-- Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii). 
-- The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i). 
-- Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge.
+- Determine the optimal number of variables (`num_var`) based on the parsimony
+plot obtained in STEP(ii).
+- The final list of variables is the first `num_var` variables in the ranked
+list `ranking` obtained in STEP(i).
+- Optional: User can adjust the finally included variables `final_variables`
+based on the clinical preferences and knowledge.
+
 ```{r}
 # Example 1: Top 6 variables are selected
 num_var <- 6
@@ -339,37 +363,34 @@ num_var <- 6
 final_variables <- names(ranking[c(1:num_var, 9, 10)])
 ```
 
-
 ```{r,include=FALSE}
 num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with the final list of variables
+### STEP(iii): Generate initial scores with final variables 
 
 <p class="autoscore-module">Re-run AutoScore-Survival Modules 2+3</p>
 
-- Generate `cut_vec` with current cutoffs of continuous variables, which can be fine-tuned in STEP(iv).
+- Generate `cut_vec` with current cutoffs of continuous variables, which can be
+fine-tuned in STEP(iv).
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
-```{r}
-cut_vec <- AutoScore_weighting_Survival( 
-    train_set,
-    validation_set,
-    final_variables,
-    max_score = 100,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    time_point = c(1,3,7,14,30,60,90)
-  )
 
+```{r}
+cut_vec <- AutoScore_weighting_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  time_point = c(1, 3, 7, 14, 30, 60, 90)
+)
 ```
 
-### STEP(iv): Fine-tune the initial score generated in STEP(iii)
+### STEP(iv): Fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore-Survival Module 5 & Re-run AutoScore-Survival Modules 2+3</p>
 
-- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore Module 5).
-- Re-run AutoScore Modules 2+3 to generate the updated scores.
+- Revise `cut_vec` with domain knowledge to update the scoring table (AutoScore-Survival Module 5).
+- Re-run AutoScore-Survival Modules 2+3 to generate the updated scores.
 - Users can choose any cutoff values and/or any number of categories, but are suggested to choose numbers close to the automatically determined values.
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
 
@@ -379,15 +400,15 @@ cut_vec <- AutoScore_weighting_Survival(
 ## variable        interval     point
 ## ==============  ===========  =====
 ## Age             <35            0  
-##                 [35,49)        7  
-##                 [49,76)       17  
-##                 [76,89)       23  
-##                 >=89          27  
+##                 [35,49)        2  
+##                 [49,76)        8  
+##                 [76,89)       16  
+##                 >=89          22  
 ```
 
 - Current cutoffs:`c(35, 49, 76, 89)`. We can fine tune the cutoffs as follows:
-```{r}
 
+```{r}
 # Example 1: rounding up to a nice number
 cut_vec$Age <- c(35, 50, 75, 90)
 
@@ -396,144 +417,101 @@ cut_vec$Age <- c(25, 50, 75, 90)
 
 # Example 3: combining categories
 cut_vec$Age <- c(50, 75, 90)
-
 ```
-- Then we do similar checks for other variables and update scoring table using new cutoffs if needed.
+
+- Then we do similar checks for other variables and update scoring table using
+new cutoffs if needed.
+
 ```{r}
 cut_vec$Lab_H <- c(0.2, 1, 3, 4)
 cut_vec$Lab_K <- c(10, 40)
 cut_vec$Lab_B <- c(10, 17)
-cut_vec$hVital_A <- c(70, 98)
-scoring_table <- AutoScore_fine_tuning_Survival(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100,
-                        time_point = c(1,3,7,14,30,60,90))
-
+cut_vec$Vital_A <- c(70, 98)
+scoring_table <- AutoScore_fine_tuning_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, cut_vec = cut_vec, max_score = 100,
+  time_point = c(1, 3, 7, 14, 30, 60, 90)
+)
 ```
 
 ### STEP(v): Evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore-Survival Module 6</p>
 
-- `threshold`: Score threshold for the ROC analysis to generate sensitivity, specificity, etc. If set to `"best"`, the optimal threshold will be calculated (Default: `"best"`).
-- `with_label`: Set to `TRUE` if there are labels in the `test_set` and performance will be evaluated accordingly (Default: `TRUE`).
-- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and the final predicted scores will be the output without performance evaluation.
+- `threshold`: Score threshold for the ROC analysis to generate sensitivity,
+specificity, etc. If set to `"best"`, the optimal threshold will be calculated
+(Default: `"best"`).
+- `with_label`: Set to `TRUE` if there are labels in the `test_set` and
+performance will be evaluated accordingly (Default: `TRUE`).
+- Set the `with_label` to `FALSE` if there are not `label` in the `test_set` and
+the final predicted scores will be the output without performance evaluation.
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
+
 ```{r}
-pred_score <-
-  AutoScore_testing_Survival(
-    test_set,
-    final_variables,
-    cut_vec,
-    scoring_table,
-    threshold = "best",
-    with_label = TRUE,
-    time_point = c(1,3,7,14,30,60,90)
-  )
+pred_score <- AutoScore_testing_Survival(
+  test_set = test_set, final_variables = final_variables, cut_vec = cut_vec, 
+  scoring_table = scoring_table, threshold = "best", with_label = TRUE,
+  time_point = c(1, 3, 7, 14, 30, 60, 90)
+)
 head(pred_score)
 ```
 
-### Map Score to Risk 
-- You can also generate conversion table using `conversion_table_survival()`,and Kaplan Meier Curve using `plot_survival_km()`. Please refer to our demo for large sample. We skipped it here.
+### Map score to risk 
 
-- Users could use the `pred_score` for further analysis or export it as the CSV to other software.
-```{r csv_generate, eval=FALSE}
-write.csv(pred_score, file = "pred_score.csv")
-```
-
-
+- Users can also generate conversion table using `conversion_table_survival()`, 
+and Kaplan-Meier curve using `plot_survival_km()`. Please refer to 
+[our demo for large sample](#score-to-risk) for detail.
 
 ## Demo 3: data with missing values {#demo3}
 
-In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values. AutoScore can automatically treat the missingness as a new category named `Unknown`. Please note that it is just a demo using simulated data, and thus, the result might not be clinically meaningful.
-
-### Load package and data
-```{r, warning=FALSE}
-library(AutoScore)
-data("sample_data_survival")
-check_data_survival(sample_data_survival)
-```
-### Create informative missing
-```{r}
-sample_data_survival <- AutoScore:::induce_informative_missing(sample_data_survival, vars_to_induce = names(sample_data_survival)[1:2], prop_missing = c(0.2, 0.6))
-```
-
-### AutoScore steps
-
-The following steps are similar to Demo #1. 
+In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values in two variables (i.e., 
+`r paste(names(sample_data)[1:2], sep = " and ")`). 
 
 ```{r, include=FALSE}
+data("sample_data_survival")
+sample_data_survival_missing <- AutoScore:::induce_informative_missing(
+  sample_data_survival, vars_to_induce = names(sample_data_survival)[1:2], 
+  prop_missing = c(0.2, 0.6)
+)
+```
+
+```{r, message=TRUE}
+check_data_survival(sample_data_survival_missing)
+```
+
+AutoScore can automatically treat the missingness as a new category named
+`Unknown`. The following steps are the **same** as those in [Demo 1](#demo1).
+
+::: callout-important
+- *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
+:::
+
+```{r}
 set.seed(4)
 out_split <- split_data(data = sample_data_survival, ratio = c(0.7, 0.1, 0.2))
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 
-ranking <- AutoScore_rank_Survival(train_set, ntree = 5)
+ranking <- AutoScore_rank_Survival(train_set = train_set, ntree = 5)
+iAUC <- AutoScore_parsimony_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  rank = ranking, max_score = 100, n_min = 1, n_max = 20,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
+  auc_lim_min = 0.5, auc_lim_max = "adaptive"
+)
 ```
 
 ::: callout-note
-- *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
+- *The `Unknown` category indicating the missingness will be displayed in the final scoring table.*
 :::
 
-```{r, fig.width=7, fig.height=5, results = "hide"}
-iAUC <- AutoScore_parsimony_Survival(
-    train_set,
-    validation_set,
-    rank = ranking,
-    max_score = 100,
-    n_min = 1,
-    n_max = 20,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1),
-    auc_lim_min = 0.5,
-    auc_lim_max = "adaptive"
-  )
-
-```
-
-```{r, results = "hide", warning=TRUE, message=FALSE,eval=TRUE,include=FALSE}
+```{r}
 num_var <- 6
 final_variables <- names(ranking[1:num_var])
-
-cut_vec <- AutoScore_weighting_Survival( 
-    train_set,
-    validation_set,
-    final_variables,
-    max_score = 100,
-    categorize = "quantile",
-    quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
-  )
-
-cut_vec$Age <- c(50, 75, 90)
-cut_vec$Lab_H <- c(0.2, 1, 3, 4)
-cut_vec$Lab_K <- c(10, 40)
-cut_vec$Lab_B <- c(10, 17)
-cut_vec$hVital_A<- c(70, 98)
-```
-
-- The `Unknown` category indicating the missingness will be displayed in the final scoring table.
-
-```{r echo=FALSE}
-scoring_table <- AutoScore_fine_tuning_Survival(train_set,
-                        validation_set,
-                        final_variables,
-                        cut_vec,
-                        max_score = 100)
-```
-
-```{r, include=FALSE}
-pred_score <-
-  AutoScore_testing_Survival(
-    test_set,
-    final_variables,
-    cut_vec,
-    scoring_table,
-    threshold = "best",
-    with_label = TRUE
-  )
-head(pred_score)
-plot_survival_km(pred_score, score_cut = c(50))
+cut_vec <- AutoScore_weighting_Survival(
+  train_set = train_set, validation_set = validation_set, 
+  final_variables = final_variables, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1)
+)
 ```

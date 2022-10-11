@@ -1,17 +1,23 @@
 # AutoScore for ordinal outcomes (AutoScore-Ordinal) {#top}
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
+                      fig.width = 7, fig.height = 5)
 ```
 
-AutoScore-Ordinal refers to the AutoScore framework for developing point-based scoring models for ordinal outcomes. Similar to the implementation described in [Chapter 4](04-autoscore.qmd#top) for binary outcomes, AutoScore-Ordinal is implemented by five functions: `AutoScore_rank_Ordinal()`, `AutoScore_parsimony_Ordinal()`, `AutoScore_weighting_Ordinal()`, `AutoScore_fine_tuning_Ordinal()` and `AutoScore_testing_Ordinal()`.
+AutoScore-Ordinal refers to the AutoScore framework for developing point-based
+scoring models for ordinal outcomes. Similar to the implementation described in
+[Chapter 4](04-autoscore.qmd#top) for binary outcomes, AutoScore-Ordinal is
+implemented by five functions: `AutoScore_rank_Ordinal()`,
+`AutoScore_parsimony_Ordinal()`, `AutoScore_weighting_Ordinal()`,
+`AutoScore_fine_tuning_Ordinal()` and `AutoScore_testing_Ordinal()`.
 
 In this chapter, we demonstrate the use of AutoScore-Ordinal to develop sparse
 risk scores for an ordinal outcome, adjust parameters to improve
-interpretability, assess the performance of the final model and generate a
-conversion table to easily map score to risk. To facilitate clinical
-applications, in the following sections we demonstrate AutoScore application
-with large and small datasets and with missing information.
+interpretability, assess the performance of the final model and map the score to
+predict risks for new data. To facilitate clinical applications, in the
+following sections we demonstrate AutoScore application in 3 demos with large
+and small datasets and with missing information.
 
 ::: callout-important
 - *Scoring models below are based on simulated data to demonstrate AutoScore usage.* 
@@ -20,9 +26,9 @@ with large and small datasets and with missing information.
 
 Cite the following paper for AutoScore-Ordinal:
 
-Saffari SE, Ning Y, Feng X, Chakraborty B, Volovici V, Vaughan R, Ong
-ME, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
-generating scoring models for ordinal outcomes, arXiv:2202.08407
+- Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong
+MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for
+generating scoring models for ordinal outcomes. *arXiv* arXiv:2202.08407
 (<https://doi.org/10.48550/arxiv.2202.08407>)
 
 ## Demo 1: large sample {#demo1}
@@ -38,7 +44,7 @@ to ensure all data requirements are met.*
 descriptive statistics before building prediction models.*
 :::
 
-### Load package and data
+<p class='p-h3'>Load package and data</p>
 
 ```{r, warning=TRUE, message=TRUE}
 library(AutoScore)
@@ -48,7 +54,7 @@ head(sample_data_ordinal)
 check_data_ordinal(sample_data_ordinal)
 ```
 
-### Prepare training, validation, and test datasets
+<p class='p-h3'>Prepare training, validation, and test datasets</p>
 
 - Option 1: Prepare three separate datasets to train, validate, and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training,
@@ -69,9 +75,10 @@ test_set <- out_split$test_set
 
 <p class="autoscore-module">AutoScore-Ordinal Module 1</p>
 
+- Variables are ranked by random forest for multiclass classification.
 - `ntree`: Number of trees in the random forest algorithm (Default: 100).
 
-```{r rank_ord, fig.width=6, fig.height=7, cache=TRUE}
+```{r rank_ord, cache=TRUE}
 ranking <- AutoScore_rank_Ordinal(train_set = train_set, ntree = 100)
 ```
 
@@ -79,41 +86,49 @@ ranking <- AutoScore_rank_Ordinal(train_set = train_set, ntree = 100)
 
 <p class="autoscore-module">AutoScore-Ordinal Modules 2+3+4</p>
 
--   `n_min`: Minimum number of selected variables (Default: 1).
--   `n_max`: Maximum number of selected variables (Default: 20).
--   `categorize`: Methods for categorizing continuous variables. Options include
+- `n_min`: Minimum number of selected variables (Default: 1).
+- `n_max`: Maximum number of selected variables (Default: 20).
+- `categorize`: Methods for categorizing continuous variables. Options include
 `"quantile"` or `"kmeans"` (Default: `"quantile"`).
--   `quantiles`: Predefined quantiles to convert continuous variables to
-categorical ones (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`). Available if 
+- `quantiles`: Predefined quantiles to convert continuous variables to
+categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if
 `categorize = "quantile"`.
--   `max_cluster`: The max number of cluster (Default: 5). Available if
+- `max_cluster`: The maximum number of cluster (Default: 5). Available if
 `categorize = "kmeans"`.
--   `max_score`: Maximum total score (Default: 100).
--   `auc_lim_min`: y-axis limits (min) of the parsimony plot (Default: 0.5)
--   `auc_lim_max`: y-axis limits (max) of the parsimony plot (Default: `"adaptive"`)
--   `link`: link function in the ordinal regression, which affects predictive
+- `max_score`: Maximum total score (Default: 100).
+- `auc_lim_min`: Minimum y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Maximum y_axis limit in the parsimony plot (Default:
+"adaptive").
+- `link`: link function in the ordinal regression, which affects predictive
 performance. Options include `"logit"` (for proportional odds model),
 `"cloglog"` (for proportional hazard model) and `"probit"` (Default: `"logit"`).
 
 ::: callout-important
-*Use the same link throughout descriptive analysis and model building steps.* 
+*Use the same `link` parameter throughout descriptive analysis and model building steps.* 
 :::
 
-```{r mauc_ord, fig.width=7, fig.height=5, cache=TRUE}
+```{r mauc_ord, cache=TRUE}
 link <- "logit"
 mAUC <- AutoScore_parsimony_Ordinal(
   train_set = train_set, validation_set = validation_set, 
   rank = ranking, link = link, max_score = 100, n_min = 1, n_max = 20,
   categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), 
-  auc_lim_min = 0
+  auc_lim_min = 0, auc_lim_max = "adaptive"
 )
 ```
 
--   Determine the optimal number of variables (`num_var`) based on the parsimony
+::: callout-note
+- *Users could use `mAUC` for further analysis or export it to CSV to other software for plotting.*
+```{r, eval=FALSE}
+write.csv(data.frame(mAUC), file = "mAUC.csv")
+```
+:::
+
+- Determine the optimal number of variables (`num_var`) based on the parsimony
 plot obtained in STEP(ii).
--   The final list of variables is the first `num_var` variables in the ranked
+- The final list of variables is the first `num_var` variables in the ranked
 list `ranking` obtained in STEP(i).
--   Optional: User can adjust the finally included variables `final_variables`
+- Optional: User can adjust the finally included variables `final_variables`
 based on the clinical preferences and knowledge.
 
 ```{r}
@@ -139,13 +154,15 @@ fine-tuned in STEP(iv).
 dichotomous classifications (mAUC), with 95% CI computed using bootstrap 
 (Default: `n_boot = 100` bootstrap samples). Setting `n_boot = 1` disables
 bootstrap and reports mAUC without CI.
+- Run time increases with larger `n_boot` value. Code below uses `n_boot = 10`
+for demonstration.
 
 ```{r}
 cut_vec <- AutoScore_weighting_Ordinal(
   train_set = train_set, validation_set = validation_set, 
   final_variables = final_variables, link = link, max_score = 100,
   categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), 
-  n_boot = 100
+  n_boot = 10
 )
 ```
 
@@ -165,10 +182,10 @@ suggested to choose numbers close to the automatically determined values.
 ## variable        interval     point
 ## ==============  ===========  =====
 ## Age                 <27          0  
-##                     [27,46)      2  
-##                     [46,78)     12  
-##                     [78,87)     16 
-##                     >=87        19 
+##                     [27,46)      4  
+##                     [46,78)     14  
+##                     [78,87)     18 
+##                     >=87        21 
 ```
 
 - Current cutoffs:`c(27, 46, 78, 87)`. We can fine tune the cutoffs as follows:
@@ -186,6 +203,8 @@ cut_vec$Age <- c(45, 75, 85)
 
 - mAUC and 95% bootstrap CI (Default: `n_boot = 100` bootstrap samples) are
 reported after fine-tuning.
+- Run time increases with larger `n_boot` value. Code below uses `n_boot = 10`
+for demonstration.
 
 ```{r, warning = FALSE}
 cut_vec$Util_D <- c(2 / 3, 4 / 3, 4, 6)
@@ -196,7 +215,7 @@ cut_vec$Age <- c(25, 45, 75, 85)
 scoring_table <- AutoScore_fine_tuning_Ordinal(
   train_set = train_set, validation_set = validation_set,
   final_variables = final_variables, link = link, cut_vec = cut_vec,
-  max_score = 100, n_boot = 100
+  max_score = 100, n_boot = 10
 )
 ```
 
@@ -206,12 +225,14 @@ scoring_table <- AutoScore_fine_tuning_Ordinal(
 
 - mAUC and generalised c-index are reported for the test set, with 95% bootstrap
 CI (Default: `n_boot = 100` bootstrap samples).
+- Run time increases with larger `n_boot` value. Code below uses `n_boot = 10`
+for demonstration.
 
 ```{r}
 pred_score <- AutoScore_testing_Ordinal(
   test_set = test_set, link = link, final_variables = final_variables, 
   cut_vec = cut_vec, scoring_table = scoring_table, 
-  with_label = TRUE, n_boot = 100
+  with_label = TRUE, n_boot = 10
 )
 head(pred_score)
 ```
@@ -222,14 +243,8 @@ previously saved `pred_score`.
 ```{r}
 print_performance_ordinal(
   label = pred_score$Label, score = pred_score$pred_score, 
-  n_boot = 100, report_cindex = TRUE
+  n_boot = 10, report_cindex = TRUE
 )
-```
-
-- Users can use `pred_score` for further analysis or save it as CSV to other software.
-
-```{r, eval=FALSE}
-write.csv(pred_score, file = "pred_score.csv")
 ```
 
 ### Map score to risk {#demo1-map}
@@ -255,21 +270,27 @@ conversion_table_ordinal(pred_score = pred_score, link = link,
                          digits = 4)
 ```
 
+:::callout-note
+- *Users could use `pred_score` for further analysis or export it to CSV to other software  (e.g., generating the calibration curve).*
+
+```{r, eval=FALSE}
+write.csv(pred_score, file = "pred_score.csv")
+```
+:::
+
 ## Demo 2: small sample {#demo2}
 
-In Demo 2, we demonstrate AutoScore-Ordinal application for a small dataset with
-5000 samples using cross-validation.
+In Demo 2, we demonstrate the use of AutoScore-Ordinal on a smaller dataset
+where there are no sufficient samples to form a separate training and validation
+dataset. Thus, the cross validation is employed to generate the parsimony plot.
 
-### Get small dataset with 5000 samples
-
-For demonstration purpose, randomly sample a small dataset with 5000 samples
-from original sample data, stratified by the outcome.
+<p class='p-h3'>Load small dataset with 5000 samples</p>
 
 ```{r}
 data("sample_data_ordinal_small")
 ```
 
-### Prepare training, validation, and test datasets
+<p class='p-h3'>Prepare training and test datasets</p>
 
 - Option 1: Prepare two separate datasets to train and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training
@@ -280,9 +301,8 @@ cross-validation will be implemented in the STEP(ii),
 
 ```{r}
 set.seed(4)
-out_split <- split_data(data = sample_data_ordinal_small, 
-                        ratio = c(0.7, 0, 0.3), cross_validation = TRUE,
-                        strat_by_label = TRUE)
+out_split <- split_data(data = sample_data_ordinal_small, ratio = c(0.7, 0, 0.3), 
+                        cross_validation = TRUE, strat_by_label = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
@@ -292,9 +312,10 @@ test_set <- out_split$test_set
 
 <p class="autoscore-module">AutoScore-Ordinal Module 1</p>
 
+- Variables are ranked by random forest for multiclass classification.
 - `ntree`: Number of trees in the random forest algorithm (Default: 100).
 
-```{r rank_ord_small, fig.width=6, fig.height=7, cache=TRUE}
+```{r rank_ord_small, cache=TRUE}
 ranking <- AutoScore_rank_Ordinal(train_set = train_set, ntree = 100)
 ```
 
@@ -302,39 +323,57 @@ ranking <- AutoScore_rank_Ordinal(train_set = train_set, ntree = 100)
 
 <p class="autoscore-module">AutoScore-Ordinal Modules 2+3+4</p>
 
--   `n_min`: Minimum number of selected variables (Default: 1).
--   `n_max`: Maximum number of selected variables (Default: 20).
--   `categorize`: Methods for categorizing continuous variables. Options include
+- `nmin`: Minimum number of selected variables (Default: 1).
+- `nmax`: Maximum number of selected variables (Default: 20).
+- `categorize`: Methods for categorizing continuous variables. Options include
 `"quantile"` or `"kmeans"` (Default: `"quantile"`).
--   `quantiles`: Predefined quantiles to convert continuous variables to
-categorical ones (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`). Available if 
+- `quantiles`: Predefined quantiles to convert continuous variables to
+categorical ones. (Default: `c(0, 0.05, 0.2, 0.8, 0.95, 1)`) Available if
 `categorize = "quantile"`.
--   `max_cluster`: The max number of cluster (Default: 5). Available if
+- `max_cluster`: The maximum number of cluster (Default: 5). Available if
 `categorize = "kmeans"`.
--   `max_score`: Maximum total score (Default: 100).
--   `auc_lim_min`: y-axis limits (min) of the parsimony plot (Default: 0.5)
--   `auc_lim_max`: y-axis limits (max) of the parsimony plot (Default: `"adaptive"`)
--   `link`: link function in the ordinal regression, which affects predictive
+- `max_score`: Maximum total score (Default: 100).
+- `auc_lim_min`: Minimum y_axis limit in the parsimony plot (Default: 0.5). 
+- `auc_lim_max`: Maximum y_axis limit in the parsimony plot (Default: "adaptive"). 
+- `cross_validation`: `TRUE` if cross-validation is needed, especially for
+small datasets.
+- `fold`: The number of folds used in cross validation (Default: 10). Available
+if `cross_validation = TRUE`.
+- `do_trace`: If set to `TRUE`, all results based on each fold of
+cross-validation would be printed out and plotted (Default: `FALSE`). Available
+if `cross_validation = TRUE`.
+- `link`: link function in the ordinal regression, which affects predictive
 performance. Options include `"logit"` (for proportional odds model),
 `"cloglog"` (for proportional hazard model) and `"probit"` (Default: `"logit"`).
 
 ::: callout-important
-*Use the same link throughout descriptive analysis and model building steps.* 
+*Use the same `link` parameter throughout descriptive analysis and model building steps.* 
 :::
 
-```{r mauc_ord_small, fig.width=7, fig.height=5, cache=TRUE}
+```{r mauc_ord_small, cache=TRUE}
 link <- "logit"
 mAUC <- AutoScore_parsimony_Ordinal(
   train_set = train_set, validation_set = validation_set, link = link,
   rank = ranking, max_score = 100, n_min = 1, n_max = 20,
   categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), 
-  auc_lim_min = 0
+  auc_lim_min = 0, auc_lim_max = "adaptive",
+  cross_validation = TRUE, fold = 10, do_trace = FALSE
 )
 ```
 
--   Determine the optimal number of variables (`num_var`) based on the parsimony plot obtained in STEP(ii).
--   The final list of variables is the first `num_var` variables in the ranked list `ranking` obtained in STEP(i).
--   Optional: User can adjust the finally included variables `final_variables` based on the clinical preferences and knowledge.
+::: callout-note
+- *Users could use `mAUC` for further analysis or export it to CSV to other software for plotting.*
+```{r, eval=FALSE}
+write.csv(data.frame(mAUC), file = "mAUC.csv")
+```
+:::
+
+- Determine the optimal number of variables (`num_var`) based on the parsimony
+plot obtained in STEP(ii).
+- The final list of variables is the first `num_var` variables in the ranked
+list `ranking` obtained in STEP(i).
+- Optional: User can adjust the finally included variables `final_variables`
+based on the clinical preferences and knowledge.
 
 ```{r}
 # Example 1: Top 6 variables are selected
@@ -345,8 +384,8 @@ final_variables <- names(ranking[1:num_var])
 num_var <- 14
 final_variables <- names(ranking[1:num_var])
 
-# Example 3: Top 3 variables, the 6th, 11th and 14th variable are selected
-final_variables <- names(ranking[c(1:3, 6, 11, 14)])
+# Example 3: Top 3 variables, the 6th, 10th and 15th variable are selected
+final_variables <- names(ranking[c(1:3, 6, 10, 15)])
 ```
 
 ### STEP(iii): Generate initial scores with final variables 
@@ -363,10 +402,9 @@ bootstrap and reports mAUC without CI.
 ```{r}
 cut_vec <- AutoScore_weighting_Ordinal(
   train_set = train_set, validation_set = validation_set, 
-  final_variables = final_variables, link = link,
-  max_score = 100,
-  categorize = "quantile",
-  quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), n_boot = 100
+  final_variables = final_variables, link = link, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), 
+  n_boot = 10
 )
 ```
 
@@ -374,9 +412,41 @@ cut_vec <- AutoScore_weighting_Ordinal(
 
 <p class="autoscore-module">AutoScore-Ordinal Module 5 & Re-run AutoScore-Ordinal Modules 2+3</p>
 
-Similar to the [large sample scenario](#fine-tune), users can fine-tune cutoff
-values for continuous variables, rerun AutoScore-Ordinal Modules 2+3 to generate
-the updated scores and assess model performance of the updated model using mAUC.
+-   Revise `cut_vec` with domain knowledge to update the scoring table
+(AutoScore-Ordinal Module 5).
+-   Re-run AutoScore-Ordinal Modules 2+3 to generate the updated scores.
+-   Users can choose any cutoff values and/or any number of categories, but are
+suggested to choose numbers close to the automatically determined values.
+
+```{r}
+## For example, we have current cutoffs of continuous variable: Age 
+## ==============  ===========  =====
+## variable        interval     point
+## ==============  ===========  =====
+## Age                 <27          0  
+##                     [27,46)      4  
+##                     [46,78)     14  
+##                     [78,87)     18 
+##                     >=87        21 
+```
+
+- Current cutoffs:`c(27, 46, 78, 87)`. We can fine tune the cutoffs as follows:
+
+```{r}
+# Example 1: rounding to a nice number
+cut_vec$Age <- c(25, 45, 75, 85)
+
+# Example 2: changing cutoffs according to clinical knowledge or preference 
+cut_vec$Age <- c(25, 50, 75, 85)
+
+# Example 3: combining categories
+cut_vec$Age <- c(45, 75, 85)
+```
+
+- mAUC and 95% bootstrap CI (Default: `n_boot = 100` bootstrap samples) are
+reported after fine-tuning.
+- Run time increases with larger `n_boot` value. Code below uses `n_boot = 10`
+for demonstration.
 
 ```{r}
 cut_vec$Util_D <- c(2 / 3, 4 / 3, 4, 6)
@@ -386,7 +456,7 @@ cut_vec$Vital_A <- c(60, 70, 95, 115)
 scoring_table <- AutoScore_fine_tuning_Ordinal(
   train_set = train_set, validation_set = validation_set, link = link,
   final_variables = final_variables, cut_vec = cut_vec, max_score = 100, 
-  n_boot = 100
+  n_boot = 10
 )
 ```
 
@@ -396,90 +466,76 @@ scoring_table <- AutoScore_fine_tuning_Ordinal(
 
 - mAUC and generalised c-index are reported for the test set, with 95% bootstrap
 CI (Default: `n_boot = 100` bootstrap samples).
+- Run time increases with larger `n_boot` value. Code below uses `n_boot = 10`
+for demonstration.
 
 ```{r}
 pred_score <- AutoScore_testing_Ordinal(
-  test_set = test_set, link = link,
-  final_variables = final_variables, cut_vec = cut_vec, 
-  scoring_table = scoring_table, 
-  with_label = TRUE, n_boot = 100
+  test_set = test_set, link = link, final_variables = final_variables, 
+  cut_vec = cut_vec, scoring_table = scoring_table, 
+  with_label = TRUE, n_boot = 10
 )
 head(pred_score)
 ```
 
-- Users can use `pred_score` for further analysis or save it as CSV to other software.
-
-```{r, eval=FALSE}
-write.csv(pred_score, file = "pred_score.csv")
-```
-
 ### Map score to risk
 
-- As illustrated in [Demo 1](#demo1-map), users can use `plot_predicted_risk()`
-and `conversion_table_ordinal()` functions to map score to risk.
+- Users can also map score to risk using `plot_predicted_risk()` and
+`conversion_table_ordinal()`. Please refer to [our demo for large
+sample](#demo1-map) for detail.
 
 ## Demo 3: data with missing values
 
 In Demo 3, we demonstrate AutoScore-Ordinal for application to data with missing
-values.
+values in two variables (i.e., `Lab_A` and `Vital_A`).
 
-### Load package and data
-
-```{r}
-library(AutoScore)
+```{r, include=FALSE}
 data("sample_data_ordinal")
-check_data_ordinal(sample_data_ordinal)
-```
-
-### Create informative missing
-
-- For demonstration, we manually induce missing to two variables in the [large
-sample](#demo1) (20% in `Lab_A` and 60% in `Vital_A`.), assuming values close to
-normal range (i.e., median value in the complete data) are more likely to be
-missing.
-- Such missing pattern is more common in laboratory tests and vital signs, where
-doctors may not choose to order a test if there is no reason to suspect
-deviation from normal range.
-
-```{r}
 sample_data_ordinal_missing <- AutoScore:::induce_informative_missing(
   df = sample_data_ordinal, vars_to_induce = c("Lab_A", "Vital_A"), 
   prop_missing = c(0.2, 0.6)
 )
 ```
 
-### AutoScore steps
+```{r, message=TRUE, warning=TRUE}
+check_data_ordinal(sample_data_ordinal_missing)
+```
 
-- Use the same code in [Demo 1](#demo1) to analyse large sample with missing.
-For illustrative purpose we repeat STEP(i)-(iii) below.
-- As shown below, such missingness pattern has little impact on variable ranking
-and cutoff values.
+AutoScore can automatically treat the missingness as a new category named
+`Unknown`. The following steps are the **same** as those in [Demo 1](#demo1).
 
-::: callout-note
+::: callout-important
 - *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
 :::
 
-```{r missing_ord, fig.width=7, fig.height=5, cache=TRUE}
+```{r missing_ord}
 set.seed(4)
-out_split <- split_data(data = sample_data_ordinal_missing, 
-                        ratio = c(0.7, 0.1, 0.2), strat_by_label = TRUE)
+out_split <- split_data(data = sample_data_ordinal_missing, ratio = c(0.7, 0.1, 0.2), 
+                        strat_by_label = TRUE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 
 link <- "logit"
+ranking <- AutoScore_rank_Ordinal(train_set = train_set, ntree = 100)
 mAUC <- AutoScore_parsimony_Ordinal(
   train_set = train_set, validation_set = validation_set, link = link,
   rank = ranking, max_score = 100, n_min = 1, n_max = 20,
   categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), 
   auc_lim_min = 0
 )
-final_variables <- names(ranking[c(1:3, 6, 11, 14)])
+```
+
+::: callout-note
+- *The `Unknown` category indicating the missingness will be displayed in the final scoring table.*
+:::
+
+```{r}
+final_variables <- names(ranking[c(1:3, 11, 14)])
 cut_vec <- AutoScore_weighting_Ordinal(
   train_set = train_set, validation_set = validation_set, 
-  final_variables = final_variables, link = link,
-  max_score = 100,
-  categorize = "quantile",
-  quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), n_boot = 100
+  final_variables = final_variables, link = link, max_score = 100,
+  categorize = "quantile", quantiles = c(0, 0.05, 0.2, 0.8, 0.95, 1), 
+  n_boot = 10
 )
 ```

@@ -5,8 +5,9 @@ opts_chunk$set(warning = FALSE, message = FALSE)
 
 # Descriptive analysis 
 
-Before building AutoScore models, users can utilize our package and codes below to do descriptive analysis (e.g., univariate analysis, multivariate analysis) for data with binary, survival, or ordinal outcomes.
-
+Before building AutoScore models, users can use our package and codes to conduct
+do descriptive analysis (e.g., univariable analysis, multivariable analysis) for
+data with binary, survival, or ordinal outcomes.
 
 ## Binary Outcome {#binary}
 
@@ -19,13 +20,17 @@ names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 compute_descriptive_table(sample_data)
 ```
 
-- Perform univariable analysis and generate the result table with odd ratios.
+- Perform univariable analysis and generate the result table with (unadjusted)
+odd ratios.
+
 ```{r}
 uni_table <- compute_uni_variable_table(sample_data)
 kable(uni_table)
 ```
 
-- Perform multivariable analysis and generate the result table with adjusted odd ratios.
+- Perform multivariable analysis and generate the result table with adjusted odd
+ratios.
+
 ```{r}
 multi_table <- compute_multi_variable_table(sample_data)
 kable(multi_table)
@@ -40,7 +45,8 @@ data("sample_data_survival")
 compute_descriptive_table(sample_data_survival)
 ```
 
-- Perform univariable analysis and generate the result table with hazard ratios.
+- Perform univariable analysis and generate the result table with (unadjusted) 
+hazard ratios.
 ```{r}
 uni_table_survival <- compute_uni_variable_table_survival(sample_data_survival)
 kable(uni_table_survival)
@@ -63,13 +69,13 @@ compute_descriptive_table(sample_data_ordinal)
 ```
 
 - Perform univariable analysis and generate the result table. 
-- By default the odds ratio from the commonly used proportional odds models are
-reported for `link = "logit"`. If other link functions are selected (i.e., 
-`"cloglog"` link corresponding to the proportional hazards model, or the 
-`"probit"` link), the exponentiated coefficients are reported.
+- By default the (unadjusted) odds ratio from the commonly used proportional
+odds models are reported for `link = "logit"`. If other link functions are
+selected (i.e., `"cloglog"` link corresponding to the proportional hazards
+model, or the `"probit"` link), the exponentiated coefficients are reported.
 
 ::: callout-important
-*Use the same link throughout descriptive analysis and model building steps.* 
+*Use the same `link` parameter throughout descriptive analysis and model building steps.* 
 :::
 
 ```{r}
@@ -78,8 +84,8 @@ uni_table_ordinal <- compute_uni_variable_table_ordinal(sample_data_ordinal, lin
 kable(uni_table_ordinal)
 ```
 
-- Perform multivariable analysis and generate the result table, with adjusted odd
-ratios from a proportional odds model by default.
+- Perform multivariable analysis and generate the result table, with adjusted
+odd ratios from a proportional odds model by default.
 
 ```{r}
 multi_table_ordinal <- compute_multi_variable_table_ordinal(sample_data_ordinal, link = link)
