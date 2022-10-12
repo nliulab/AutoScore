@@ -487,7 +487,7 @@ check_predictor <- function(data_predictor) {
   # Check for missing ----
   missing_rate <- colSums(is.na(data))
   if (sum(missing_rate) == 0) {
-    message(simpleMessage("No NA in data \n"))
+    message(simpleMessage("No NA in data. \n"))
   } else {
     n_missing <- missing_rate[which(missing_rate > 0)]
     tb_missing <- data.frame(
