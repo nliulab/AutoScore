@@ -9,7 +9,7 @@ Before building AutoScore models, users can use our package and codes to conduct
 do descriptive analysis (e.g., univariable analysis, multivariable analysis) for
 data with binary, survival, or ordinal outcomes.
 
-## Binary Outcome {#binary}
+## Binary outcome {#binary}
 
 - Compute descriptive table (usually Table 1 in medical literature) for the dataset.
 ```{r table one, warning = FALSE}
@@ -36,8 +36,7 @@ multi_table <- compute_multi_variable_table(sample_data)
 kable(multi_table)
 ```
 
-
-## Survival Outcome {#survival}
+## Survival outcome {#survival}
 
 - Compute descriptive table (usually Table 1 in medical literature) for the data with survival outcome
 ```{r, warning = FALSE}
@@ -58,8 +57,7 @@ multi_table_survival <- compute_multi_variable_table_survival(sample_data_surviv
 kable(multi_table_survival)
 ```
 
-
-## Ordinal Outcome {#ordinal}
+## Ordinal outcome {#ordinal}
 
 - Compute descriptive table (usually Table 1 in medical literature) for the dataset.
 

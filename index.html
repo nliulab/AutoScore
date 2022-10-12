@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Feng Xie, Yilin Ning, Han Yuan, Mingxuan Liu, Seyed Ehsan Saffari, Siqi Li, Bibhas Chakraborty, Nan Liu">
-<meta name="dcterms.date" content="2022-10-12">
+<meta name="dcterms.date" content="2022-10-13">
 
 <title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator</title>
 <style>
@@ -161,7 +161,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">AutoScore Introduction</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">AutoScore introduction</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -203,14 +203,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#autoscore-introduction" id="toc-autoscore-introduction" class="nav-link active" data-scroll-target="#autoscore-introduction">AutoScore Introduction</a>
+  <li><a href="#autoscore-introduction" id="toc-autoscore-introduction" class="nav-link active" data-scroll-target="#autoscore-introduction">AutoScore introduction</a>
   <ul class="collapse">
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
-  <li><a href="#autoscore-package-installation" id="toc-autoscore-package-installation" class="nav-link" data-scroll-target="#autoscore-package-installation">AutoScore Package Installation</a></li>
+  <li><a href="#autoscore-package-installation" id="toc-autoscore-package-installation" class="nav-link" data-scroll-target="#autoscore-package-installation">AutoScore package installation</a></li>
   <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a>
   <ul class="collapse">
-  <li><a href="#core-paper" id="toc-core-paper" class="nav-link" data-scroll-target="#core-paper">Core Paper</a></li>
-  <li><a href="#method-extensions" id="toc-method-extensions" class="nav-link" data-scroll-target="#method-extensions">Method Extensions</a></li>
+  <li><a href="#core-paper" id="toc-core-paper" class="nav-link" data-scroll-target="#core-paper">Core paper</a></li>
+  <li><a href="#method-extensions" id="toc-method-extensions" class="nav-link" data-scroll-target="#method-extensions">Method extensions</a></li>
   </ul></li>
   <li><a href="#contact" id="toc-contact" class="nav-link" data-scroll-target="#contact">Contact</a></li>
   </ul></li>
@@ -239,7 +239,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-10-12</p>
+      <p class="date">2022-10-13</p>
     </div>
   </div>
     
@@ -249,8 +249,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <section id="autoscore-introduction" class="level1 unnumbered">
-<h1 class="unnumbered">AutoScore Introduction</h1>
-<p>AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in the article (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>) and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to survival outcomes (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>) and ordinal outcomes (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>). AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner.</p>
+<h1 class="unnumbered">AutoScore introduction</h1>
+<p>AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in <a href="http://dx.doi.org/10.2196/21798">this article</a> and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to <a href="http://dx.doi.org/10.1016/j.jbi.2021.103959">survival outcomes</a> and <a href="https://doi.org/10.48550/arxiv.2202.08407">ordinal outcomes</a>. AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner.</p>
 <div class="figure" style="text-align: center">
 <p><img src="Figure1.png" width="70%"></p>
 </div>
@@ -268,7 +268,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We also include several functions in the package, which could help with data analysis and result reporting. As demonstrated in <a href="./02-desc_analysis.html#top">Chapter 3</a>, these functions are <code>compute_descriptive_table()</code> for generating the table of descriptive analysis for your dataset, <code>compute_uni_variable_table()</code> or <code>compute_uni_variable_table_survival()</code> or <code>compute_uni_variable_table_ordinal()</code> for creating the table of univariable analysis for your dataset, and <code>compute_multi_variable_table()</code> for generating the table of multivariable analysis for your dataset.</p>
 </section>
 <section id="autoscore-package-installation" class="level2">
-<h2 class="anchored" data-anchor-id="autoscore-package-installation">AutoScore Package Installation</h2>
+<h2 class="anchored" data-anchor-id="autoscore-package-installation">AutoScore package installation</h2>
 <p>Install from GitHub or CRAN：</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From Github</span></span>
@@ -287,17 +287,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="citation" class="level2">
 <h2 class="anchored" data-anchor-id="citation">Citation</h2>
 <section id="core-paper" class="level3">
-<h3 class="anchored" data-anchor-id="core-paper">Core Paper</h3>
+<h3 class="anchored" data-anchor-id="core-paper">Core paper</h3>
 <ul>
-<li>Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records. <em>JMIR Medical Informatics</em> 2020;8(10):e21798 (<a href="http://dx.doi.org/10.2196/21798" class="uri">http://dx.doi.org/10.2196/21798</a>)</li>
+<li>Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. <a href="http://dx.doi.org/10.2196/21798">AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records</a>. JMIR Medical Informatics 2020; 8(10): e21798.</li>
 </ul>
 </section>
 <section id="method-extensions" class="level3">
-<h3 class="anchored" data-anchor-id="method-extensions">Method Extensions</h3>
+<h3 class="anchored" data-anchor-id="method-extensions">Method extensions</h3>
 <ul>
-<li><p>Xie F, Ning Y, Yuan H, Goldstein BA, Ong ME, Liu N, Chakraborty B. AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data. <em>Journal of Biomedical Informatics</em> 2022;125:103959. (<a href="http://dx.doi.org/10.1016/j.jbi.2021.103959" class="uri">http://dx.doi.org/10.1016/j.jbi.2021.103959</a>)</p></li>
-<li><p>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes. <em>arXiv</em> arXiv:2202.08407 (<a href="https://doi.org/10.48550/arxiv.2202.08407" class="uri">https://doi.org/10.48550/arxiv.2202.08407</a>)</p></li>
-<li><p>Ning Y, Li S, Ong MEH, Xie F, Chakraborty B, Ting DSW, Liu N. A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study, <em>PLOS Digital Health</em> 1(6): e0000062 (<a href="https://doi.org/10.1371/journal.pdig.0000062" class="uri">https://doi.org/10.1371/journal.pdig.0000062</a>).</p></li>
+<li><p>Xie F, Ning Y, Yuan H, Goldstein BA, Ong MEH, Liu N, Chakraborty B. <a href="http://dx.doi.org/10.1016/j.jbi.2021.103959">AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data</a>. Journal of Biomedical Informatics 2022; 125: 103959.</p></li>
+<li><p>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, <a href="https://doi.org/10.48550/arxiv.2202.08407">AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes</a>, arXiv:2202.08407.</p></li>
+<li><p>Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. <a href="https://doi.org/10.1371/journal.pdig.0000062">A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study</a>. PLOS Digit Health 2022; 1(6): e0000062.</p></li>
 </ul>
 </section>
 </section>

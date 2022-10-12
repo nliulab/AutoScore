@@ -26,11 +26,7 @@ and small datasets and with missing information.
 
 Citation for AutoScore-Survival:
 
-- Xie F, Ning Y, Yuan H, Goldstein BA, Ong ME, Liu N, Chakraborty B.
-AutoScore-Survival: Developing interpretable machine learning-based
-time-to-event scores with right-censored survival data. 
-*Journal of Biomedical Informatics* 2022;125:103959. 
-(<http://dx.doi.org/10.1016/j.jbi.2021.103959>)
+* Xie F, Ning Y, Yuan H, Goldstein BA, Ong MEH, Liu N, Chakraborty B. [AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data](http://dx.doi.org/10.1016/j.jbi.2021.103959). Journal of Biomedical Informatics 2022; 125: 103959.
 
 ## Demo 1: large sample {#demo1}
 
@@ -66,7 +62,7 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-### STEP(i): Generate variable ranking list
+### STEP(i): generate variable ranking list
 
 <p class="autoscore-module">AutoScore-Survival Modules 1</p>
 
@@ -78,7 +74,7 @@ test_set <- out_split$test_set
 ranking <- AutoScore_rank_Survival(train_set = train_set, ntree = 5)
 ```
 
-### STEP(ii): Select variables with parsimony plot 
+### STEP(ii): select variables with parsimony plot 
 
 <p class="autoscore-module">AutoScore-Survival Modules 2+3+4</p>
 
@@ -138,7 +134,7 @@ num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with final variables
+### STEP(iii): generate initial scores with final variables
 
 <p class="autoscore-module">Re-run AutoScore-Survival Modules 2+3</p>
 
@@ -155,7 +151,7 @@ cut_vec <- AutoScore_weighting_Survival(
 )
 ```
 
-### STEP(iv): Fine-tune initial score from STEP(iii) 
+### STEP(iv): fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore-Survival Module 5 & Re-run AutoScore-Survival Modules 2+3</p>
 
@@ -204,7 +200,7 @@ scoring_table <- AutoScore_fine_tuning_Survival(
 )
 ```
 
-### STEP(v): Evaluate final risk scores on test dataset
+### STEP(v): evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore-Survival Module 6</p>
 
@@ -289,7 +285,7 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-### STEP(i): Generate variable ranking list
+### STEP(i): generate variable ranking list
 
 <p class="autoscore-module">AutoScore-Survival Modules 1</p>
 
@@ -301,7 +297,7 @@ test_set <- out_split$test_set
 ranking <- AutoScore_rank_Survival(train_set = train_set, ntree = 5)
 ```
 
-### STEP(ii): Select the best model with parsimony plot 
+### STEP(ii): select the best model with parsimony plot 
 
 <p class="autoscore-module">AutoScore-Survival Modules 2+3+4/p>
 
@@ -368,7 +364,7 @@ num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with final variables 
+### STEP(iii): generate initial scores with final variables 
 
 <p class="autoscore-module">Re-run AutoScore-Survival Modules 2+3</p>
 
@@ -385,7 +381,7 @@ cut_vec <- AutoScore_weighting_Survival(
 )
 ```
 
-### STEP(iv): Fine-tune initial score from STEP(iii) 
+### STEP(iv): fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore-Survival Module 5 & Re-run AutoScore-Survival Modules 2+3</p>
 
@@ -434,7 +430,7 @@ scoring_table <- AutoScore_fine_tuning_Survival(
 )
 ```
 
-### STEP(v): Evaluate final risk scores on test dataset
+### STEP(v): evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore-Survival Module 6</p>
 
@@ -460,7 +456,7 @@ head(pred_score)
 
 - Users can also generate conversion table using `conversion_table_survival()`, 
 and Kaplan-Meier curve using `plot_survival_km()`. Please refer to 
-[our demo for large sample](#score-to-risk) for detail.
+[our demo for large sample (5.1.6)](#score-to-risk) for detail.
 
 ## Demo 3: data with missing values {#demo3}
 
@@ -480,7 +476,7 @@ check_data_survival(sample_data_survival_missing)
 ```
 
 AutoScore can automatically treat the missingness as a new category named
-`Unknown`. The following steps are the **same** as those in [Demo 1](#demo1).
+`Unknown`. The following steps are the **same** as those in [Demo 1 (5.1)](#demo1).
 
 ::: callout-important
 - *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
@@ -488,7 +484,7 @@ AutoScore can automatically treat the missingness as a new category named
 
 ```{r}
 set.seed(4)
-out_split <- split_data(data = sample_data_survival, ratio = c(0.7, 0.1, 0.2))
+out_split <- split_data(data = sample_data_survival_missing, ratio = c(0.7, 0.1, 0.2))
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set

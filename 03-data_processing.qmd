@@ -83,7 +83,7 @@ imputation methods.
 *In either way, imputation or treating as a new category, variables with high missing rate (e.g., >80%) may reduce model stability and should be analysed with caution.* 
 :::
 
-### Optional Operations
+### Optional operations
 
 - Check variable distribution.
 - Handle outliers. The raw data may contain outliers caused by system errors

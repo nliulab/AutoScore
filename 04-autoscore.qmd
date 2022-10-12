@@ -18,10 +18,7 @@ as with missing data.
 
 Citation for original AutoScore:
 
-- Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. AutoScore: A machine
-learning-based automatic clinical score generator and its application to
-mortality prediction using electronic health records. *JMIR Medical Informatics*
-2020;8(10):e21798 (<http://dx.doi.org/10.2196/21798>)
+* Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. [AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records](http://dx.doi.org/10.2196/21798). JMIR Medical Informatics 2020; 8(10): e21798.
 
 ## Demo 1: large sample 
 
@@ -56,7 +53,7 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-### STEP(i): Generate variable ranking list {#demo1}
+### STEP(i): generate variable ranking list {#demo1}
 
 <p class="autoscore-module">AutoScore Module 1</p>
 
@@ -92,7 +89,7 @@ ranking <- ranking_temp
 
 :::
 
-### STEP(ii): Select variables with parsimony plot 
+### STEP(ii): select variables with parsimony plot 
 
 <p class="autoscore-module">AutoScore Modules 2+3+4</p>
 
@@ -152,7 +149,7 @@ num_var <- 6
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with final variables {#model}
+### STEP(iii): generate initial scores with final variables {#model}
 
 <p class="autoscore-module">Re-run AutoScore Modules 2+3</p>
 
@@ -167,7 +164,7 @@ cut_vec <- AutoScore_weighting(
 )
 ```
 
-### STEP(iv): Fine-tune initial score from STEP(iii) 
+### STEP(iv): fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore Module 5 & Re-run AutoScore Modules 2+3</p>
 
@@ -217,7 +214,7 @@ scoring_table <- AutoScore_fine_tuning(
 )
 ```
 
-### STEP(v): Evaluate final risk scores on test dataset
+### STEP(v): evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore Module 6</p>
 
@@ -317,7 +314,7 @@ validation_set <- out_split$validation_set
 test_set <- out_split$test_set
 ```
 
-### STEP(i): Generate variable ranking list
+### STEP(i): generate variable ranking list
 
 <p class="autoscore-module">AutoScore Module 1</p>
 
@@ -353,7 +350,7 @@ ranking <- ranking_temp
 
 :::
 
-### STEP(ii): Select variables with parsimony plot
+### STEP(ii): select variables with parsimony plot
 
 <p class="autoscore-module">AutoScore Modules 2+3+4</p>
 
@@ -420,7 +417,7 @@ num_var <- 5
 final_variables <- names(ranking[1:num_var])
 ```
 
-### STEP(iii): Generate initial scores with final variables 
+### STEP(iii): generate initial scores with final variables 
 
 <p class="autoscore-module">Re-run AutoScore Modules 2+3</p>
 
@@ -435,7 +432,7 @@ cut_vec <- AutoScore_weighting(
 )
 ```
 
-### STEP(iv): Fine-tune initial score from STEP(iii) 
+### STEP(iv): fine-tune initial score from STEP(iii) 
 
 <p class="autoscore-module">AutoScore Module 5 & Re-run AutoScore Modules 2+3</p>
 
@@ -485,7 +482,7 @@ scoring_table <- AutoScore_fine_tuning(
 )
 ```
 
-### STEP(v): Evaluate final risk scores on test dataset
+### STEP(v): evaluate final risk scores on test dataset
 
 <p class="autoscore-module">AutoScore Module 6</p>
 
@@ -514,7 +511,7 @@ print_roc_performance(pred_score$Label, pred_score$pred_score, threshold = 90)
 ### Map score to risk 
 
 - Users can also generate conversion table using `conversion_table()`. Please 
-refer to [our demo for large sample](#score-to-risk) for detail.
+refer to [our demo for large sample (4.1.6)](#score-to-risk) for detail.
 
 ## Demo 3: data with missing values {#demo3}
 
@@ -536,7 +533,7 @@ check_data(sample_data_missing)
 ```
 
 AutoScore can automatically treat the missingness as a new category named
-`Unknown`. The following steps are the **same** as those in [Demo 1](#demo1).
+`Unknown`. The following steps are the **same** as those in [Demo 1 (4.1)](#demo1).
 
 ::: callout-important
 - *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*

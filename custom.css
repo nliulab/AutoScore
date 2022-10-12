@@ -51,3 +51,8 @@ https://quarto.org/docs/authoring/article-layout.html
 .p-h3 {
   font-size: calc(1.275rem + 0.3vw);
 }
+
+/* reduce table font size */
+table, .table{
+  font-size: 12pt;
+}
