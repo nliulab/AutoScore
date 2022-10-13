@@ -33,19 +33,18 @@ A collection of clinical applications using [**AutoScore**](https://nliulab.gith
 
 ### Emergency medicine
 
-* Xie F, Ong MEH, Liew JNMH, Tan KBK, Ho AFW, Nadarajan GD, Low LL, Kwan YH, Goldstein BA, Matchar DB, Chakraborty B, Liu N. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
+* Xie F, Ong MEH, Liew JNMH, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
 * Xie F, Liu N*, Yan L, Ning Y, Lim KK, Gong C, Ho AFW, Low LL, Chakraborty B, Ong MEH. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
 
 ### Neurology
 
-* Petersen KK, et al. [Predicting Amyloid Positivity in Cognitively Unimpaired Older Adults: A Machine Learning Approach Using the A4 Data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr.
+* Petersen KK, Lipton RB, Grober E, et al. [Predicting Amyloid Positivity in Cognitively Unimpaired Older Adults: A Machine Learning Approach Using the A4 Data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr.
 
 ### Out-of-hospital cardiac arrest
 
-* Wong XY, Ang YK, Li K, Chin YH, Lam SSW, Tan KBK, Chua MCH, Ong MEH, Liu N, Pourghaderi AR, Ho AFW. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
-* Liu N, Liu M, Chen X, Ning Y, Lee JW, Siddiqui FJ, Saffari SE, Matthew M, Shin SD, Tanaka, Ho AFW, Ong MEH. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
+* Wong XY, Ang YK, Li K, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
+* Liu N, Liu M, Chen X, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
 
 ### Renal medicine
 
-* Ang Y, Li S, Ong MEH, Xie F, Teo SH, Choong L, Koniman R, Chakraborty B, Ho AFW, Liu N. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
-
+* Ang Y, Li S, Ong MEH, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
