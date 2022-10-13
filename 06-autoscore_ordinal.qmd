@@ -484,6 +484,7 @@ sample (6.1.6)](#demo1-map) for detail.
 ## Demo 3: data with missing values
 
 ```{r, include=FALSE}
+set.seed(4)
 data("sample_data_ordinal")
 vars_missing <- c("Vital_A", "Vital_B")
 sample_data_ordinal_missing <- AutoScore:::induce_informative_missing(

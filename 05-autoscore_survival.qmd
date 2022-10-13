@@ -462,6 +462,7 @@ and Kaplan-Meier curve using `plot_survival_km()`. Please refer to
 
 
 ```{r, include=FALSE}
+set.seed(4)
 data("sample_data_survival")
 vars_missing <- names(sample_data_survival)[1:2]
 sample_data_survival_missing <- AutoScore:::induce_informative_missing(

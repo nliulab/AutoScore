@@ -1143,14 +1143,14 @@ Trees Grown:       5,    Time Remaining (sec):       0
 
 
 The ranking based on variable importance was shown below for each variable: 
-    Vital_E         Age       Lab_H       Lab_K     Vital_A       Lab_B 
-0.172183527 0.156303423 0.153288717 0.143596333 0.061927466 0.046668249 
-    Vital_C       Lab_G     Vital_D       Lab_M       Lab_C       Lab_J 
-0.034486107 0.027956087 0.020831834 0.018029869 0.017762933 0.014800266 
-      Lab_E     Vital_B       Lab_F       Lab_I       Lab_A       Lab_L 
-0.014437534 0.014338354 0.011371402 0.009221126 0.008565023 0.007860810 
-    Vital_F       Lab_D     Vital_G 
-0.007073654 0.007046679 0.004359652 </code></pre>
+      Lab_H     Vital_E         Age       Lab_K     Vital_A       Lab_B 
+0.189048035 0.153815166 0.148410072 0.113510258 0.052494936 0.039331535 
+      Lab_G     Vital_C     Vital_B       Lab_M       Lab_C       Lab_J 
+0.027740318 0.020009762 0.019397757 0.017821924 0.012899126 0.011615832 
+      Lab_E     Vital_D     Vital_G       Lab_L     Vital_F       Lab_A 
+0.010927125 0.008761049 0.008098151 0.007862010 0.007065528 0.006657491 
+      Lab_D       Lab_I       Lab_F 
+0.006350121 0.006320267 0.005267076 </code></pre>
 </div>
 <div class="cell-output-display">
 <p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
@@ -1162,26 +1162,26 @@ The ranking based on variable importance was shown below for each variable:
 <span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
 <span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Select 1 Variable(s):  0.6651428 
-Select 2 Variable(s):  0.7453079 
+<pre><code>Select 1 Variable(s):  0.6702443 
+Select 2 Variable(s):  0.7474401 
 Select 3 Variable(s):  0.8111006 
 Select 4 Variable(s):  0.8416833 
-Select 5 Variable(s):  0.8655618 
-Select 6 Variable(s):  0.8762291 
-Select 7 Variable(s):  0.8833062 
-Select 8 Variable(s):  0.8842532 
-Select 9 Variable(s):  0.8845616 
-Select 10 Variable(s):  0.8873212 
-Select 11 Variable(s):  0.8871904 
-Select 12 Variable(s):  0.8896801 
-Select 13 Variable(s):  0.888737 
-Select 14 Variable(s):  0.8905294 
-Select 15 Variable(s):  0.8909928 
-Select 16 Variable(s):  0.8960207 
-Select 17 Variable(s):  0.8961333 
-Select 18 Variable(s):  0.8967676 
-Select 19 Variable(s):  0.8955097 
-Select 20 Variable(s):  0.8953185 </code></pre>
+Select 5 Variable(s):  0.8638688 
+Select 6 Variable(s):  0.874965 
+Select 7 Variable(s):  0.8787852 
+Select 8 Variable(s):  0.8818598 
+Select 9 Variable(s):  0.8830868 
+Select 10 Variable(s):  0.8882672 
+Select 11 Variable(s):  0.8883038 
+Select 12 Variable(s):  0.8918071 
+Select 13 Variable(s):  0.8909669 
+Select 14 Variable(s):  0.8920578 
+Select 15 Variable(s):  0.8908901 
+Select 16 Variable(s):  0.891204 
+Select 17 Variable(s):  0.8909822 
+Select 18 Variable(s):  0.890646 
+Select 19 Variable(s):  0.8912008 
+Select 20 Variable(s):  0.8946074 </code></pre>
 </div>
 <div class="cell-output-display">
 <p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid" width="672"></p>
@@ -1213,9 +1213,9 @@ Note
 <div class="cell-output cell-output-stdout">
 <pre><code>****Included Variables: 
   variable_name
-1       Vital_E
-2           Age
-3         Lab_H
+1         Lab_H
+2       Vital_E
+3           Age
 4         Lab_K
 5       Vital_A
 6         Lab_B
@@ -1225,53 +1225,53 @@ Note
 ========  ==========  =====
 variable  interval    point
 ========  ==========  =====
+Lab_H     &lt;0.2          0  
+          [0.2,1.1)     4  
+          [1.1,3.1)     8  
+          [3.1,4)      14  
+          &gt;=4          18  
+                           
 Vital_E   &lt;12           0  
           [12,15)       4  
           [15,22)      10  
-          [22,25)      14  
-          &gt;=25         18  
+          [22,25)      16  
+          &gt;=25         20  
                            
 Age       &lt;35           0  
-          [35,49)       4  
+          [35,49)       6  
           [49,76)      12  
-          [76,89)      18  
+          [76,89)      20  
           &gt;=89         24  
                            
-Lab_H     &lt;0.2          0  
-          [0.2,1.1)     2  
-          [1.1,3.1)     8  
-          [3.1,4)      12  
-          &gt;=4          18  
-                           
 Lab_K     &lt;8            0  
-          [8,42)        4  
+          [8,42)        6  
           [42,58)      10  
           &gt;=58         12  
                            
 Vital_A   &lt;59           0  
           [59,70)       2  
-          [70,100)      6  
-          [100,112)    10  
+          [70,100)      8  
+          [100,112)    12  
           &gt;=113        14  
-          Unknown       6  
+          Unknown       8  
                            
 Lab_B     &lt;8.5          0  
           [8.5,11.2)    4  
-          [11.2,17)     6  
+          [11.2,17)     8  
           [17,19.8)    10  
-          &gt;=19.8       12  
+          &gt;=19.8       14  
 ========  ==========  =====
-Integrated AUC by all time points: 0.8762291
-C_index:  0.7838144 
+Integrated AUC by all time points: 0.874965
+C_index:  0.7833611 
 The AUC(t) are shown as bwlow:
   time_point     AUC_t
-1          1 0.0005000
+1          1 0.0002500
 2          3 1.0000000
-3          7 0.9943011
-4         14 0.9848241
-5         30 0.9459621
-6         60 0.8707148
-7         90 0.8599146
+3          7 0.9939254
+4         14 0.9874121
+5         30 0.9424219
+6         60 0.8702307
+7         90 0.8605016
 ***The cutoffs of each variable generated by the AutoScore are saved in cut_vec. You can decide whether to revise or fine-tune them </code></pre>
 </div>
 </div>
