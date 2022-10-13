@@ -18,7 +18,7 @@
 
 * Yuan H, Xie F, Ong MEH, Ning Y, Chee ML, Saffari SE, Abdullah HR, Goldstein BA, Chakraborty B, Liu N. [AutoScore-Imbalance: An interpretable machine learning tool for development of clinical scores with rare events data](https://doi.org/10.1016/j.jbi.2022.104072). Journal of Biomedical Informatics 2022; 129: 104072.
 
-### Integrated AutoScore-ShapleyVIC framework for robust variable ranking
+### AutoScore-ShapleyVIC framework for robust variable ranking
 
 * Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digit Health 2022; 1(6): e0000062.
 
