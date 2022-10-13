@@ -34,7 +34,7 @@ A collection of clinical applications using [**AutoScore**](https://nliulab.gith
 ### Emergency medicine
 
 * Xie F, Ong MEH, Liew JNMH, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
-* Xie F, Liu N*, Yan L, Ning Y, Lim KK, Gong C, Ho AFW, Low LL, Chakraborty B, Ong MEH. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
+* Xie F, Liu N, Yan L, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
 
 ### Neurology
 
