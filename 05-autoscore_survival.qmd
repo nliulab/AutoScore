@@ -460,16 +460,17 @@ and Kaplan-Meier curve using `plot_survival_km()`. Please refer to
 
 ## Demo 3: data with missing values {#demo3}
 
-In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values in two variables (i.e., 
-`r paste(names(sample_data)[1:2], sep = " and ")`). 
 
 ```{r, include=FALSE}
 data("sample_data_survival")
+vars_missing <- names(sample_data_survival)[1:2]
 sample_data_survival_missing <- AutoScore:::induce_informative_missing(
-  sample_data_survival, vars_to_induce = names(sample_data_survival)[1:2], 
+  sample_data_survival, vars_to_induce = vars_missing, 
   prop_missing = c(0.2, 0.6)
 )
 ```
+
+In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values in two variables (i.e., `r paste(vars_missing, sep = " and ")`). 
 
 ```{r, message=TRUE}
 check_data_survival(sample_data_survival_missing)

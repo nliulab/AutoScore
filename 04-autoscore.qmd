@@ -515,18 +515,18 @@ refer to [our demo for large sample (4.1.6)](#score-to-risk) for detail.
 
 ## Demo 3: data with missing values {#demo3}
 
-In Demo 3, we demonstrate the use of AutoScore on a simulated dataset with
-missing values in two variables (i.e., 
-`r paste(names(sample_data)[1:2], sep = " and ")`). 
-
 ```{r, include=FALSE}
 data("sample_data")
+vars_missing <- names(sample_data)[1:2]
 names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 sample_data_missing <- AutoScore:::induce_informative_missing(
-  sample_data, vars_to_induce = names(sample_data)[1:2], 
+  sample_data, vars_to_induce = vars_missing, 
   prop_missing = c(0.2, 0.6)
 )
 ```
+
+In Demo 3, we demonstrate the use of AutoScore on a simulated dataset with
+missing values in two variables (i.e., `r paste(vars_missing, sep = " and ")`). 
 
 ```{r}
 check_data(sample_data_missing)

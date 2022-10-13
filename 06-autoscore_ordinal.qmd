@@ -35,9 +35,9 @@ observations using split-sample approach (i.e., to randomly divide the full
 dataset into training, validation and test sets) for model development.
 
 ::: callout-important
-*- Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top)
+- *Before proceeding, follow the steps in [Chapter 2](03-data_processing.qmd#top)
 to ensure all data requirements are met.*
-*- Refer to [Chapter 3](02-desc_analysis.qmd#ordinal) for how to generate simple
+- *Refer to [Chapter 3](02-desc_analysis.qmd#ordinal) for how to generate simple
 descriptive statistics before building prediction models.*
 :::
 
@@ -483,23 +483,24 @@ sample (6.1.6)](#demo1-map) for detail.
 
 ## Demo 3: data with missing values
 
-In Demo 3, we demonstrate AutoScore-Ordinal for application to data with missing
-values in two variables (i.e., `Lab_A` and `Vital_A`).
-
 ```{r, include=FALSE}
 data("sample_data_ordinal")
+vars_missing <- c("Vital_A", "Vital_B")
 sample_data_ordinal_missing <- AutoScore:::induce_informative_missing(
-  df = sample_data_ordinal, vars_to_induce = c("Lab_A", "Vital_A"), 
+  df = sample_data_ordinal, vars_to_induce = vars_missing, 
   prop_missing = c(0.2, 0.6)
 )
 ```
+
+In Demo 3, we demonstrate AutoScore-Ordinal for application to data with missing
+values in two variables (i.e., `r paste(vars_missing, sep = " and ")`).
 
 ```{r, message=TRUE, warning=TRUE}
 check_data_ordinal(sample_data_ordinal_missing)
 ```
 
 AutoScore can automatically treat the missingness as a new category named
-`Unknown`. The following steps are the **same** as those in [Demo 1  (5.1)](#demo1).
+`Unknown`. The following steps are the **same** as those in [Demo 1  (6.1)](#demo1).
 
 ::: callout-important
 - *High missing rate may cause the variable ranking less reliable, and thus, caution is needed for variable selection using parsimony plot.*
@@ -528,7 +529,7 @@ mAUC <- AutoScore_parsimony_Ordinal(
 :::
 
 ```{r}
-final_variables <- names(ranking[c(1:3, 11, 14)])
+final_variables <- names(ranking[c(1:6)])
 cut_vec <- AutoScore_weighting_Ordinal(
   train_set = train_set, validation_set = validation_set, 
   final_variables = final_variables, link = link, max_score = 100,
