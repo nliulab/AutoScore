@@ -26,10 +26,10 @@
 
 A collection of clinical applications using [**AutoScore**](https://nliulab.github.io/AutoScore/) and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
 
-- [Emergency Medicine](#emergency-medicine)
+- [Emergency medicine](#emergency-medicine)
 - [Neurology](#neurology)
-- [Out-of-Hospital Cardiac Arrest](#out-of-hospital-cardiac-arrest)
-- [Renal Medicine](#renal-medicine)
+- [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
+- [Renal medicine](#renal-medicine)
 
 ### Emergency medicine
 
