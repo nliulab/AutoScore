@@ -38,7 +38,7 @@ A collection of clinical applications using [**AutoScore**](https://nliulab.gith
 
 ### Neurology
 
-* Petersen KK, Lipton RB, Grober E, et al. [Predicting Amyloid Positivity in Cognitively Unimpaired Older Adults: A Machine Learning Approach Using the A4 Data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr.
+* Petersen KK, Lipton RB, Grober E, et al. [Predicting amyloid positivity in cognitively unimpaired older adults: A machine learning approach using the A4 data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr; 98(24): e2425-e2435.
 
 ### Out-of-hospital cardiac arrest
 
