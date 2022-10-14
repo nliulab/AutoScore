@@ -130,7 +130,6 @@ AutoScore_parsimony_Ordinal <- function(train_set, validation_set, rank,
 
       # Go through AutoScore-Ordinal Module 2/3/4 in the loop
       mauc <- unlist(lapply(n_min:n_max, function(i) {
-        cat("Select", i, "variables:  ")
         variable_list <- names(rank)[1:i]
         train_set_1 <- train_set_tmp[, c(variable_list, "label")]
         validation_set_1 <- validation_set_temp[, c(variable_list, "label")]
@@ -163,8 +162,8 @@ AutoScore_parsimony_Ordinal <- function(train_set, validation_set, rank,
     # finish loop and then output final results averaged by all folds
     auc_set$rep.0..n_max...n_min...1. <- NULL
     auc_set$sum <- rowSums(auc_set) / fold
-    cat("list of fianl Mean AUC values through cross validation are shown below")
-    print(data.frame(mAUC = auc_set$sum))
+    cat("***list of fianl Mean AUC values through cross validation are shown below \n")
+    print(data.frame(auc_set$sum))
     plot(plot_auc(AUC = auc_set$sum, variables = names(rank)[n_min:n_max],
                   num = n_min:n_max,
                   auc_lim_min = auc_lim_min, auc_lim_max = auc_lim_max,
