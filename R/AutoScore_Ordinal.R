@@ -142,7 +142,6 @@ AutoScore_parsimony_Ordinal <- function(train_set, validation_set, rank,
                                          quantiles = quantiles,
                                          max_cluster = max_cluster,
                                          max_score = max_score)
-        cat("Mean area under the curve:", model_auc, "\n")
         model_auc
       }))
       # plot parsimony plot for each fold
@@ -401,7 +400,7 @@ check_data_ordinal <- function(data) {
 #' @examples
 #' data("sample_data_ordinal")
 #' # Using just a few variables to demonstrate usage:
-#' uni_table<-compute_uni_variable_table_ordinal(sample_data_ordinal[, 1:6])
+#' uni_table<-compute_uni_variable_table_ordinal(sample_data_ordinal[, 1:3])
 #' @importFrom ordinal clm
 #' @export
 compute_uni_variable_table_ordinal <- function(df, link = "logit", n_digits = 3) {
@@ -425,7 +424,7 @@ compute_uni_variable_table_ordinal <- function(df, link = "logit", n_digits = 3)
 #' @examples
 #' data("sample_data_ordinal")
 #' # Using just a few variables to demonstrate usage:
-#' multi_table<-compute_multi_variable_table_ordinal(sample_data_ordinal[, 1:6])
+#' multi_table<-compute_multi_variable_table_ordinal(sample_data_ordinal[, 1:3])
 #' @importFrom ordinal clm
 #' @export
 compute_multi_variable_table_ordinal <- function(df, link = "logit", n_digits = 3) {
