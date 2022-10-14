@@ -1,6 +1,6 @@
 # AutoScore-Related Papers
 
-## AutoScore original paper
+## AutoScore core paper
 
 * Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. [AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records](http://dx.doi.org/10.2196/21798). JMIR Medical Informatics 2020; 8(10): e21798.
 
