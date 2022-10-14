@@ -381,8 +381,8 @@ final_variables <- names(ranking[1:num_var])
 num_var <- 14
 final_variables <- names(ranking[1:num_var])
 
-# Example 3: Top 3 variables, the 6th, 10th and 15th variable are selected
-final_variables <- names(ranking[c(1:3, 6, 10, 15)])
+# Example 3: Top 3 variables, the 10th and 15th variable are selected
+final_variables <- names(ranking[c(1:3, 10, 15)])
 ```
 
 ### STEP(iii): generate initial scores with final variables 
