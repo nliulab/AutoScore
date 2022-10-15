@@ -14,7 +14,8 @@ Score Generator
 
 AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in [this article](http://dx.doi.org/10.2196/21798) and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to [survival outcomes](http://dx.doi.org/10.1016/j.jbi.2021.103959) and [ordinal outcomes](https://doi.org/10.48550/arxiv.2202.08407). AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner. 
 
-**Please go to our [bookdown page](https://nliulab.github.io/AutoScore/) for a full tutorial on AutoScore usage.**
+> ### Please go to our [bookdown page](https://nliulab.github.io/AutoScore/) for a full tutorial on AutoScore usage.
+
 
 ## Usage
 
@@ -45,10 +46,8 @@ fine-tuning the cutoffs in variable transformation):
     `AutoScore_testing_Ordinal()` - Evaluate the final score with ROC
     analysis (AutoScore Module 6)
 
-We also include several optional functions in the package, which could
-help with data analysis and result reporting.
+We also include several optional functions in the package, which could help with data analysis and result reporting.
 
-Please go to our [bookdown page](https://nliulab.github.io/AutoScore/) for a full tutorial on AutoScore usage.
 
 ## Citation
 
@@ -62,7 +61,7 @@ Please go to our [bookdown page](https://nliulab.github.io/AutoScore/) for a ful
 
 * Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, [AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes](https://doi.org/10.48550/arxiv.2202.08407), arXiv:2202.08407.
 
-* Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digit Health 2022; 1(6): e0000062.
+* Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digital Health 2022; 1(6): e0000062.
 
 ## Contact
 
@@ -90,6 +89,3 @@ Load AutoScore package:
 ``` r
 library(AutoScore)
 ```
-
-Please go to our [bookdown page](https://nliulab.github.io/AutoScore/)
-for a full tutorial on AutoScore usage.
