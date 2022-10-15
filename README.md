@@ -14,7 +14,7 @@ Score Generator
 
 AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in [this article](http://dx.doi.org/10.2196/21798) and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to [survival outcomes](http://dx.doi.org/10.1016/j.jbi.2021.103959) and [ordinal outcomes](https://doi.org/10.48550/arxiv.2202.08407). AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner. 
 
-> ### Please go to our [bookdown page](https://nliulab.github.io/AutoScore/) for a full tutorial on AutoScore usage.
+> ### Please visit our [bookdown page](https://nliulab.github.io/AutoScore/) for a full tutorial on AutoScore usage.
 
 
 ## Usage
