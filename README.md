@@ -69,7 +69,7 @@ We also include several optional functions in the package, which could help with
 
 ## Package installation
 
-Install from GitHub or CRAN：
+Install from GitHub or CRAN:
 
 ``` r
 # From Github
