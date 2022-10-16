@@ -67,7 +67,7 @@ We also include several optional functions in the package, which could help with
 -   Yilin Ning (Email: <yilin.ning@duke-nus.edu.sg>)
 -   Nan Liu (Email: <liu.nan@duke-nus.edu.sg>)
 
-## AutoScore package installation
+## Package installation
 
 Install from GitHub or CRAN：
 
