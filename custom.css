@@ -56,3 +56,9 @@ https://quarto.org/docs/authoring/article-layout.html
 table, .table{
   font-size: 12pt;
 }
+
+/* enlarge github icon next to book title 
+.sidebar-navigation .sidebar-tool {
+  font-size: 1.5rem;
+}
+*/
