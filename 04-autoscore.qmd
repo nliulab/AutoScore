@@ -206,7 +206,7 @@ new cutoffs if needed.
 cut_vec$Lab_H <- c(0.2, 1, 3, 4)
 cut_vec$Lab_K <- c(10, 40)
 cut_vec$Lab_B <- c(10, 17)
-cut_vec$hVital_A <- c(70, 98)
+cut_vec$Vital_A <- c(70, 98)
 
 scoring_table <- AutoScore_fine_tuning(
   train_set = train_set, validation_set = validation_set, 
