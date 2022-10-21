@@ -242,7 +242,7 @@ plot_survival_km(pred_score, score_cut = c(40, 50, 60))
 - `time_point`: The time points to be evaluated using time-dependent AUC(t).
 
 ```{r}
-table <- conversion_table_survival(
+conversion_table_survival(
   pred_score = pred_score, score_cut = c(40,50,60), 
   time_point = c(7, 14, 30, 60, 90)
 )

@@ -679,10 +679,20 @@ The AUC(t) are shown as bwlow:
 <li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>table <span class="ot">&lt;-</span> <span class="fu">conversion_table_survival</span>(</span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">conversion_table_survival</span>(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">pred_score =</span> pred_score, <span class="at">score_cut =</span> <span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">60</span>), </span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       [8,40) [40,50) [50,60) [60,93]
+Number of patients        656    1076    1241    1027
+Percentage of patients  16.4%   26.9%  31.03%  25.67%
+t=7                        0%      0%      0%   0.58%
+t=14                       0%      0%      0%   2.82%
+t=30                       0%      0%   0.32%  12.07%
+t=60                    1.52%   8.46%  29.33%   70.5%
+t=90                   24.24%  60.59%  87.19%  98.64%</code></pre>
+</div>
 </div>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -698,7 +708,7 @@ Note
 <li><em>Users could use <code>pred_score</code> for further analysis or export it to CSV to other software (e.g., generating the calibration curve).</em></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score, <span class="at">file =</span> <span class="st">"pred_score.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pred_score, <span class="at">file =</span> <span class="st">"pred_score.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -711,7 +721,7 @@ Note
 Load small dataset with 1000 samples
 </p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival_small"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"sample_data_survival_small"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p class="p-h3">
 Prepare training and test datasets
@@ -721,12 +731,12 @@ Prepare training and test datasets
 <li>Option 2: Use demo codes below to randomly split your dataset into training and test datasets (70% and 30%, respectively). For cross-validation, <code>train_set</code> is equal to <code>validation_set</code> and the ratio of <code>validation_set</code> should be 0. Then cross-validation will be implemented in the STEP(ii) <code>AutoScore_parsimony_Survival()</code>.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>out_split <span class="ot">&lt;-</span> <span class="fu">split_data</span>(<span class="at">data =</span> sample_data_survival_small, <span class="at">ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="dv">0</span>, <span class="fl">0.3</span>), </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">cross_validation =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>train_set</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>validation_set</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>out_split <span class="ot">&lt;-</span> <span class="fu">split_data</span>(<span class="at">data =</span> sample_data_survival_small, <span class="at">ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="dv">0</span>, <span class="fl">0.3</span>), </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">cross_validation =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>train_set</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>validation_set</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="stepi-generate-variable-ranking-list-1" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="stepi-generate-variable-ranking-list-1"><span class="header-section-number">5.2.1</span> STEP(i): generate variable ranking list</h3>
@@ -739,7 +749,7 @@ AutoScore-Survival Modules 1
 <li>Run time increases with larger <code>ntree</code> value. Code below uses <code>ntree = 5</code> for demonstration.</li>
 </ul>
 <div class="cell" data-hash="05-autoscore_survival_cache/html/rank_surv_small_4e2f6843fd0f97d3c0729d6c7f590194">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(<span class="at">train_set =</span> train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(<span class="at">train_set =</span> train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Trees Grown:       1,    Time Remaining (sec):       0 
@@ -780,13 +790,13 @@ The ranking based on variable importance was shown below for each variable:
 <li><code>do_trace</code>: If set to <code>TRUE</code>, all results based on each fold of cross-validation would be printed out and plotted (Default: <code>FALSE</code>). Available if <code>cross_validation = TRUE</code>.</li>
 </ul>
 <div class="cell" data-hash="05-autoscore_survival_cache/html/iauc_surv_small_5be03b79f47b176f679cc3d36d4eb325">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, <span class="at">rank =</span> ranking,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_score =</span> <span class="dv">100</span>, <span class="at">n_min =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">20</span>,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span>,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">cross_validation =</span> <span class="cn">TRUE</span>, <span class="at">fold =</span> <span class="dv">10</span>, <span class="at">do_trace =</span> <span class="cn">FALSE</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, <span class="at">rank =</span> ranking,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_score =</span> <span class="dv">100</span>, <span class="at">n_min =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">20</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">cross_validation =</span> <span class="cn">TRUE</span>, <span class="at">fold =</span> <span class="dv">10</span>, <span class="at">do_trace =</span> <span class="cn">FALSE</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>***list of final mean AUC values through cross-validation are shown below 
    auc_set.sum
@@ -829,7 +839,7 @@ Note
 <li><em>Users could use <code>iAUC</code> for further analysis or export it to CSV to other software for plotting.</em></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(iAUC), <span class="at">file =</span> <span class="st">"iAUC.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(iAUC), <span class="at">file =</span> <span class="st">"iAUC.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -839,17 +849,17 @@ Note
 <li>Optional: User can adjust the finally included variables <code>final_variables</code> based on the clinical preferences and knowledge.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: Top 6 variables are selected</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: Top 9 variables are selected</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">9</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: Top 6 variables, the 9th and 10th variable are selected</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>num_var, <span class="dv">9</span>, <span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: Top 6 variables are selected</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: Top 9 variables are selected</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: Top 6 variables, the 9th and 10th variable are selected</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>num_var, <span class="dv">9</span>, <span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="stepiii-generate-initial-scores-with-final-variables-1" class="level3" data-number="5.2.3">
@@ -862,12 +872,12 @@ Re-run AutoScore-Survival Modules 2+3
 <li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>(</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>****Included Variables: 
   variable_name
@@ -945,42 +955,42 @@ AutoScore-Survival Module 5 &amp; Re-run AutoScore-Survival Modules 2+3
 <li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For example, we have current cutoffs of continuous variable: Age </span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ==============  ===========  =====</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="do">## variable        interval     point</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="do">## ==============  ===========  =====</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Age             &lt;35            0  </span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [35,49)        2  </span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [49,76)        8  </span></span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [76,89)       16  </span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="do">##                 &gt;=89          22  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## For example, we have current cutoffs of continuous variable: Age </span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ==============  ===========  =====</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="do">## variable        interval     point</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="do">## ==============  ===========  =====</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Age             &lt;35            0  </span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [35,49)        2  </span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [49,76)        8  </span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="do">##                 [76,89)       16  </span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="do">##                 &gt;=89          22  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Current cutoffs:<code>c(35, 49, 76, 89)</code>. We can fine tune the cutoffs as follows:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: rounding up to a nice number</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: changing cutoffs according to clinical knowledge or preference </span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: combining categories</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: rounding up to a nice number</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: changing cutoffs according to clinical knowledge or preference </span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: combining categories</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Then we do similar checks for other variables and update scoring table using new cutoffs if needed.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_H <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_K <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">40</span>)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_B <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">17</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Vital_A <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">98</span>)</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>scoring_table <span class="ot">&lt;-</span> <span class="fu">AutoScore_fine_tuning_Survival</span>(</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">cut_vec =</span> cut_vec, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_H <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_K <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">40</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Lab_B <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">17</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>cut_vec<span class="sc">$</span>Vital_A <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">98</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>scoring_table <span class="ot">&lt;-</span> <span class="fu">AutoScore_fine_tuning_Survival</span>(</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">cut_vec =</span> cut_vec, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>***Fine-tuned Scores: 
 
@@ -1046,11 +1056,11 @@ AutoScore-Survival Module 6
 <li><code>time_point</code>: The time points to be evaluated using time-dependent AUC(t).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pred_score <span class="ot">&lt;-</span> <span class="fu">AutoScore_testing_Survival</span>(</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">test_set =</span> test_set, <span class="at">final_variables =</span> final_variables, <span class="at">cut_vec =</span> cut_vec, </span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">scoring_table =</span> scoring_table, <span class="at">threshold =</span> <span class="st">"best"</span>, <span class="at">with_label =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>pred_score <span class="ot">&lt;-</span> <span class="fu">AutoScore_testing_Survival</span>(</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">test_set =</span> test_set, <span class="at">final_variables =</span> final_variables, <span class="at">cut_vec =</span> cut_vec, </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">scoring_table =</span> scoring_table, <span class="at">threshold =</span> <span class="st">"best"</span>, <span class="at">with_label =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_point =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">14</span>, <span class="dv">30</span>, <span class="dv">60</span>, <span class="dv">90</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>***Performance using AutoScore (based on unseen test Set):
 Integrated AUC by all time points: 0.872 (0.848-0.898)
@@ -1065,7 +1075,7 @@ The AUC(t) are shown as bwlow:
 6         60 0.856 (0.814-0.902)
 7         90 0.852 (0.801-0.892)</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pred_score)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  pred_score label_time label_status
 1         67         52         TRUE
@@ -1088,7 +1098,7 @@ The AUC(t) are shown as bwlow:
 <h2 data-number="5.3" class="anchored" data-anchor-id="demo3"><span class="header-section-number">5.3</span> Demo 3: data with missing values</h2>
 <p>In Demo #3, we demonstrate the use of AutoScore on a dataset with missing values in two variables (i.e., Vital_A, Vital_B).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_data_survival</span>(sample_data_survival_missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_data_survival</span>(sample_data_survival_missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Data type check passed. </code></pre>
 </div>
@@ -1129,17 +1139,16 @@ Important
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>out_split <span class="ot">&lt;-</span> <span class="fu">split_data</span>(<span class="at">data =</span> sample_data_survival_missing, <span class="at">ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>))</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>train_set</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>validation_set</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(<span class="at">train_set =</span> train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>out_split <span class="ot">&lt;-</span> <span class="fu">split_data</span>(<span class="at">data =</span> sample_data_survival_missing, <span class="at">ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>))</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>train_set</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>validation_set</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(<span class="at">train_set =</span> train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-Trees Grown:       1,    Time Remaining (sec):       0 
-Trees Grown:       4,    Time Remaining (sec):       1 
+Trees Grown:       1,    Time Remaining (sec):       4 
 Trees Grown:       5,    Time Remaining (sec):       0 
 
 
@@ -1156,12 +1165,12 @@ The ranking based on variable importance was shown below for each variable:
 <div class="cell-output-display">
 <p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rank =</span> ranking, <span class="at">max_score =</span> <span class="dv">100</span>, <span class="at">n_min =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">20</span>,</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rank =</span> ranking, <span class="at">max_score =</span> <span class="dv">100</span>, <span class="at">n_min =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">20</span>,</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Select 1 Variable(s):  0.6702443 
 Select 2 Variable(s):  0.7474401 
@@ -1204,13 +1213,13 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>(</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>)</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>(</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>)</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>****Included Variables: 
   variable_name
