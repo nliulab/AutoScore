@@ -57,7 +57,7 @@ We also include several optional functions in the package, which could help with
 
 * Xie F, Ning Y, Yuan H, Goldstein BA, Ong MEH, Liu N, Chakraborty B. [AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data](http://dx.doi.org/10.1016/j.jbi.2021.103959). Journal of Biomedical Informatics 2022; 125: 103959.
 
-* Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, [AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes](https://doi.org/10.48550/arxiv.2202.08407), arXiv:2202.08407.
+* Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, [AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes](https://doi.org/10.1186/s12874-022-01770-y), BMC Medical Research Methodology 2022; 22: 286.
 
 * Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digital Health 2022; 1(6): e0000062.
 
