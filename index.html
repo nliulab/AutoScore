@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Feng Xie, Yilin Ning, Han Yuan, Mingxuan Liu, Seyed Ehsan Saffari, Siqi Li, Bibhas Chakraborty, Nan Liu">
-<meta name="dcterms.date" content="2022-10-21">
+<meta name="dcterms.date" content="2022-11-07">
 
 <title>AutoScore: An Interpretable Machine Learning-Based Automatic Clinical Score Generator</title>
 <style>
@@ -239,7 +239,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2022-10-21</p>
+      <p class="date">2022-11-07</p>
     </div>
   </div>
     
@@ -250,7 +250,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="autoscore-introduction" class="level1 unnumbered">
 <h1 class="unnumbered">AutoScore introduction</h1>
-<p>AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in <a href="http://dx.doi.org/10.2196/21798">this article</a> and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to <a href="http://dx.doi.org/10.1016/j.jbi.2021.103959">survival outcomes</a> and <a href="https://doi.org/10.48550/arxiv.2202.08407">ordinal outcomes</a>. AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner. Please visit <a href="https://github.com/nliulab/AutoScore">GitHub page</a> for source code.</p>
+<p>AutoScore is a novel machine learning framework to automate the development of interpretable clinical scoring models. AutoScore consists of six modules: 1) variable ranking with machine learning, 2) variable transformation, 3) score derivation, 4) model selection, 5) domain knowledge-based score fine-tuning, and 6) performance evaluation. The original AutoScore structure is elaborated in <a href="http://dx.doi.org/10.2196/21798">this article</a> and its flowchart is shown in the following figure. AutoScore was originally designed for binary outcomes and later extended to <a href="http://dx.doi.org/10.1016/j.jbi.2021.103959">survival outcomes</a> and <a href="https://doi.org/10.1186/s12874-022-01770-y">ordinal outcomes</a>. AutoScore could seamlessly generate risk scores using a parsimonious set of variables for different types of clinical outcomes, which can be easily implemented and validated in clinical practice. Moreover, it enables users to build transparent and interpretable clinical scores quickly in a straightforward manner. Please visit <a href="https://github.com/nliulab/AutoScore">GitHub page</a> for source code.</p>
 <div class="figure" style="text-align: center">
 <p><img src="Figure1.png" width="70%"></p>
 </div>
@@ -296,7 +296,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="method-extensions">Method extensions</h3>
 <ul>
 <li><p>Xie F, Ning Y, Yuan H, Goldstein BA, Ong MEH, Liu N, Chakraborty B. <a href="http://dx.doi.org/10.1016/j.jbi.2021.103959">AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data</a>. Journal of Biomedical Informatics 2022; 125: 103959.</p></li>
-<li><p>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, <a href="https://doi.org/10.48550/arxiv.2202.08407">AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes</a>, arXiv:2202.08407.</p></li>
+<li><p>Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, <a href="https://doi.org/10.1186/s12874-022-01770-y">AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes</a>, BMC Medical Research Methodology 2022; 22: 286.</p></li>
 <li><p>Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. <a href="https://doi.org/10.1371/journal.pdig.0000062">A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study</a>. PLOS Digit Health 2022; 1(6): e0000062.</p></li>
 </ul>
 </section>

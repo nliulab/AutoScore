@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -295,7 +295,7 @@ Load package and data
 <pre><code>Data type check passed. </code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>No NA in data. </code></pre>
+<pre><code>No NA in data </code></pre>
 </div>
 </div>
 <p class="p-h3">
@@ -1104,7 +1104,8 @@ The AUC(t) are shown as bwlow:
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
-WARNING: NA detected in data: -----</code></pre>
+WARNING: NA detected in data: -----
+.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Variable name No. missing %missing
@@ -1113,10 +1114,8 @@ Vital_B       Vital_B       12000       60</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>SUGGESTED ACTION:
- * Consider imputation and supply AutoScore with complete data.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code> * Alternatively, AutoScore can handle missing values as a separate 'Unknown' category, IF:
+ * Consider imputation and supply AutoScore with complete data.
+ * Alternatively, AutoScore can handle missing values as a separate 'Unknown' category, IF:
     - you believe the missingness in your dataset is informative, AND
     - missing is prevalent enough that you prefer to preserve them as NA rather than removing or doing imputation, AND
     - missing is not too prevalent, which may make results unstable.</code></pre>
@@ -1139,13 +1138,13 @@ Important
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>out_split <span class="ot">&lt;-</span> <span class="fu">split_data</span>(<span class="at">data =</span> sample_data_survival_missing, <span class="at">ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>))</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>train_set</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>validation_set</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(<span class="at">train_set =</span> train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>out_split <span class="ot">&lt;-</span> <span class="fu">split_data</span>(<span class="at">data =</span> sample_data_survival_missing, <span class="at">ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>))</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>train_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>train_set</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>validation_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>validation_set</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>test_set <span class="ot">&lt;-</span> out_split<span class="sc">$</span>test_set</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>ranking <span class="ot">&lt;-</span> <span class="fu">AutoScore_rank_Survival</span>(<span class="at">train_set =</span> train_set, <span class="at">ntree =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Trees Grown:       1,    Time Remaining (sec):       4 
@@ -1165,12 +1164,12 @@ The ranking based on variable importance was shown below for each variable:
 <div class="cell-output-display">
 <p><img src="05-autoscore_survival_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rank =</span> ranking, <span class="at">max_score =</span> <span class="dv">100</span>, <span class="at">n_min =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">20</span>,</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>iAUC <span class="ot">&lt;-</span> <span class="fu">AutoScore_parsimony_Survival</span>(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">rank =</span> ranking, <span class="at">max_score =</span> <span class="dv">100</span>, <span class="at">n_min =</span> <span class="dv">1</span>, <span class="at">n_max =</span> <span class="dv">20</span>,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>),</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">auc_lim_min =</span> <span class="fl">0.5</span>, <span class="at">auc_lim_max =</span> <span class="st">"adaptive"</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Select 1 Variable(s):  0.6702443 
 Select 2 Variable(s):  0.7474401 
@@ -1213,13 +1212,13 @@ Note
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>(</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>)</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>num_var <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>final_variables <span class="ot">&lt;-</span> <span class="fu">names</span>(ranking[<span class="dv">1</span><span class="sc">:</span>num_var])</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>cut_vec <span class="ot">&lt;-</span> <span class="fu">AutoScore_weighting_Survival</span>(</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">train_set =</span> train_set, <span class="at">validation_set =</span> validation_set, </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">final_variables =</span> final_variables, <span class="at">max_score =</span> <span class="dv">100</span>,</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">categorize =</span> <span class="st">"quantile"</span>, <span class="at">quantiles =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.05</span>, <span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">0.95</span>, <span class="dv">1</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>****Included Variables: 
   variable_name
