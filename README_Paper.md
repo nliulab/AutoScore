@@ -13,7 +13,7 @@
 
 ## AutoScore clinical applications
 
-A collection of clinical applications using [**AutoScore**](https://nliulab.github.io/AutoScore/) and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
+A collection of clinical applications using [AutoScore](https://nliulab.github.io/AutoScore/) and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
 
 - [Emergency medicine](#emergency-medicine)
 - [Neurology](#neurology)
