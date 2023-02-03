@@ -9,7 +9,7 @@
 * Xie F, Ning Y, Yuan H, Goldstein BA, Ong MEH, Liu N, Chakraborty B. [AutoScore-Survival: Developing interpretable machine learning-based time-to-event scores with right-censored survival data](http://dx.doi.org/10.1016/j.jbi.2021.103959). Journal of Biomedical Informatics 2022; 125: 103959.
 * Saffari SE, Ning Y, Xie F, Chakraborty B, Volovici V, Vaughan R, Ong MEH, Liu N, [AutoScore-Ordinal: An interpretable machine learning framework for generating scoring models for ordinal outcomes](https://doi.org/10.1186/s12874-022-01770-y), BMC Medical Research Methodology 2022; 22: 286.
 * Yuan H, Xie F, Ong MEH, Ning Y, Chee ML, Saffari SE, Abdullah HR, Goldstein BA, Chakraborty B, Liu N. [AutoScore-Imbalance: An interpretable machine learning tool for development of clinical scores with rare events data](https://doi.org/10.1016/j.jbi.2022.104072). Journal of Biomedical Informatics 2022; 129: 104072.
-* Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digit Health 2022; 1(6): e0000062.
+* Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digital Health 2022; 1(6): e0000062.
 
 ## AutoScore clinical applications
 
