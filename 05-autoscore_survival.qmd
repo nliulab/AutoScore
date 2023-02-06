@@ -53,6 +53,7 @@ check_data_survival(sample_data_survival)
 
 - Option 1: Prepare three separate datasets to train, validate, and test models.
 - Option 2: Use demo codes below to randomly split your dataset into training, validation, and test datasets (70%, 10%, 20%, respectively).
+- Stratified splitting is not supported for survival outcomes.
 
 ```{r}
 set.seed(4)

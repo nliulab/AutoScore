@@ -43,11 +43,15 @@ check_data(sample_data)
 <p class='p-h3'>Prepare training, validation, and test datasets</p>
 
 - Option 1: Prepare three separate datasets to train, validate, and test models.
-- Option 2: Use demo codes below to randomly split your dataset into training, validation, and test datasets (70%, 10%, 20%, respectively).
+- Option 2: Use demo codes below to randomly split your dataset 
+(`strat_by_label = FALSE`, default) into training, validation, and test datasets 
+(70%, 10%, 20%, respectively).
+- Use `strat_by_label = FALSE` to stratify by label when splitting data.
 
 ```{r}
 set.seed(4)
-out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2))
+out_split <- split_data(data = sample_data, ratio = c(0.7, 0.1, 0.2), 
+                        strat_by_label = FALSE)
 train_set <- out_split$train_set
 validation_set <- out_split$validation_set
 test_set <- out_split$test_set
