@@ -16,29 +16,28 @@
 A collection of clinical applications using [AutoScore](https://nliulab.github.io/AutoScore/) and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
 
 - [Emergency medicine](#emergency-medicine)
-- [Intensive and Critical Care](#intensive-and-critical-care)
+- [Intensive and critical care](#intensive-and-critical-care)
 - [Neurology](#neurology)
+- [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
 - [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
 - [Renal medicine](#renal-medicine)
 
 ### Emergency medicine
-
 * Xie F, Ong MEH, Liew JNMH, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
 * Xie F, Liu N, Yan L, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
 
-### Intensive and Critical Care
-
+### Intensive and critical care
 * Shu T, Huang J, Deng J, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
 
 ### Neurology
-
 * Petersen KK, Lipton RB, Grober E, et al. [Predicting amyloid positivity in cognitively unimpaired older adults: A machine learning approach using the A4 data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr; 98(24): e2425-e2435.
 
-### Out-of-hospital cardiac arrest
+### Obstetrics and gynaecology
+* Tan HS, Liu N, Tan CW, et al. [Developing the BreakThrough Pain Risk Score: an interpretable machine-learning-based risk score to predict breakthrough pain with labour epidural analgesia](https://link.springer.com/article/10.1007/s12630-022-02294-1). Canadian Journal of Anesthesia 2022 Oct; 69(10): 1315-1317. 
 
+### Out-of-hospital cardiac arrest
 * Wong XY, Ang YK, Li K, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
 * Liu N, Liu M, Chen X, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
 
 ### Renal medicine
-
 * Ang Y, Li S, Ong MEH, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
