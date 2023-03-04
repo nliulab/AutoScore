@@ -21,6 +21,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
 - [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
 - [Renal medicine](#renal-medicine)
+- [Trauma](#trauma)
 
 ### Emergency medicine
 * Xie F, Ong MEH, Liew JNMH, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
@@ -41,3 +42,6 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Renal medicine
 * Ang Y, Li S, Ong MEH, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
+
+### Trauma
+* Yu JY, Heo S, Xie F, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
