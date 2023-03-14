@@ -21,6 +21,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
 - [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
 - [Renal medicine](#renal-medicine)
+- [Respiratory medicine](#respiratory-medicine)
 - [Trauma](#trauma)
 
 ### Emergency medicine
@@ -42,6 +43,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Renal medicine
 * Ang Y, Li S, Ong MEH, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
+
+### Respiratory medicine
+* Kwok SWH, Wang G, Sohel F, et al. [An artificial intelligence approach for predicting death or organ failure after hospitalization for COVID-19: development of a novel risk prediction tool and comparisons with ISARIC-4C, CURB-65, qSOFA, and MEWS scoring systems](https://respiratory-research.biomedcentral.com/articles/10.1186/s12931-023-02386-6). Respiratory Research 2023 Mar; 24: 79.
 
 ### Trauma
 * Yu JY, Heo S, Xie F, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
