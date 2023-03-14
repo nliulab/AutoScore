@@ -62,7 +62,7 @@ We also include several optional functions in the package, which could help with
 * Ning Y, Li S, Ong ME, Xie F, Chakraborty B, Ting DS, Liu N. [A novel interpretable machine learning system to generate clinical risk scores: An application for predicting early mortality or unplanned readmission in a retrospective cohort study](https://doi.org/10.1371/journal.pdig.0000062). PLOS Digital Health 2022; 1(6): e0000062.
 
 ## Clinical application
-A collection of clinical applications using AutoScore and its extensions can be found in [this page](https://github.com/nliulab/AutoScore/blob/master/README_Paper.md). This application list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
+[This page](https://github.com/nliulab/AutoScore/blob/master/README_Paper.md) provides a collection of clinical applications using AutoScore and its extensions. The application list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
 
 ## Contact
 
