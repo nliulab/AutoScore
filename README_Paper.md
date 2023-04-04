@@ -19,6 +19,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Intensive and critical care](#intensive-and-critical-care)
 - [Neurology](#neurology)
 - [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
+- [Ophthalmology](#ophthalmology)
 - [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
 - [Renal medicine](#renal-medicine)
 - [Respiratory medicine](#respiratory-medicine)
@@ -36,6 +37,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Obstetrics and gynecology
 * Tan HS, Liu N, Tan CW, et al. [Developing the BreakThrough Pain Risk Score: an interpretable machine-learning-based risk score to predict breakthrough pain with labour epidural analgesia](https://link.springer.com/article/10.1007/s12630-022-02294-1). Canadian Journal of Anesthesia 2022 Oct; 69(10): 1315-1317. 
+
+### Ophthalmology
+* Lee S, Yu J, Kim Y, et al. [Application of an interpretable machine learning for estimating severity of Graves’ Orbitopathy based on initial finding](https://www.mdpi.com/2077-0383/12/7/2640). Journal of Clinical Medicine 2023 Apr; 12(7): 2640.
 
 ### Out-of-hospital cardiac arrest
 * Wong XY, Ang YK, Li K, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
