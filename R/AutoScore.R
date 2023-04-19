@@ -752,8 +752,9 @@ conversion_table<-function(pred_score, by = "risk", values = c(0.01,0.05,0.1,0.2
 
 
   } else{ stop('ERROR: please specify correct method for categorizing the threshold:  by "risk" or "score".')}
-
-  kable(rtotoal,align=c(rep('c',times=7)))
+  print(kable(rtotoal))
+  invisible(rtotoal)
+  # kable(rtotoal,align=c(rep('c',times=7)))
 
 }
 
