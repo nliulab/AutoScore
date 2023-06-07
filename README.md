@@ -52,6 +52,7 @@ We also include several optional functions in the package, which could help with
 ### Core paper
 
 * Xie F, Chakraborty B, Ong MEH, Goldstein BA, Liu N. [AutoScore: A machine learning-based automatic clinical score generator and its application to mortality prediction using electronic health records](http://dx.doi.org/10.2196/21798). JMIR Medical Informatics 2020; 8(10): e21798.
+* Xie F, Ning Y, Liu M, Li S, Saffari SE, Yuan H, Volovici V, Ting DSW, Goldstein BA, Ong MEH, Vaughan R, Chakraborty B, Liu N. [A universal AutoScore framework to develop interpretable scoring systems for predicting common types of clinical outcomes](https://www.sciencedirect.com/science/article/pii/S2666166723002691). STAR Protocols 2023 Jun; 4(2): 102302.
 
 ### Method extensions
 
