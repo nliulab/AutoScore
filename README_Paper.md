@@ -54,3 +54,4 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Trauma
 * Yu JY, Heo S, Xie F, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
+* Cleri NA, Saadon JR, Zheng X, et al. [Predicting traumatic brain injury outcomes using a posterior dominant rhythm](https://doi.org/10.3171/2023.4.JNS23569). Journal of Neurosurgery 2023.
