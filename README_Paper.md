@@ -24,6 +24,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
 - [Renal medicine](#renal-medicine)
 - [Respiratory medicine](#respiratory-medicine)
+- [Stroke](#stroke)
 - [Trauma](#trauma)
 
 ### Emergency medicine
@@ -51,6 +52,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Respiratory medicine
 * Kwok SWH, Wang G, Sohel F, et al. [An artificial intelligence approach for predicting death or organ failure after hospitalization for COVID-19: development of a novel risk prediction tool and comparisons with ISARIC-4C, CURB-65, qSOFA, and MEWS scoring systems](https://respiratory-research.biomedcentral.com/articles/10.1186/s12931-023-02386-6). Respiratory Research 2023 Mar; 24: 79.
+
+### Stroke
+* Ullah W, Nair A, Warner ED, et al. [Discriminative Accuracy of CHA2DS2VASc Score, and Development of Predictive Accuracy Model Using Machine Learning for Ischemic Stroke in Cardiac Amyloidosis](https://www.medrxiv.org/content/10.1101/2023.06.16.23291530v1). medRxiv 2023.
 
 ### Trauma
 * Yu JY, Heo S, Xie F, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
