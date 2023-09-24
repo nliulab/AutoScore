@@ -22,6 +22,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
 - [Ophthalmology](#ophthalmology)
 - [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
+- [Pediatrics](#Pediatrics)
 - [Renal medicine](#renal-medicine)
 - [Respiratory medicine](#respiratory-medicine)
 - [Stroke](#stroke)
@@ -46,6 +47,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 ### Out-of-hospital cardiac arrest
 * Wong XY, Ang YK, Li K, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
 * Liu N, Liu M, Chen X, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
+
+### Pediatrics
+* Chong SL, Niu C, Ong GYK, et al. [Febrile infants risk score at triage (FIRST) for the early identification of serious bacterial infections](https://www.nature.com/articles/s41598-023-42854-z). Scientific Reports 2023 Sep; 13: 15845.
 
 ### Renal medicine
 * Ang Y, Li S, Ong MEH, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
