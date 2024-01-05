@@ -34,7 +34,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 * Xie F, Liu N, Yan L, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
 
 ### Cardiology
-* Zahid S, Agrawal A, Salman F, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2023.
+* Zahid S, Agrawal A, Salman F, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
 
 ### Intensive and critical care
 * Shu T, Huang J, Deng J, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
