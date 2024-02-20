@@ -18,8 +18,8 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 - [Acute and emergency medicine](#acute-and-emergency-medicine)
 - [Cardiology](#cardiology)
+- [Endocrinology](#endocrinology)
 - [Intensive and critical care](#intensive-and-critical-care)
-- [Metabolism](#metabolism)
 - [Neurology](#neurology)
 - [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
 - [Ophthalmology](#ophthalmology)
@@ -37,11 +37,11 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 ### Cardiology
 * Zahid S, Agrawal A, Salman F, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
 
+### Endocrinology
+* Oppong AE, Coelewij L, Robertson G, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024.
+
 ### Intensive and critical care
 * Shu T, Huang J, Deng J, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
-
-### Metabolism
-* Oppong AE, Coelewij L, Robertson G, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024.
 
 ### Neurology
 * Petersen KK, Lipton RB, Grober E, et al. [Predicting amyloid positivity in cognitively unimpaired older adults: A machine learning approach using the A4 data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr; 98(24): e2425-e2435.
