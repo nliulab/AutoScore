@@ -38,7 +38,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 * Zahid S, Agrawal A, Salman F, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
 
 ### Endocrinology
-* Oppong AE, Coelewij L, Robertson G, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024.
+* Oppong AE, Coelewij L, Robertson G, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024 Mar; 27(3): 109225.
 
 ### Intensive and critical care
 * Shu T, Huang J, Deng J, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
