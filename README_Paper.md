@@ -16,18 +16,18 @@
 
 A collection of clinical applications using [AutoScore](https://nliulab.github.io/AutoScore/) and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
 
-- [Acute and emergency medicine](#acute-and-emergency-medicine)
+- [Acute and Emergency Medicine](#acute-and-emergency-medicine)
 - [Cardiology](#cardiology)
 - [Endocrinology](#endocrinology)
 - [Infectious Diseases](#infectious-diseases)
-- [Intensive and critical care](#intensive-and-critical-care)
+- [Intensive and Critical Care](#intensive-and-critical-care)
 - [Neurology](#neurology)
-- [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
+- [Obstetrics and Gynaecology](#obstetrics-and-gynaecology)
 - [Ophthalmology](#ophthalmology)
-- [Out-of-hospital cardiac arrest](#out-of-hospital-cardiac-arrest)
+- [Out-of-Hospital Cardiac Arrest](#out-of-hospital-cardiac-arrest)
 - [Pediatrics](#Pediatrics)
-- [Renal medicine](#renal-medicine)
-- [Respiratory medicine](#respiratory-medicine)
+- [Renal Medicine](#renal-medicine)
+- [Respiratory Medicine](#respiratory-medicine)
 - [Stroke](#stroke)
 - [Trauma](#trauma)
 
