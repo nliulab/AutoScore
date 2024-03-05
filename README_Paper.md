@@ -19,6 +19,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Acute and emergency medicine](#acute-and-emergency-medicine)
 - [Cardiology](#cardiology)
 - [Endocrinology](#endocrinology)
+- [Infectious Diseases](#infectious-diseases)
 - [Intensive and critical care](#intensive-and-critical-care)
 - [Neurology](#neurology)
 - [Obstetrics and gynaecology](#obstetrics-and-gynaecology)
@@ -39,6 +40,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Endocrinology
 * Oppong AE, Coelewij L, Robertson G, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024 Mar; 27(3): 109225.
+
+### Infectious Diseases
+* Lai CKC, Leung E, He Y, et al. [A machine learning-based risk score for prediction of infective endocarditis among patients with Staphylococcus aureus bacteraemia – The SABIER score](https://academic.oup.com/jid/advance-article/doi/10.1093/infdis/jiae080/7616139). The Journal of Infectious Diseases 2024.
 
 ### Intensive and critical care
 * Shu T, Huang J, Deng J, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
