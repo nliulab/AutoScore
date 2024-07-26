@@ -58,6 +58,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Ophthalmology
 * Lee S, Yu J, Kim Y, et al. [Application of an interpretable machine learning for estimating severity of Graves’ Orbitopathy based on initial finding](https://www.mdpi.com/2077-0383/12/7/2640). Journal of Clinical Medicine 2023 Apr; 12(7): 2640.
+* Ng C, et al. [Interpretable Machine Learning–Based Risk Score for Predicting Ten-Year Corneal Graft Survival After Penetrating Keratoplasty and Deep Anterior Lamellar Keratoplasty in Asian Eyes](https://doi.org/10.1097/ico.0000000000003641). Cornea 2024 Jul.
 
 ### Out-of-hospital cardiac arrest
 * Wong XY, Ang YK, Li K, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
