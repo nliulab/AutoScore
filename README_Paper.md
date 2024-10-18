@@ -32,52 +32,53 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Trauma](#trauma)
 
 ### Acute and emergency medicine
-* Xie F, Ong MEH, Liew JNMH, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
-* Xie F, Liu N, Yan L, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
-* Yu JY, Kim D, Yoon S, et al. [Inter hospital external validation of interpretable machine learning based triage score for the emergency department using common data model](https://www.nature.com/articles/s41598-024-54364-7). Scientific Reports 2024 Mar; 14: 6666.
-* Look CS, Teixayavong S, Djärv T, et al. [Improved interpretable machine learning emergency department triage tool addressing class imbalance](https://journals.sagepub.com/doi/10.1177/20552076241240910). Digital Health 2024 May; 10: 1-12.
+* Xie F, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
+* Xie F, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
+* Yu JY, et al. [Inter hospital external validation of interpretable machine learning based triage score for the emergency department using common data model](https://www.nature.com/articles/s41598-024-54364-7). Scientific Reports 2024 Mar; 14: 6666.
+* Look CS, et al. [Improved interpretable machine learning emergency department triage tool addressing class imbalance](https://journals.sagepub.com/doi/10.1177/20552076241240910). Digital Health 2024 May; 10: 1-12.
 
 ### Cardiology
-* Zahid S, Agrawal A, Salman F, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
-* Zahid S, Jha S, Kaur G, et al. [PARCCS: A machine learning risk-prediction model for acute peripartum cardiovascular complications during delivery admissions](https://doi.org/10.1016/j.jacadv.2024.101095). JACC: Advances 2024 Aug: 3(8): 101095.
+* Zahid S, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
+* Zahid S, et al. [PARCCS: A machine learning risk-prediction model for acute peripartum cardiovascular complications during delivery admissions](https://doi.org/10.1016/j.jacadv.2024.101095). JACC: Advances 2024 Aug: 3(8): 101095.
 
 ### Endocrinology
-* Oppong AE, Coelewij L, Robertson G, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024 Mar; 27(3): 109225.
+* Oppong AE, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024 Mar; 27(3): 109225.
 
 ### Infectious Diseases
-* Lai CKC, Leung E, He Y, et al. [A machine learning-based risk score for prediction of infective endocarditis among patients with Staphylococcus aureus bacteraemia – The SABIER score](https://academic.oup.com/jid/advance-article/doi/10.1093/infdis/jiae080/7616139). The Journal of Infectious Diseases 2024.
+* Lai CKC, et al. [A machine learning-based risk score for prediction of infective endocarditis among patients with Staphylococcus aureus bacteraemia – The SABIER score](https://academic.oup.com/jid/advance-article/doi/10.1093/infdis/jiae080/7616139). The Journal of Infectious Diseases 2024.
 
 ### Intensive and critical care
-* Shu T, Huang J, Deng J, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
+* Shu T, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
 
 ### Neurology
-* Petersen KK, Lipton RB, Grober E, et al. [Predicting amyloid positivity in cognitively unimpaired older adults: A machine learning approach using the A4 data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr; 98(24): e2425-e2435.
-* Pan Y, Chu C, Wang Y, et al. [Development and validation of the Florey Dementia Risk Score web-based tool to screen for Alzheimer's disease in primary care](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(24)00413-9/fulltext). eClinicalMedicine 2024 Oct; 76: 102834.
+* Petersen KK, et al. [Predicting amyloid positivity in cognitively unimpaired older adults: A machine learning approach using the A4 data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr; 98(24): e2425-e2435.
+* Pan Y, et al. [Development and validation of the Florey Dementia Risk Score web-based tool to screen for Alzheimer's disease in primary care](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(24)00413-9/fulltext). eClinicalMedicine 2024 Oct; 76: 102834.
 
 ### Obstetrics and gynecology
-* Tan HS, Liu N, Tan CW, et al. [Developing the BreakThrough Pain Risk Score: an interpretable machine-learning-based risk score to predict breakthrough pain with labour epidural analgesia](https://link.springer.com/article/10.1007/s12630-022-02294-1). Canadian Journal of Anesthesia 2022 Oct; 69(10): 1315-1317. 
+* Tan HS, et al. [Developing the BreakThrough Pain Risk Score: an interpretable machine-learning-based risk score to predict breakthrough pain with labour epidural analgesia](https://link.springer.com/article/10.1007/s12630-022-02294-1). Canadian Journal of Anesthesia 2022 Oct; 69(10): 1315-1317. 
 
 ### Ophthalmology
-* Lee S, Yu J, Kim Y, et al. [Application of an interpretable machine learning for estimating severity of Graves’ Orbitopathy based on initial finding](https://www.mdpi.com/2077-0383/12/7/2640). Journal of Clinical Medicine 2023 Apr; 12(7): 2640.
+* Lee S, et al. [Application of an interpretable machine learning for estimating severity of Graves’ Orbitopathy based on initial finding](https://www.mdpi.com/2077-0383/12/7/2640). Journal of Clinical Medicine 2023 Apr; 12(7): 2640.
 * Ng C, et al. [Interpretable Machine Learning–Based Risk Score for Predicting Ten-Year Corneal Graft Survival After Penetrating Keratoplasty and Deep Anterior Lamellar Keratoplasty in Asian Eyes](https://doi.org/10.1097/ico.0000000000003641). Cornea 2024 Jul.
 
 ### Out-of-hospital cardiac arrest
-* Wong XY, Ang YK, Li K, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
-* Liu N, Liu M, Chen X, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
+* Wong XY, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
+* Liu N, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
 
 ### Pediatrics
-* Chong SL, Niu C, Ong GYK, et al. [Febrile infants risk score at triage (FIRST) for the early identification of serious bacterial infections](https://www.nature.com/articles/s41598-023-42854-z). Scientific Reports 2023 Sep; 13: 15845.
+* Chong SL, et al. [Febrile infants risk score at triage (FIRST) for the early identification of serious bacterial infections](https://www.nature.com/articles/s41598-023-42854-z). Scientific Reports 2023 Sep; 13: 15845.
 
 ### Renal medicine
-* Ang Y, Li S, Ong MEH, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
-* Jeon J, Yu JY, Song Y, et al. [Prediction tool for renal adaptation after living kidney donation using interpretable machine learning](https://www.frontiersin.org/articles/10.3389/fmed.2023.1222973). Frontiers in Medicine 2023 Jul; 10: 1222973.
+* Ang Y, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
+* Jeon J, et al. [Prediction tool for renal adaptation after living kidney donation using interpretable machine learning](https://www.frontiersin.org/articles/10.3389/fmed.2023.1222973). Frontiers in Medicine 2023 Jul; 10: 1222973.
 
 ### Respiratory medicine
-* Kwok SWH, Wang G, Sohel F, et al. [An artificial intelligence approach for predicting death or organ failure after hospitalization for COVID-19: development of a novel risk prediction tool and comparisons with ISARIC-4C, CURB-65, qSOFA, and MEWS scoring systems](https://respiratory-research.biomedcentral.com/articles/10.1186/s12931-023-02386-6). Respiratory Research 2023 Mar; 24: 79.
+* Kwok SWH, et al. [An artificial intelligence approach for predicting death or organ failure after hospitalization for COVID-19: development of a novel risk prediction tool and comparisons with ISARIC-4C, CURB-65, qSOFA, and MEWS scoring systems](https://respiratory-research.biomedcentral.com/articles/10.1186/s12931-023-02386-6). Respiratory Research 2023 Mar; 24: 79.
 
 ### Stroke
-* Ullah W, Nair A, Warner ED, et al. [Discriminative Accuracy of CHA2DS2VASc Score, and Development of Predictive Accuracy Model Using Machine Learning for Ischemic Stroke in Cardiac Amyloidosis](https://www.medrxiv.org/content/10.1101/2023.06.16.23291530v1). medRxiv 2023.
+* Ullah W, et al. [Discriminative Accuracy of CHA2DS2VASc Score, and Development of Predictive Accuracy Model Using Machine Learning for Ischemic Stroke in Cardiac Amyloidosis](https://www.medrxiv.org/content/10.1101/2023.06.16.23291530v1). medRxiv 2023.
 
 ### Trauma
-* Yu JY, Heo S, Xie F, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
-* Cleri NA, Saadon JR, Zheng X, et al. [Predicting traumatic brain injury outcomes using a posterior dominant rhythm](https://doi.org/10.3171/2023.4.JNS23569). Journal of Neurosurgery 2023.
+* Yu JY, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
+* Cleri NA, et al. [Predicting traumatic brain injury outcomes using a posterior dominant rhythm](https://doi.org/10.3171/2023.4.JNS23569). Journal of Neurosurgery 2023.
+* Karabacak M, et al. [The MOST (Mortality Score for TBI): A novel prediction model beyond CRASH-Basic and IMPACT-Core for isolated traumatic brain injury](https://www.injuryjournal.com/article/S0020-1383(24)00685-5/fulltext). Injury 2024.
