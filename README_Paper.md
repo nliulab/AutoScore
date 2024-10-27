@@ -28,6 +28,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Pediatrics](#Pediatrics)
 - [Renal Medicine](#renal-medicine)
 - [Respiratory Medicine](#respiratory-medicine)
+- [Sepsis](#Sepsis)
 - [Stroke](#stroke)
 - [Trauma](#trauma)
 
@@ -74,6 +75,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Respiratory medicine
 * Kwok SWH, et al. [An artificial intelligence approach for predicting death or organ failure after hospitalization for COVID-19: development of a novel risk prediction tool and comparisons with ISARIC-4C, CURB-65, qSOFA, and MEWS scoring systems](https://respiratory-research.biomedcentral.com/articles/10.1186/s12931-023-02386-6). Respiratory Research 2023 Mar; 24: 79.
+
+### Sepsis
+* Song YF, et al. [Early prediction of sepsis in emergency department patients using various methods and scoring systems](https://onlinelibrary.wiley.com/doi/10.1111/nicc.13201). Nursing in Critical Care 2024 Oct.
 
 ### Stroke
 * Ullah W, et al. [Discriminative Accuracy of CHA2DS2VASc Score, and Development of Predictive Accuracy Model Using Machine Learning for Ischemic Stroke in Cardiac Amyloidosis](https://www.medrxiv.org/content/10.1101/2023.06.16.23291530v1). medRxiv 2023.
