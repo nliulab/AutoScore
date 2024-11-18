@@ -81,6 +81,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Stroke
 * Ullah W, et al. [Discriminative Accuracy of CHA2DS2VASc Score, and Development of Predictive Accuracy Model Using Machine Learning for Ischemic Stroke in Cardiac Amyloidosis](https://www.medrxiv.org/content/10.1101/2023.06.16.23291530v1). medRxiv 2023.
+* Luo X, et al. [An interpretable machine learning scoring tool for estimating time to recurrence readmissions in stroke patients](https://www.sciencedirect.com/science/article/abs/pii/S1386505624003678?via%3Dihub). International Journal of Medical Informatics 2025 Feb.
 
 ### Trauma
 * Yu JY, et al. [Development and Asian-wide validation of the Grade for Interpretable Field Triage (GIFT) for predicting mortality in pre-hospital patients using the Pan-Asian Trauma Outcomes Study (PATOS)](https://www.sciencedirect.com/science/article/pii/S2666606523000512). The Lancet Regional Health – Western Pacific 2023.
