@@ -54,6 +54,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 ### Neurology
 * Petersen KK, et al. [Predicting amyloid positivity in cognitively unimpaired older adults: A machine learning approach using the A4 data](https://n.neurology.org/content/early/2022/04/25/WNL.0000000000200553). Neurology 2022 Apr; 98(24): e2425-e2435.
 * Pan Y, et al. [Development and validation of the Florey Dementia Risk Score web-based tool to screen for Alzheimer's disease in primary care](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(24)00413-9/fulltext). eClinicalMedicine 2024 Oct; 76: 102834.
+* Mohammadi R, et al. [Machine Learning for Early Detection of Cognitive Decline in Parkinson’s Disease Using Multimodal Biomarker and Clinical Data](https://doi.org/10.3390/biomedicines12122758). Biomedicines 2024 Dec, 12: 2758.
 
 ### Obstetrics and gynecology
 * Tan HS, et al. [Developing the BreakThrough Pain Risk Score: an interpretable machine-learning-based risk score to predict breakthrough pain with labour epidural analgesia](https://link.springer.com/article/10.1007/s12630-022-02294-1). Canadian Journal of Anesthesia 2022 Oct; 69(10): 1315-1317. 
