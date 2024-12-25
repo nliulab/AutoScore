@@ -17,6 +17,7 @@
 A collection of clinical applications using [AutoScore](https://nliulab.github.io/AutoScore/) and its extensions can be found on this page. The list is categorized according to medical specialties and is updated regularly. However, due to the manual process of updating, we are unable to keep track of all publications.
 
 - [Acute and Emergency Medicine](#acute-and-emergency-medicine)
+- [Cancer](#cancer)
 - [Cardiology](#cardiology)
 - [Endocrinology](#endocrinology)
 - [Infectious Diseases](#infectious-diseases)
@@ -37,6 +38,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 * Xie F, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
 * Yu JY, et al. [Inter hospital external validation of interpretable machine learning based triage score for the emergency department using common data model](https://www.nature.com/articles/s41598-024-54364-7). Scientific Reports 2024 Mar; 14: 6666.
 * Look CS, et al. [Improved interpretable machine learning emergency department triage tool addressing class imbalance](https://journals.sagepub.com/doi/10.1177/20552076241240910). Digital Health 2024 May; 10: 1-12.
+
+### Cancer
+* Yau STY, et al. [Point-based prediction model for bladder cancer risk in diabetes: A random survival forest-guided approach](https://www.mdpi.com/2077-0383/14/1/4). Journal of Clinical Medicine 2025; 14(1): 4.
 
 ### Cardiology
 * Zahid S, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
