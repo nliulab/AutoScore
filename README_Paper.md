@@ -29,7 +29,8 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Pediatrics](#Pediatrics)
 - [Renal Medicine](#renal-medicine)
 - [Respiratory Medicine](#respiratory-medicine)
-- [Sepsis](#Sepsis)
+- [Sepsis](#sepsis)
+- [Sleep Medicine](#sleep-medicine)
 - [Stroke](#stroke)
 - [Trauma](#trauma)
 
@@ -83,6 +84,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Sepsis
 * Song YF, et al. [Early prediction of sepsis in emergency department patients using various methods and scoring systems](https://onlinelibrary.wiley.com/doi/10.1111/nicc.13201). Nursing in Critical Care 2024 Oct.
+
+### Sleep medicine
+* Cawiding OR, et al. [SymScore: Machine learning accuracy meets transparency in a symbolic regression-based clinical score generator](https://www.sciencedirect.com/science/article/pii/S0010482524016743). Computers in Biology and Medicine 2025 Feb; 185: 109589.
 
 ### Stroke
 * Ullah W, et al. [Discriminative Accuracy of CHA2DS2VASc Score, and Development of Predictive Accuracy Model Using Machine Learning for Ischemic Stroke in Cardiac Amyloidosis](https://www.medrxiv.org/content/10.1101/2023.06.16.23291530v1). medRxiv 2023.
