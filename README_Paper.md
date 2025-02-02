@@ -34,7 +34,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Stroke](#stroke)
 - [Trauma](#trauma)
 
-### Acute and emergency medicine
+### Acute and Emergency Medicine
 * Xie F, et al. [Development and assessment of an interpretable machine learning triage tool for estimating mortality after emergency admissions](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2783549). JAMA Network Open 2021 Aug; 4(8): e2118467.
 * Xie F, et al. [Development and validation of an interpretable machine learning scoring tool for estimating time to emergency readmissions](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(22)00045-1/fulltext). eClinicalMedicine 2022 Mar; 45: 101315.
 * Yu JY, et al. [Inter hospital external validation of interpretable machine learning based triage score for the emergency department using common data model](https://www.nature.com/articles/s41598-024-54364-7). Scientific Reports 2024 Mar; 14: 6666.
@@ -53,7 +53,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 ### Infectious Diseases
 * Lai CKC, et al. [A machine learning-based risk score for prediction of infective endocarditis among patients with Staphylococcus aureus bacteraemia – The SABIER score](https://academic.oup.com/jid/advance-article/doi/10.1093/infdis/jiae080/7616139). The Journal of Infectious Diseases 2024.
 
-### Intensive and critical care
+### Intensive and Critical Care
 * Shu T, et al. [Development and assessment of scoring model for ICU stay and mortality prediction after emergency admissions in ischemic heart disease: a retrospective study of MIMIC-IV databases](https://link.springer.com/article/10.1007/s11739-023-03199-7). Internal and Emergency Medicine 2023 Feb.
 
 ### Neurology
@@ -61,31 +61,31 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 * Pan Y, et al. [Development and validation of the Florey Dementia Risk Score web-based tool to screen for Alzheimer's disease in primary care](https://www.thelancet.com/journals/eclinm/article/PIIS2589-5370(24)00413-9/fulltext). eClinicalMedicine 2024 Oct; 76: 102834.
 * Mohammadi R, et al. [Machine Learning for Early Detection of Cognitive Decline in Parkinson’s Disease Using Multimodal Biomarker and Clinical Data](https://doi.org/10.3390/biomedicines12122758). Biomedicines 2024 Dec, 12: 2758.
 
-### Obstetrics and gynecology
+### Obstetrics and Gynecology
 * Tan HS, et al. [Developing the BreakThrough Pain Risk Score: an interpretable machine-learning-based risk score to predict breakthrough pain with labour epidural analgesia](https://link.springer.com/article/10.1007/s12630-022-02294-1). Canadian Journal of Anesthesia 2022 Oct; 69(10): 1315-1317. 
 
 ### Ophthalmology
 * Lee S, et al. [Application of an interpretable machine learning for estimating severity of Graves’ Orbitopathy based on initial finding](https://www.mdpi.com/2077-0383/12/7/2640). Journal of Clinical Medicine 2023 Apr; 12(7): 2640.
 * Ng C, et al. [Interpretable Machine Learning–Based Risk Score for Predicting Ten-Year Corneal Graft Survival After Penetrating Keratoplasty and Deep Anterior Lamellar Keratoplasty in Asian Eyes](https://doi.org/10.1097/ico.0000000000003641). Cornea 2024 Jul.
 
-### Out-of-hospital cardiac arrest
+### Out-of-hospital Cardiac Arrest
 * Wong XY, et al. [Development and validation of the SARICA score to predict survival after return of spontaneous circulation in out of hospital cardiac arrest using an interpretable machine learning framework](https://www.sciencedirect.com/science/article/abs/pii/S0300957221004834). Resuscitation 2022 Jan; 170: 126-133.
 * Liu N, et al. [Development and validation of interpretable prehospital return of spontaneous circulation (P-ROSC) score for out-of-hospital cardiac arrest patients using machine learning](https://doi.org/10.1016/j.eclinm.2022.101422). eClinicalMedicine 2022 Jun; 48: 101422.
 
 ### Pediatrics
 * Chong SL, et al. [Febrile infants risk score at triage (FIRST) for the early identification of serious bacterial infections](https://www.nature.com/articles/s41598-023-42854-z). Scientific Reports 2023 Sep; 13: 15845.
 
-### Renal medicine
+### Renal Medicine
 * Ang Y, et al. [Development and validation of an interpretable clinical score for early identification of acute kidney injury at the emergency department](https://www.nature.com/articles/s41598-022-11129-4). Scientific Reports 2022 May; 12: 7111.
 * Jeon J, et al. [Prediction tool for renal adaptation after living kidney donation using interpretable machine learning](https://www.frontiersin.org/articles/10.3389/fmed.2023.1222973). Frontiers in Medicine 2023 Jul; 10: 1222973.
 
-### Respiratory medicine
+### Respiratory Medicine
 * Kwok SWH, et al. [An artificial intelligence approach for predicting death or organ failure after hospitalization for COVID-19: development of a novel risk prediction tool and comparisons with ISARIC-4C, CURB-65, qSOFA, and MEWS scoring systems](https://respiratory-research.biomedcentral.com/articles/10.1186/s12931-023-02386-6). Respiratory Research 2023 Mar; 24: 79.
 
 ### Sepsis
 * Song YF, et al. [Early prediction of sepsis in emergency department patients using various methods and scoring systems](https://onlinelibrary.wiley.com/doi/10.1111/nicc.13201). Nursing in Critical Care 2024 Oct.
 
-### Sleep medicine
+### Sleep Medicine
 * Cawiding OR, et al. [SymScore: Machine learning accuracy meets transparency in a symbolic regression-based clinical score generator](https://www.sciencedirect.com/science/article/pii/S0010482524016743). Computers in Biology and Medicine 2025 Feb; 185: 109589.
 
 ### Stroke
