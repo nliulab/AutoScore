@@ -46,6 +46,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 ### Cardiology
 * Zahid S, et al. [Development and validation of a machine learning risk-prediction model for 30 day readmission for heart failure following transcatheter aortic valve replacement (TAVR-HF Score)](https://doi.org/10.1016/j.cpcardiol.2023.102143). Current Problems in Cardiology 2024 Feb; 49(2): 102143.
 * Zahid S, et al. [PARCCS: A machine learning risk-prediction model for acute peripartum cardiovascular complications during delivery admissions](https://doi.org/10.1016/j.jacadv.2024.101095). JACC: Advances 2024 Aug: 3(8): 101095.
+* Hong T, et al. [The scoring model to predict ICU stay and mortality after emergency admissions in atrial fibrillation: A retrospective study of 30366 patients](https://pmc.ncbi.nlm.nih.gov/articles/PMC11841604/). Clinical Cardiology 2025 Feb; 48(2): e70101. 
 
 ### Endocrinology
 * Oppong AE, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024 Mar; 27(3): 109225.
