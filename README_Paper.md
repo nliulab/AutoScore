@@ -20,6 +20,7 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 - [Cancer](#cancer)
 - [Cardiology](#cardiology)
 - [Endocrinology](#endocrinology)
+- [Gerontology and Geriatrics](#gerontology-and-geriatrics)
 - [Infectious Diseases](#infectious-diseases)
 - [Intensive and Critical Care](#intensive-and-critical-care)
 - [Neurology](#neurology)
@@ -50,6 +51,9 @@ A collection of clinical applications using [AutoScore](https://nliulab.github.i
 
 ### Endocrinology
 * Oppong AE, et al. [Blood metabolomic and transcriptomic signatures stratify patient subgroups in multiple sclerosis according to disease severity](https://www.sciencedirect.com/science/article/pii/S2589004224004462). iScience 2024 Mar; 27(3): 109225.
+
+### Gerontology and Geriatrics
+* You Y, et al. [Development of a falls risk assessment scale for middle-aged and elderly patients with cardiovascular diseases in Chinese community based on AutoScore: A CHARLS study](https://pubmed.ncbi.nlm.nih.gov/39914122/). Public Health 2025 Feb; 240: 167-173. 
 
 ### Infectious Diseases
 * Lai CKC, et al. [A machine learning-based risk score for prediction of infective endocarditis among patients with Staphylococcus aureus bacteraemia – The SABIER score](https://academic.oup.com/jid/advance-article/doi/10.1093/infdis/jiae080/7616139). The Journal of Infectious Diseases 2024.
