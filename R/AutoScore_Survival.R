@@ -494,6 +494,7 @@ print_performance_survival <-
 #' @seealso \code{\link{AutoScore_testing_Ordinal}}
 #' @return No return value and the ROC performance will be printed out directly.
 #' @import survAUC survival
+#' @importFrom stats quantile
 #' @export
 print_performance_ci_survival  <-
   function(score, validation_set, time_point, n_boot = 100) {
@@ -607,6 +608,7 @@ conversion_table_survival<- function(pred_score, score_cut = c(40,50,60), time_p
 #' data("sample_data_survival")
 #' uni_table<-compute_uni_variable_table_survival(sample_data_survival)
 #' @import survival
+#' @importFrom stats coef confint.default
 #' @export
 compute_uni_variable_table_survival <- function(df) {
   uni_table <- data.frame()
@@ -646,6 +648,7 @@ compute_uni_variable_table_survival <- function(df) {
 #' data("sample_data_survival")
 #' multi_table<-compute_multi_variable_table_survival(sample_data_survival)
 #' @import survival
+#' @importFrom stats coef confint.default
 #' @export
 compute_multi_variable_table_survival <- function(df) {
   model <-
@@ -691,13 +694,12 @@ compute_multi_variable_table_survival <- function(df) {
 #' @param variable_list List of included variables
 #' @return A scoring table
 #' @import survival
-compute_score_table_survival <-
-  function(train_set_2, max_score, variable_list) {
+#' @importFrom stats coef
+compute_score_table_survival <- function(train_set_2, max_score, variable_list) {
     #AutoScore Module 3 : Score weighting
     # First-step logistic regression
 
-    model <-
-      coxph(Surv(label_time, label_status) ~ ., data = train_set_2)
+    model <- coxph(Surv(label_time, label_status) ~ ., data = train_set_2)
     coef_vec <- coef(model)
     if (length(which(is.na(coef_vec))) > 0) {
       warning(" WARNING: GLM output contains NULL, Replace NULL with 1")

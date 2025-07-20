@@ -23,6 +23,7 @@
 #' @seealso \code{\link{AutoScore_parsimony}}, \code{\link{AutoScore_weighting}}, \code{\link{AutoScore_fine_tuning}}, \code{\link{AutoScore_testing}}, Run \code{vignette("Guide_book", package = "AutoScore")} to see the guidebook or vignette.
 #' @export
 #' @importFrom randomForest randomForest importance
+#' @importFrom stats glm binomial predict
 #'
 AutoScore_rank <- function(train_set, validation_set = NULL, method = "rf", ntree = 100) {
   # set.seed(4)
@@ -508,6 +509,7 @@ AutoScore_testing <-
 #' data("sample_data")
 #' names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 #' uni_table<-compute_uni_variable_table(sample_data)
+#' @importFrom stats glm binomial coef confint.default
 #' @export
 compute_uni_variable_table <- function(df) {
   uni_table <- data.frame()
@@ -550,15 +552,11 @@ compute_uni_variable_table <- function(df) {
 #' data("sample_data")
 #' names(sample_data)[names(sample_data) == "Mortality_inpatient"] <- "label"
 #' multi_table<-compute_multi_variable_table(sample_data)
+#' @importFrom stats glm binomial coef confint.default
 #' @export
 compute_multi_variable_table <- function(df) {
-  model <-
-    glm(label ~ .,
-        data = df,
-        family = binomial,
-        na.action = na.omit)
-  multi_table <-
-    cbind(exp(cbind(
+  model <- glm(label ~ ., data = df, family = binomial, na.action = na.omit)
+  multi_table <- cbind(exp(cbind(
       adjusted_OR = coef(model), confint.default(model)
     )), summary(model)$coef[, "Pr(>|z|)"])
   multi_table <-
@@ -706,6 +704,7 @@ print_roc_performance <-
 #' @return No return value and the conversion will be printed out directly.
 #' @export
 #' @import pROC knitr
+#' @importFrom stats glm binomial predict
 conversion_table<-function(pred_score, by = "risk", values = c(0.01,0.05,0.1,0.2,0.5)){
 
   glmmodel<-glm(Label~pred_score,data = pred_score,family = binomial(link="logit"))
@@ -768,9 +767,9 @@ conversion_table<-function(pred_score, by = "risk", values = c(0.01,0.05,0.1,0.2
 #' @param train_set_2 Processed training set after variable transformation (AutoScore Module 2)
 #' @param max_score Maximum total score
 #' @param variable_list List of included variables
+#' @importFrom stats glm binomial coef
 #' @return A scoring table
-compute_score_table <-
-  function(train_set_2, max_score, variable_list) {
+compute_score_table <- function(train_set_2, max_score, variable_list) {
     #AutoScore Module 3 : Score weighting
     # First-step logistic regression
     model <-
@@ -871,7 +870,9 @@ compute_auc_val <-
 #' @param labels Actual outcome(binary)
 #' @param quiet if set to TRUE, there will be no trace printing
 #' @return No return value and the ROC curve will be plotted.
-#' @import pROC
+#' @import pROC ggplot2
+#' @importFrom grDevices rgb
+#' @importFrom rlang .data
 plot_roc_curve <- function(prob, labels, quiet = TRUE) {
   #library(pROC)
   # prob<-predict(model.glm,newdata=X_test, type = 'response')
@@ -888,10 +889,10 @@ plot_roc_curve <- function(prob, labels, quiet = TRUE) {
   auc_ci <- sort(as.numeric(auc_ci)) # should include AUC and 95% CI
   clr <- rgb(red = 41, green = 70, blue = 76, maxColorValue = 255)
   clr_axis <- rgb(red = 25, green = 24, blue = 24, maxColorValue = 255)
-  p<-ggplot(data.frame(fpr = roc.data$fpr, tpr = roc.data$tpr),
-            aes_string(x = "fpr", ymin = 0, ymax = "tpr")) +
+  p <- ggplot(data.frame(fpr = roc.data$fpr, tpr = roc.data$tpr),
+              aes(x = .data[["fpr"]], ymin = 0, ymax = .data[["tpr"]])) +
     #geom_ribbon(alpha = 0.2, fill = clr) +
-    geom_line(aes_string(y = "tpr"), color = clr, lwd = 1.2) +
+    geom_line(aes(y = .data[["tpr"]]), color = clr, lwd = 1.2) +
     geom_abline(slope = 1, intercept = 0, lty = 2, lwd = 0.3, color = clr_axis) +
     # scale_color_manual(values = ) +
     scale_x_continuous(expand = c(0, 0), limits = c(0, 1)) +

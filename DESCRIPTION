@@ -1,7 +1,7 @@
 Package: AutoScore
 Type: Package
 Title: An Interpretable Machine Learning-Based Automatic Clinical Score Generator
-Version: 1.0.0
+Version: 1.1.0
 Date: 2022-08-27
 Authors@R: c(person("Feng", "Xie", role = c("aut","cre"), comment = c(ORCID = "0000-0002-0215-667X"),
                     email= "xief@u.duke.nus.edu"),
@@ -25,14 +25,14 @@ Description: A novel interpretable machine learning-based framework to automate 
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Imports: 
     tableone,
     pROC,
     randomForest,
     ggplot2,
     knitr,
-    Hmisc, car, coxed, dplyr, ordinal, survival, tidyr, plotly,
+    Hmisc, car, dplyr, ordinal, survival, tidyr, plotly,
     magrittr, randomForestSRC, rlang, survAUC, survminer
 Depends: 
     R (>= 3.5.0)

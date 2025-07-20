@@ -517,6 +517,7 @@ check_link <- function(link) {
 #' @param model An ordinal regression model fitted using \code{\link[ordinal]{clm}}.
 #' @param n_digits Number of digits to print for OR or exponentiated
 #'   coefficients (Default:3).
+#' @importFrom stats confint
 extract_or_ci_ord <- function(model, n_digits = 3) {
   s_str <- paste0("%.", n_digits, "f")
   # Number of threshold parameters, not to include in results:
@@ -687,7 +688,6 @@ compute_final_score_ord <- function(data, final_variables, cut_vec, scoring_tabl
 #'   mAUC (Default:FALSE).
 #' @import survival
 #' @importFrom Hmisc rcorrcens
-#' @importFrom coxed bca
 #' @import ggplot2
 #' @return Returns a list of the mAUC (mauc) and generalized c-index (cindex, if
 #'   requested for) and their 95% bootstrap CIs (mauc_ci and cindex_ci).
@@ -701,7 +701,7 @@ evaluate_model_ord <- function(label, score, n_boot, report_cindex = TRUE) {
   model_auc_boot <- unlist(lapply(score_list, function(score_boot) {
     compute_mauc_ord(y = score_boot$label, fx = score_boot$score)
   }))
-  model_auc_ci <- coxed::bca(model_auc_boot, conf.level = 0.95)
+  model_auc_ci <- bca(model_auc_boot, conf.level = 0.95)
   if (report_cindex) {
     model_cindex <- Hmisc::rcorrcens(
       Surv(label, status) ~ pred_score,
@@ -716,7 +716,7 @@ evaluate_model_ord <- function(label, score, n_boot, report_cindex = TRUE) {
                           status = 1)
       )[, "C"]
     }))
-    model_cindex_ci <- coxed::bca(model_cindex_boot, conf.level = 0.95)
+    model_cindex_ci <- bca(model_cindex_boot, conf.level = 0.95)
   } else {
     model_cindex <- NULL
     model_cindex_ci <- NULL

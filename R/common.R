@@ -267,6 +267,7 @@ compute_descriptive_table <- function(df, ...) {
 #' @title Internal Function: Change Reference category after first-step logistic regression (part of AutoScore Module 3)
 #' @param df A \code{data.frame} used for logistic regression
 #' @param coef_vec Generated from logistic regression
+#' @importFrom stats relevel
 #' @return Processed \code{data.frame} after changing reference category
 change_reference <- function(df, coef_vec) {
   # delete label first
@@ -511,6 +512,7 @@ check_predictor <- function(data_predictor) {
 #' Internal function: induce informative missing in a single variable
 #' @param x Variable to induce missing in.
 #' @inheritParams induce_informative_missing
+#' @importFrom stats median glm predict
 induce_median_missing <- function(x, prop_missing) {
   if (anyNA(x)) stop(simpleError("x already has missing."))
   x_mdn <- median(x)
@@ -568,6 +570,11 @@ induce_informative_missing <- function(df, vars_to_induce = c("Lab_A", "Vital_A"
   df
 }
 
+#' Internal function: impute missing values in the training and validation sets
+#' @param train_set A data.frame of the training data.
+#' @param validation_set A data.frame of the validation data. Default is \code{NULL}.
+#' @importFrom stats median
+#' @return Returns the imputed sets.
 AutoScore_impute <- function(train_set, validation_set = NULL){
   n_train <- nrow(train_set)
   df <- rbind(train_set, validation_set)
@@ -609,6 +616,7 @@ AutoScore_impute <- function(train_set, validation_set = NULL){
 #' @param categorize  Methods for categorize continuous variables. Options include "quantile" or "kmeans" (Default: "quantile").
 #' @param quantiles Predefined quantiles to convert continuous variables to categorical ones. (Default: c(0, 0.05, 0.2, 0.8, 0.95, 1)) Available if \code{categorize = "quantile"}.
 #' @param max_cluster The max number of cluster (Default: 5). Available if \code{categorize = "kmeans"}.
+#' @importFrom stats quantile kmeans
 #' @return cut_vec for \code{transform_df_fixed}
 get_cut_vec <-
   function(df,
