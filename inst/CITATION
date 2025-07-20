@@ -1,7 +1,7 @@
 citHeader("To cite AutoScore in publications use:")
 
 bibentry(
-  entry    = "Manual",
+  bibtype    = "Manual",
   title    = "{AutoScore}: An Interpretable Machine Learning-Based Automatic Clinical Score Generator",
   author   = c(
     person("Feng", "Xie"),
@@ -18,7 +18,8 @@ bibentry(
 )
 
 
-bibentry(entry = "Article",
+bibentry(
+  bibtype = "Article",
   title        = "AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records",
   author       = c(
     person("Feng", "Xie"),
