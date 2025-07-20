@@ -1,28 +1,32 @@
 citHeader("To cite AutoScore in publications use:")
 
-citEntry(
+bibentry(
   entry    = "Manual",
   title    = "{AutoScore}: An Interpretable Machine Learning-Based Automatic Clinical Score Generator",
-  author   = personList(as.person("Feng Xie"),
-                  as.person("Yilin Ning"),
-                  as.person("Han Yuan"),
-                  as.person("Mingxuan Liu"),
-                  as.person("Seyed Ehsan Saffari"),
-                  as.person("Bibhas Chakraborty"),
-                  as.person("Nan Liu")),
+  author   = c(
+    person("Feng", "Xie"),
+    person("Yilin", "Ning"),
+    person("Han", "Yuan"),
+    person("Mingxuan", "Liu"),
+    person("Seyed Ehsan", "Saffari"),
+    person("Bibhas", "Chakraborty"),
+    person("Nan", "Liu")
+  ),
   year     = 2022,
   url      = "https://CRAN.R-project.org/package=AutoScore",
   textVersion  = "Xie F, Ning Y, Yuan H, Liu M, Saffari SE, Chakraborty B, Liu N. Package 'AutoScore': An Interpretable Machine Learning-Based Automatic Clinical Score Generator. R package version, 2022. Available from: cran.r-project.org/web/packages/AutoScore/AutoScore.pdf"
 )
 
 
-citEntry(entry = "Article",
+bibentry(entry = "Article",
   title        = "AutoScore: A Machine Learning-Based Automatic Clinical Score Generator and Its Application to Mortality Prediction Using Electronic Health Records",
-  author       = personList(as.person("Feng Xie"),
-                  as.person("Bibhas Chakraborty"),
-                  as.person("Marcus Eng Hock Ong"),
-                  as.person("Benjamin Alan Goldstein"),
-                  as.person("Nan Liu")),
+  author       = c(
+    person("Feng", "Xie"),
+    person("Bibhas", "Chakraborty"),
+    person("Marcus Eng Hock", "Ong"),
+    person("Benjamin Alan", "Goldstein"),
+    person("Nan", "Liu")
+  ),
   journal      = "JMIR Medical Informatics",
   year         = "2020",
   volume       = "8",
